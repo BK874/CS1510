@@ -1,0 +1,72 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+\usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 1}
+\author{Brian Knotten}
+\maketitle
+
+\section*{3}
+This problem was the most straightforward of the three problems I selected; clearly, the solution involves pouring quantities of water between the two pails. The challenging part was figuring out the least number of moves to measure out 4 quarts of water. \\
+Solution: \begin{enumerate}
+\item Fill the 5 quart pail
+\item Transfer the 3 quarts from the 5 quart pail to the 3 quart pail. Now the 3 quart pail is full and the 5 quart pail contains 2 quarts.
+\item Empty the 3 quart pail
+\item Transfer the contents of the 5 quart pail to the 3 quart pail. Now the 3 quart pail contains 2 quarts and the 5 quart pail is empty
+\item Fill the 5 quart pail
+\item Transfer water from the 5 quart pail to the 3 quart pail until the 3 quart pail is full. Now the 3 quart pail is full and the 5 quart pail contains exactly 4 quarts and we are done. 
+\end{enumerate}
+
+\section*{4}
+My immediate (naive) solution to this problem was that Pirate 5 would just take a third of the gold and give the other two thirds to two other pirates to easily  Aside from the issue of the leftover gold coin from an even three-way split, this solution seemed too easy and seemingly ignored the whole experience system and the killing of the most experienced pirate so I examined this problem more closely. Clearly, if he chose Pirate 4 as one of two pirates to split with it would be advantageous for Pirate 4 to not agree on the plan, kill 5 and then split the gold 50-50 with another pirate. However, this logic follows for the rest of the pirates, collapsing the hierarchy down to Pirates 2 and 1. Obviously in the two pirate case, Pirate 2 takes all of it and Pirate 1 is left with nothing. This line of thought helped eliminate the naive approach, but was not overly helpful for optimizing Pirate 5's plan, so I needed a new approach.\\
+\\
+Deciding to work from the bottom up, I tried examining the best strategies for Pirates 2-5. Pirate 2's strategy, as stated above, is obvious and he takes all of the gold. Pirate 3 clearly needs to convince Pirate 1 instead of Pirate 2, as (assuming the Pirates are rational) Pirate 2 will always vote against the plan in order to kill Pirate 3 and claim the gold for himself. Assuming Pirate 1 follows this line of reasoning, Pirate 3 should propose taking 99 of the gold coins for himself and giving 1 gold coin to Pirate 1. Pirate 1 must agree, otherwise Pirate 3 gets killed and Pirate 2 takes all 100 gold coins and Pirate 1 gets nothing. By the same reasoning, Pirate 4 should claim 99 of the gold coins and give 1 to Pirate 2 as otherwise he will be killed and Pirate 3 will follow the above strategy, leaving Pirate 2 with nothing. Following the same logic, Pirate 5 should take 98 of the gold pieces and give 1 each to Pirates 3 and 1 as they will otherwise be left with nothing by Pirate 4. \\
+\\
+In summary, Pirate 5 should propose that he take 98 of the gold coins and gives 1 coin each to Pirates 3 and 1. Pirates 3 and 1 will accept because otherwise (assuming they are all rational and follow the same logic) Pirate 5 will be killed and Pirate 4 will leave them with nothing. 
+
+\section*{11}
+I spent the most time pondering this problem because the description is rather vague and does not give much in the way of restrictions and allowances i.e. I did not know what actions I could and could not take while solving this problem. My solution assumes that you are allowed to remove as many pills as you want from the jars (it does not seem possible otherwise) and that the scale is a single plate scale and not a two plate balance like in question 1 i.e. you cannot compare two objects using the scale. \\
+\\
+Solution: Form a pile of 15 pills by taking pills from the jars as follows: 1 pill from Jar 1, 2 pills from Jar 2, 3 pills from Jar 3, 4 pills from Jar 4, and 5 pills from Jar 5. Place the pile on the scale and determine the jar as follows: \\
+\begin{enumerate}
+\item If the weight of the pile is 149 grams, then Jar 1 is infected as $149 = 14 \times 10$ (infected)$ + 9$ (noninfected)
+\item If the weight of the pile is 148 grams, then Jar 2 is infected as $148 = 13 \times 10$ (noninfected)$ + 9 \times 2$ (infected)
+\item If the weight of the pile is 147 grams, then Jar 3 is infected as $147 = 12 \times 10$ (noninfected)$ + 9 \times 3$ (infected)
+\item If the weight of the pile is 146 grams, then Jar 4 is infected as $146 = 11 \times 10$ (noninfected)$ + 9 \times 4$ (infected)
+\item If the weight of the pile is 145 grams, then Jar 5 is infected as $145 = 10 \times 10$ (noninfected)$ + 9 \times 5$ (infected)
+\end{enumerate}
+
+\end{document}
