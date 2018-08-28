@@ -1,0 +1,17 @@
+\documentclass[11pt, oneside]{article}   	
+\usepackage{graphicx}				
+										
+\usepackage{amssymb}
+
+
+
+\title{CS 1510 Homework 1}
+\author{Brian Falkenstein, Brian Knotten, Brett Schreiber}
+
+\begin{document}
+\maketitle
+
+{\noindent \large Problem 2 B \par}
+Assume the algorithm given, A, does not solve the interval coloring problem. Let s be the maximum number of intervals that overlap at any point, and thus, the optimal output (minimum number of rooms after assigning all intervals). Then, A will output a value larger than s for some input, and thus, A does not solve the problem. We can conclude that in the case that A's output is greater than s, this means that A assigned a class to a new room when another room already had a space for it, as this would be the only case where A's output could be greater than s. Because, in this algorithm, classes already placed are never altered / assigned to another room, this is a contradiction. The algorithm checks the set R of rooms that already have a class scheduled in it, and places the class in the first room it finds that does not cause an overlap. Thus, the output of A cannot be larger than s. 
+~\\ \par
+\end{document}
