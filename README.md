@@ -1,2 +1,2 @@
-# CS 1511/2110 Homeworks
-Brian Knotten, Brett Schreiber
+# CS 1510 Homeworks
+Brian Knotten, Brett Schreiber, Brian Falkenstein
