@@ -114,6 +114,8 @@ Therefore the algorithm does not solve the problem of generating a maximum cardi
 
 \section*{2}
 \subsection*{a}
+This algorithm $A$ does not find the optimal solution for the following instance $I$: For the first room, $A(I)$ chooses the interval that ends earliest, $A$. This eliminates $C$ and $D$ as candidates for the first room. The next room that ends earliest is $B$, which eliminates $E$, and now there are no intervals left, so the first room is full. $C$, $D$, and $E$ all overlap, so they must all have their own room. So $A(I)$ requires 4 rooms in its output: $\{A, B\}, \{C\}, \{D\}, \{E\}$. But a better solution exists using three rooms: $\{A, E\}, \{D, B\}, \{C\}$. So the algorithm $A$ is not correct in all instances.
+
 \subsection*{b}
 Assume the algorithm given, $A$, does not solve the interval coloring problem. Let $s$ be the maximum number of intervals that overlap at any point, and thus, the optimal output (minimum number of rooms after assigning all intervals). Then, $A$ will output a value larger than s for some input, and thus, $A$ does not solve the problem. We can conclude that in the case that $A$'s output is greater than $s$, this means that $A$ assigned a class to a new room when another room already had a space for it, as this would be the only case where $A$'s output could be greater than $s$. Because, in this algorithm, classes already placed are never altered / assigned to another room, this is a contradiction. The algorithm checks the set $R$ of rooms that already have a class scheduled in it, and places the class in the first room it finds that does not cause an overlap. Thus, the output of $A$ cannot be larger than s. 
 ~\\ \par
