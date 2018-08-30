@@ -5,11 +5,6 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 
-% Finite State Machine stuff
-\usepackage{pgf}
-\usepackage{tikz}
-\usetikzlibrary{arrows,automata}
-
 % Format tables nicely
 \usepackage[latin1]{inputenc}
 \usepackage{array}
@@ -42,15 +37,61 @@
 
 \section*{4}
 \subsection*{a}
+\begin{itemize}
+	\item Let $A$ be an algorithm which produces a list fill amounts a motorist takes at each stop. 
+	\item For sake of contradiction assume $A$ is not correct.
+	\item Therefore there exists an input $I$ where $A$ produces a non-optimal output.
+	\item Let $opt(I)$ be the optimal output that differs the least from $A(I)$.
+	\item Since $A(I) \neq opt(I)$, there exists a first item in the list at stop $x_i$ where $A(I)$'s fill amount $f$ differs from $opt(I)$'s fill amount $g$.
+	\item Every prior fill amount before $x_i$ must be identical between $A(I)$ and $opt(I)$.
+	\item Since $f \neq g$, then $f > g$ or $f < g$.
+	\item If $f > g$:
+	\begin{itemize}
+		\item Since $opt(I)$ is correct, $g$ was enough fuel to get to the next stop.
+		\item Therefore $f$ was not the minimum amount of gas needed.
+		\item $A$ guarantees only filling up the minimum amount of gas needed.
+		\item There is a contradiction.
+	\end{itemize}
+	
+	\item So it can only be the case that $f < g$.
+	\item $A(I)$ spends less time ( $\frac{g - f}{r}$ seconds) filling up at $x_i$.
+	\item Since $A(I)$ is correct (yet suboptimal), $f$ was enough fuel to get to the next stop.
+	\item Consider an alternative optimal solution $opt'(I)$ identical to $opt(I)$ except fill amount $g$ is replaced with $f$ at $x_i$.
+	\item The time is still optimal, since less time is spent fueling at $x_i$. ($\frac{g - f}{r}$) seconds less.
+	\item $opt'(I)$ cannot use less time than $opt(I)$, otherwise $opt(I)$ would not be optimal. So $opt'(I)$ utilizes $\frac{g - f}{r}$ seconds somewhere else.
+	\item This extra time can be used to ensure that $opt'(I)$ is still a correct algorithm.
+\end{itemize}
+
 
 \subsection*{b}
 This algorithm $A$ does not provide an optimal output for the following input $I$:\\
 \begin{itemize}
-\item Let $A$ be the first gas station at kilometer 0
-\item Let $x$ be the second gas station at kilometer 2
-\item Let $B$ be the destination at kilometer 4
-\item Let $C$ be the capacity 3 liters
-\item Let $F$ be the consumption rate of 1 liter per kilometer
+	\item Let $A$ be the first gas station at kilometer 0
+	\item Let $x$ be the second gas station at kilometer 2
+	\item Let $B$ be the destination at kilometer 4
+	\item Let $C$ be the capacity 3 liters
+	\item Let $F$ be the consumption rate of 1 liter per kilometer
+	\item Let $r$ be the fill rate of 1 liter per minute
 \end{itemize}
-$A(I)$ produces the following output:...\\
+$A(I)$ produces the following output (a list of actions):
+\begin{enumerate}
+	\item Fuel tank starts at 0/3.
+	\item Not enough gas to make it to $x$, so fill the tank up all the way with 3 liters at $A$, taking 3 minutes. (Fuel tank at 3/3).
+	\item Travel to gas station $x$, 2 kilometers away. (Fuel tank at 1/3).
+	\item Not enough gas to make it to $B$, so fill the tank up all the way with 2 liters at $x$ taking 2 minutes. (Fuel tank at 3/3).
+	\item Arrive at destination $B$, 2 kilometers away. (Fuel tank at 1/3).
+\end{enumerate}
+$A(I)$ requires 3 + 2 = 5 minutes of fueling.
+
+A better output $O(I)$ is:
+\begin{enumerate}
+	\item Fuel tank starts at 0/3.
+	\item Fill 3 liters at $A$, taking 3 minutes. (Fuel tank at 3/3).
+	\item Travel to gas station $x$, 2 kilometers away. (Fuel tank at 1/3).
+	\item Fill 1 liters at $x$, taking 1 minute. (Fuel tank at 1/3).
+	\item Arrive at destination $B$, 2 kilometers away. (Fuel tank at 0/3).
+\end{enumerate}
+$O(I)$ requires 3 + 1 = 4 minutes of fueling.\\
+
+Since there exists a more optimal output than $A(I)$, $A$ is not a correct algorithm.
 \end{document}
