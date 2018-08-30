@@ -94,4 +94,19 @@ A better output $O(I)$ is:
 $O(I)$ requires 3 + 1 = 4 minutes of fueling.\\
 
 Since there exists a more optimal output than $A(I)$, $A$ is not a correct algorithm.
+\section*{5}
+\subsection*{b}
+This algorithm $A$ solves the problem. Because I am using $A$ to refer to the algorithm, I will refer to the set of points listed in the problem as $P$. 
+\begin{itemize}
+	\item Assume the algorithm $A$ is incorrect, and has some input $I$ that causes it to give suboptimal output. 
+	\item Let $O(I)$ be the optimal algorithm on $I$ that differs the least from $A(I)$. 
+	\item Let $j$ be the first point that the algorithms differ. That is, before we've reached $p_j$, the $j'th$ item in $P$, $A(I)=O(I)$. 
+	\item Because of our assumption, $O(I)$ chose another way of covering point $p_j$ with a unit interval. Because we know that $A(I)$ will have a unit interval beginning at point $p_j$, by definition of the algorithm, that leaves 2 possibilities for how $O(I)$ placed the unit interval. 
+	\item Either $O(I)$ has a unit interval ending at point $p_j$, or $O(I)$ placed a unit interval, where $p_j$ appears somewhere in between. 
+	\item Neither of these situations are more optimal than the one $A$ chose. 
+	\item In the case that the interval ends at $p_j$, we know that it is not more optimal, as if it covered more points before $p_j$, $A$ would have already selected one of those earlier points, placing a unit interval beginning at one of those points and covering $p_j$. 
+	\item Similarly, in the case that $p_j$ appears somewhere in the middle of the interval placed by $O$, no points appearing earlier would be captured (for the reason stated above), and any point after $p_j$ that would be captured by this interval would also be captured by the interval that $A$ placed.
+	\item Thus, we can construct $O'(I)$ by removing the interval it placed at step j, and adding an interval beginning at $p_j$. 
+	\item $O'(I)$ agrees with $A(I)$ for one more step without sacrificing correctness, so we have reached a contradiction. 
+\end{itemize}	
 \end{document}
