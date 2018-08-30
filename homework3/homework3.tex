@@ -5,6 +5,12 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usepackage{pgfplots}
+
 % Format tables nicely
 \usepackage[latin1]{inputenc}
 \usepackage{array}
@@ -95,6 +101,33 @@ $O(I)$ requires 3 + 1 = 4 minutes of fueling.\\
 
 Since there exists a more optimal output than $A(I)$, $A$ is not a correct algorithm.
 \section*{5}
+\subsection*{a}
+The presented algorithm (hereafter referred to as $A$) is not correct as it does not provide an optimal output for the presented problem for the following input (hereafter referred to as $P$). For the sake of simplicity I will be presenting the input ($P$) as a list of points on the real line and the unit intervals as intervals of length 1 on the real line. Additionally, $S$ shall be the solution set of intervals.
+\begin{itemize}
+	\item Let $P = \{1, 1.6, 1.7, 1.8, 2.1, 2.2, 2.9, 2.95, 3.3, 3.4, 3.5, 4 \}$ \\\\
+	\begin{tikzpicture}
+        \begin{axis}[
+            axis x line=middle,
+            axis y line=none,
+            height=50pt,
+            width=\axisdefaultwidth,
+            xmin=1,
+            xmax=4,
+        ]
+            \addplot coordinates {
+                (1,0) (1.6,0) (1.7,0) (1.8,0) (2.1,0) (2.2,0) (2.9,0) (2.95,0) (3.3,0) (3.4,0) (3.5,0) (4,0)
+            };
+        \end{axis}
+    \end{tikzpicture}
+    \item $A$ always selects the interval that covers the most points; clearly, the intervals from from 1.6 to 2.2 and from 2.9 to 3.5 cover the most points as they both cover 5 points each. For the sake of argument, let's say $A$ selects the interval from 1.6 to 2.2 first and adds it to $S$.
+    \item $A$ will next select the interval from 2.9 and 3.5 and add it to $S$ as it also covers 5 points.
+    \item $A$ is now left with points 1 and 4 to cover with intervals. They will have to be covered separately, as they are more than 1 unit away from each other.
+    \item After covering 1 and 4, $A$'s optimal output is: $P = \{1, \ $1.6-2.2, 2.9-3.5$ \ , 4 \}$
+    \item However, a more optimal output is the obvious three intervals from 1-2, 2-3, and 3-4.
+    \item Since there exists a more optimal output than $A(P)$, $A$ is not a correct algorithm.
+	
+\end{itemize}
+
 \subsection*{b}
 This algorithm $A$ solves the problem. Because I am using $A$ to refer to the algorithm, I will refer to the set of points listed in the problem as $P$. 
 \begin{itemize}
