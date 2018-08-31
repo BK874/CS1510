@@ -54,12 +54,9 @@
 	\item So it can only be the case that $f < g$.
 	\item $A(I)$ spends less time ($\frac{g - f}{r}$ seconds) filling up at $x_i$.
 	\item Since $A(I)$ is correct (yet suboptimal), $f$ was enough fuel to get to the next stop. Moreover, $A(I)$ must have spent more time than $opt(I)$ fueling, so the time avoided by filling less ($\frac{g - f}{r}$ seconds) must have been spent at a later station, $x_j$.
-	
-	\item Consider an alternative optimal solution $opt'(I)$ identical to $opt(I)$ except fill amount $g$ is replaced with $f$ at $x_i$.
-	\item The time is still optimal, since less time is spent fueling at $x_i$. ($\frac{g - f}{r}$) seconds less.
-	\item $opt'(I)$ cannot use less time than $opt(I)$, otherwise $opt(I)$ would not be optimal. So $opt'(I)$ utilizes $\frac{g - f}{r}$ seconds somewhere else.
-
-	\item This extra time can be used to ensure that $opt'(I)$ is still a correct algorithm.
+	\item So there must be another station, $x_j$ where $A(I)$ spent $\frac{g - f}{r}$ more seconds than $opt(I)$.
+	\item If $opt(I)$ were to spend less time filling than $A(I)$ at $x_j$, we return to the contradiction where $A(I)$ spent too much time filling.
+	\item In all cases there is a contradiction. $A$ is optimal on all inputs and therefore correct.
 \end{itemize}
 
 
