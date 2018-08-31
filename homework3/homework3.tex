@@ -42,23 +42,23 @@
 	\item For sake of contradiction assume $A$ is not correct.
 	\item Therefore there exists an input $I$ where $A$ produces a non-optimal output.
 	\item Let $opt(I)$ be the optimal output that differs the least from $A(I)$.
-	\item Since $A(I) \neq opt(I)$, there exists a first item in the list at stop $x_i$ where $A(I)$'s fill amount $f$ differs from $opt(I)$'s fill amount $g$.
-	\item Every prior fill amount before $x_i$ must be identical between $A(I)$ and $opt(I)$.
+	\item Since $A(I) \neq opt(I)$, there exists a first item in the list at stop $x_i$ where $A(I)$'s fill amount $f$ differs from $opt(I)$'s fill amount $g$. Every prior fill amount before $x_i$ must be identical between $A(I)$ and $opt(I)$.
 	\item Since $f \neq g$, then $f > g$ or $f < g$.
 	\item If $f > g$:
 	\begin{itemize}
 		\item Since $opt(I)$ is correct, $g$ was enough fuel to get to the next stop.
 		\item Therefore $f$ was not the minimum amount of gas needed.
-		\item $A$ guarantees only filling up the minimum amount of gas needed.
-		\item There is a contradiction.
+		\item Since $A$ guarantees only filling up the minimum amount of gas needed, there is a contradiction.
 	\end{itemize}
 	
 	\item So it can only be the case that $f < g$.
-	\item $A(I)$ spends less time ( $\frac{g - f}{r}$ seconds) filling up at $x_i$.
-	\item Since $A(I)$ is correct (yet suboptimal), $f$ was enough fuel to get to the next stop.
+	\item $A(I)$ spends less time ($\frac{g - f}{r}$ seconds) filling up at $x_i$.
+	\item Since $A(I)$ is correct (yet suboptimal), $f$ was enough fuel to get to the next stop. Moreover, $A(I)$ must have spent more time than $opt(I)$ fueling, so the time avoided by filling less ($\frac{g - f}{r}$ seconds) must have been spent at a later station, $x_j$.
+	
 	\item Consider an alternative optimal solution $opt'(I)$ identical to $opt(I)$ except fill amount $g$ is replaced with $f$ at $x_i$.
 	\item The time is still optimal, since less time is spent fueling at $x_i$. ($\frac{g - f}{r}$) seconds less.
 	\item $opt'(I)$ cannot use less time than $opt(I)$, otherwise $opt(I)$ would not be optimal. So $opt'(I)$ utilizes $\frac{g - f}{r}$ seconds somewhere else.
+
 	\item This extra time can be used to ensure that $opt'(I)$ is still a correct algorithm.
 \end{itemize}
 
