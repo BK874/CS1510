@@ -1,0 +1,51 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usepackage{pgfplots}
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+\usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here..
+
+\title{CS 1510 Homework 4}
+\author{Brian Falkenstein, Brian Knotten, Brett Schreiber}
+
+\begin{document}
+\maketitle
+
+\section*{9}
+\subsection*{a}
+This algorithm can be proven incorrect by considering a situation where large files, which by the algorithm will be placed after shorter files, have a higher probability of being accessed. This is demonstrated most simply in an example with 2 files, $F_1$ of size 2 and probability 0.1, and $F_2$ of size 10 and probability 0.9. Following the algorithm, $F_2$ would be placed after $F_1$, giving an expected access time of $(2*0.2)+(12*0.9)=11$. This can be improved by simply swapping the locations of the two files, giving us an expected access time of $(10*0.9)+(12*.1)=10.2$.
+\subsection*{b}
+
+
+
+\end{document}
