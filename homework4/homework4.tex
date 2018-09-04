@@ -45,7 +45,12 @@
 \subsection*{a}
 This algorithm can be proven incorrect by considering a situation where large files, which by the algorithm will be placed after shorter files, have a higher probability of being accessed. This is demonstrated most simply in an example with 2 files, $F_1$ of size 2 and probability 0.1, and $F_2$ of size 10 and probability 0.9. Following the algorithm, $F_2$ would be placed after $F_1$, giving an expected access time of $(2*0.2)+(12*0.9)=11$. This can be improved by simply swapping the locations of the two files, giving us an expected access time of $(10*0.9)+(12*.1)=10.2$.
 \subsection*{b}
-
+Assume the algorithm stated in the problem, $A$, is incorrect and has some input I that causes it to give the incorrect output. Define $Opt(I)$ to be an acceptable output to the problem that agrees with $A(I)$ for the most steps. That is, before their first point of disagreement, $Opt(I)$ and $A(I)$ chose the same ordering of files. At this point of disagreement, call the file that $A(I)$ chose $F_j$ and the file that $Opt(I)$ chose $F_k$. We know that $F_k$ must have a lower probability than $F_j$, otherwise $A(I)$ would've already chosen it. That leaves us with two scenarios:
+\begin{enumerate}
+\item The length of $F_j$ is greater than that of $F_k$.
+\item The length of $F_j$ is less than that of $F_k$. 
+\end{enumerate}
+Both situations bring us to a contradiction of $Opt(I)$ being an acceptable output. Having the larger probability file come before the lower probability one always results in a more optimal solution, as the probability for a specific file will always stay the same no matter where it is placed in the chain, but the length of files before the file, and thus the value multiplied by the probability at that step in the calculation of expected access time, varies. The highest probability files should be placed at the start of the tape, so as to minimize the length of tape before these files that will need to be multiplied by their probabilities. This, $Opt(I)$ can be modified to agree with $A(I)$ for one more step by simply swapping $F_k$ with $F_j$, making $Opt(I)$ more optimal. 
 
 
 \end{document}
