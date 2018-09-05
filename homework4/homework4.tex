@@ -52,5 +52,24 @@ Assume the algorithm stated in the problem, $A$, is incorrect and has some input
 \end{enumerate}
 Both situations bring us to a contradiction of $Opt(I)$ being an acceptable output. Having the larger probability file come before the lower probability one always results in a more optimal solution, as the probability for a specific file will always stay the same no matter where it is placed in the chain, but the length of files before the file, and thus the value multiplied by the probability at that step in the calculation of expected access time, varies. The highest probability files should be placed at the start of the tape, so as to minimize the length of tape before these files that will need to be multiplied by their probabilities.Thus, $Opt(I)$ can be modified to agree with $A(I)$ for one more step by simply swapping $F_k$ with $F_j$, making $Opt(I)$ more optimal. 
 
+\section*{10}
+\subsection*{a}
+This algorithm $A$ is not correct, because it does not find an optimal solution for the followind input $I$:\\
+$p = (3, 6, 10)$\\
+$s = (1, 4, 8)$\\
+$A(I)$ outputs:
+\begin{enumerate}
+\item The first smallest difference is $|p_1 - s_2| = |3 - 4| = 1$. So $p_1$ gets assigned $s_2$.
+\item The next smallest difference is $|p_2 - s_3| = |6 - 8| = 2$. So $p_2$ gets assigned $s_3$.
+\item $p_3$ gets assigned $s_1$ by default. $|p_3 - s_1| = |10 - 1| = 9$.
+\end{enumerate}
+$A(I)$'s sum of differences in height is $1 + 2 + 9 = 12$.\\\\
 
+There exists a more optimal output $O(I)$:
+\begin{enumerate}
+\item $p_1$ gets assigned $s_1$. $|p_1 - s_1| = |3 - 1| = 2$.
+\item $p_2$ gets assigned $s_2$. $|p_2 - s_2| = |6 - 4| = 2$.
+\item $p_3$ gets assigned $s_3$. $|p_3 - s_3| = |10 - 8| = 2$.
+\end{enumerate}
+$O(I)$'s sum of differences in heights is $2 + 2 + 2 = 6$. So $A(I)$ is not a correct algorithm.
 \end{document}
