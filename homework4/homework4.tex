@@ -63,5 +63,24 @@ By distributing and cancelling $p_m\ell_{pre}$, $p_m\ell_m$, $p_n\ell_{pre}$, $p
 $p_n\ell_m \leq p_m\ell_n = \frac{\ell_m}{p_m} \leq \frac{\ell_n}{p_n}$\\
 Therefore it cannot be the case that $(\frac{\ell_m}{p_m} > \frac{\ell_n}{p_m})$ as stated earlier. Therefore, $OPT(I)$ can be modified into $OPT'(I)$ where $OPT'(I)$ agrees with $A(I)$ for one more step than $OPT(I)$, contradicting our statement that $OPT(I)$ agrees with $A(I)$ for the most number of steps. Therefore, $A(I)$ is correct.
 
+\section*{10}
+\subsection*{a}
+This algorithm $A$ is not correct, because it does not find an optimal solution for the followind input $I$:\\
+$p = (3, 6, 10)$\\
+$s = (1, 4, 8)$\\
+$A(I)$ outputs:
+\begin{enumerate}
+\item The first smallest difference is $|p_1 - s_2| = |3 - 4| = 1$. So $p_1$ gets assigned $s_2$.
+\item The next smallest difference is $|p_2 - s_3| = |6 - 8| = 2$. So $p_2$ gets assigned $s_3$.
+\item $p_3$ gets assigned $s_1$ by default. $|p_3 - s_1| = |10 - 1| = 9$.
+\end{enumerate}
+$A(I)$'s sum of differences in height is $1 + 2 + 9 = 12$.\\\\
 
+There exists a more optimal output $O(I)$:
+\begin{enumerate}
+\item $p_1$ gets assigned $s_1$. $|p_1 - s_1| = |3 - 1| = 2$.
+\item $p_2$ gets assigned $s_2$. $|p_2 - s_2| = |6 - 4| = 2$.
+\item $p_3$ gets assigned $s_3$. $|p_3 - s_3| = |10 - 8| = 2$.
+\end{enumerate}
+$O(I)$'s sum of differences in heights is $2 + 2 + 2 = 6$. So $A(I)$ is not a correct algorithm.
 \end{document}
