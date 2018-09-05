@@ -65,11 +65,18 @@ $A(I)$ outputs:
 \end{enumerate}
 $A(I)$'s sum of differences in height is $1 + 2 + 9 = 12$.\\\\
 
-There exists a more optimal output $O(I)$:
+There exists a more optimal output $Opt(I)$:
 \begin{enumerate}
 \item $p_1$ gets assigned $s_1$. $|p_1 - s_1| = |3 - 1| = 2$.
 \item $p_2$ gets assigned $s_2$. $|p_2 - s_2| = |6 - 4| = 2$.
 \item $p_3$ gets assigned $s_3$. $|p_3 - s_3| = |10 - 8| = 2$.
 \end{enumerate}
-$O(I)$'s sum of differences in heights is $2 + 2 + 2 = 6$. So $A(I)$ is not a correct algorithm.
+$Opt(I)$'s sum of differences in heights is $2 + 2 + 2 = 6$. So $A(I)$ is not a correct algorithm.
+
+\subsection*{b}
+Assume for contradiction $A$ is not correct. Then there exists an input $I$ in which $A(I)$ produces a greater total difference in heights than an optimal output $Opt(I)$. Let $Opt(I)$ be the optimal output which agrees with $A(I)$ at the greatest number of steps.\\
+
+There exists some assignment for $p_i$ where $A(I)$ and $Opt(I)$ first disagree. $A(I)$ assigned ski $a$, but $Opt(I)$ assigned ski $b$. $b > a$, since there are no shorter skis that $Opt(I)$ could have assigned, since $A(I)$ and $Opt(I)$ have agreed that the shortest skier gets the shortest ski up to this point. Moreover, $Opt(I)$ must assign $a$ to a taller skier $s_j > s_i$.\\
+
+For $Opt(I)$ to be more optimal than $A(I)$, $|p_i - b| + |p_j - a| < |p_i - a| + |p_j + b|$, but this is not the case since $p_i < p_j$ and $a < b$. There is a contradiction, and so $A$ is a correct algorithm.
 \end{document}
