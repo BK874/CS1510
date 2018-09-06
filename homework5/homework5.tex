@@ -1,0 +1,67 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usepackage{pgfplots}
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+\usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here..
+
+\title{CS 1510 Homework 5}
+\author{Brian Falkenstein, Brian Knotten, Brett Schreiber}
+
+\begin{document}
+\maketitle
+
+\section*{11}
+\subsection*{a}
+$SJF$ is not optimal on the following input $I$:\\
+$J_1 = (0, 2)$\\
+$J_2 = (1, 2)$\\
+For each time $t$:
+\begin{enumerate}
+\item Run $J_1$ (it is the only choice)
+\item Run $J_2$ (arbitrarily, since $J_1$ and $J_2$ are the same size.)
+\item Run $J_2$ (arbitrarily). $J_2$ is completed now, so $C_2 = 3$
+\item Run $J_1$ (it is the only choice). $J_1$ is completed now, so $C_1 = 4$
+\end{enumerate}
+The total completion time for $SJF(I)$ is $C_1 + C_2 = 4 + 3 = 7$\\
+But a more optimal solution $opt(I)$ exists. For each time $t$:
+\begin{enumerate}
+\item Run $J_1$
+\item Run $J_1$. $J_1$ is now finished, so $C_1 = 2$.
+\item Run $J_2$.
+\item Run $J_2$. $J_2$ is now finished, so $C_2 = 4$.
+\end{enumerate}
+The total completion time for $opt(I)$ is $C_1 + C_2 = 2 + 4 = 6$\\
+$SJF(I)$ is not optimal therefore $SJF$ is incorrect.
+\section*{17}
+\end{document}
