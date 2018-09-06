@@ -63,5 +63,12 @@ But a more optimal solution $opt(I)$ exists. For each time $t$:
 \end{enumerate}
 The total completion time for $opt(I)$ is $C_1 + C_2 = 2 + 4 = 6$\\
 $SJF(I)$ is not optimal therefore $SJF$ is incorrect.
+
 \section*{17}
+Consider the following algorithm $A$:\\
+Given rooted tree $T$:\\
+\tab Sort the leaves by value in descending order.\\
+\tab For each leaf $l$ (from greatest value to least): \\ 
+\tab\tab If any ancestor's current capacity is less than 0, do not include $l$ in the output
+\tab\tab Otherwise, include $l$, and for each ancestor of $l$ set its new capacity to be its current capacity - 1
 \end{document}
