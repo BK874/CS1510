@@ -69,6 +69,17 @@ Consider the following algorithm $A$:\\
 Given rooted tree $T$:\\
 \tab Sort the leaves by value in descending order.\\
 \tab For each leaf $l$ (from greatest value to least): \\ 
-\tab\tab If any ancestor's current capacity is less than 0, do not include $l$ in the output
-\tab\tab Otherwise, include $l$, and for each ancestor of $l$ set its new capacity to be its current capacity - 1
-\end{document}
+\tab\tab If any ancestor's current capacity is less than 0, do not include $l$ in the output \\
+\tab\tab Otherwise, include $l$, and for each ancestor of $l$ set its new capacity to be its current capacity - 1 \\
+
+Proof: Assume to reach a contradiction that our algorithm, hereafter referred to as $A$, is incorrect. Then there exists an input $I$ on which $A$ produces a suboptimal output. Let $OPT(I)$ be the optimal solution to the problem that agrees with $A(I)$ for the max number of steps i.e. up to leaf $n$ $OPT(I)$ and $A(I)$ have included and excluded the same leaves. Because each step is either including or excluding a leaf, the disagreement can be one of two cases:\\
+\begin{enumerate}
+  \item $A(I)$ excluded leaf $n$ and $OPT(I)$ included leaf $n$:\\
+  Because $A(I)$ and $OPT(I)$ agreed on every leaf up to this step and $A$ always considers the next highest possible value and only excludes leaves when a leaf's ancestors' capacity does not accommodate it, it cannot be the case that $OPT(I)$ includes $n$ and $A(I)$ does not. 
+
+  \item $A(I)$ included leaf $n$ and $OPT(I)$ excluded leaf $n$:\\
+    $OPT(I)$ excludes a leaf that $A(I)$ includes either because the parent nodes are at capacity or because there is a better leaf it will select later on. The first case cannot occur, as $OPT(I)$ and $A(I)$ have the same capacity because they have agreed on every leaf up to this point. In the second case, because $A$ always selects the next highest possible value and $OPT(I)$ has agreed with $A(I)$ up to this point, it is impossible for there to be a leaf with greater value than $n$ available for $OPT(I)$ to select later on. Therefore the leaf $OPT(I)$ would select instead of $n$ has to be of equal or lesser value than $n$ and $OPT(I)$'s solution is equivalent to or lesser than $A(I)$'s solution.\\
+\end{enumerate}
+Therefore $OPT(I)$ can be modified into $OPT'(I)$ where $OPT'(I)$ agrees with $A(I)$ for one more step (including or excluding $n$), contradicting the statement that $OPT(I)$ is the optimal solution that agrees with $A(I)$ for the most number of steps.\\
+Thus, by contradiction, $A(I)$ is correct.
+\end{document} \\
