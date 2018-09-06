@@ -64,6 +64,12 @@ But a more optimal solution $opt(I)$ exists. For each time $t$:
 The total completion time for $opt(I)$ is $C_1 + C_2 = 2 + 4 = 6$\\
 $SJF(I)$ is not optimal therefore $SJF$ is incorrect.
 
+\subsection*{b}
+This proof does not consider the possibility of job $j$ completing between times $t$ and $u$. If this were the case, and $j$ was initially scheduled to complete before time $u$, moving it back to $u$ will increase its completion time, making its output not optimal. 
+\subsection*{c}
+Assume that $A$, the algorithm that implements $SRPT$, is incorrect and has some input $I$ that makes it give the incorrect output. Define $Opt(I)$ to be the correct output that agrees with $A(I)$, the output from $A$ on $I$, for the most steps. Also define the first "step", or time interval that $A(I)$ and $Opt(I)$ disagree, to be $t$. At time $t$, say that $A(I)$ schedules job $J_A$ with tuple $(r_A, x_A)$, and $Opt(I)$ schedules job $J_O$ with tuple $(r_O, x_O)$. We can construct $Opt'(I)$ by simply swapping $J_O$ with the next instance of $Opt(I)$ scheduling $J_A$, say at time $u$. \\
+$Opt'(I)$ clearly agrees with $A(I)$ for one more step, as it now also schedules $J_A$ at time $t$. The problem addressed in part b of this problem can also be disproven here. We know that $J_A$ has a shorter time left until completion than $J_O$, because of the definition of A. Thus, if $J_O$ were to complete between times $t$ and $u$, we could simply swap the entirety of $J_A$ into the spots that $J_O$ is ran, and have it complete even earlier, lowering the total completion time. The increased completion time added by having to shift $J_O$ down would be less than the decreased time from completing $J_A$ earlier, because $J_O$ could also be scheduled into the additional slots that $J_A$ does not need.  
+
 \section*{17}
 Consider the following algorithm $A$:\\
 Given rooted tree $T$:\\
