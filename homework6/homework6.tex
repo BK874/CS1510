@@ -1,0 +1,77 @@
+
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usepackage{pgfplots}
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+\usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here..
+
+\title{CS 1510 Homework 6}
+\author{Brian Falkenstein, Brian Knotten, Brett Schreiber}
+
+\begin{document}
+\maketitle
+
+\section*{1}
+\subsection*{a}
+Let $Time$ be a function denoting the number of steps required to compute a $T$ on an input. \\
+Computing $T(n)$ recursively requires at least the number of steps to calculate $T(n - 1)$ and $T(n - 2)$, as well as a multiplication step. \\
+$Time(n) \geq Time(n - 1) + Time(n - 2) + 1$ \\
+So computing $T(n)$ takes more steps than computing $T(n - 2)$ twice. \\
+$Time(n) \geq 2 * Time(n - 2)$ \\
+$Time(n) \geq 4 * Time(n - 4) \geq 8 * Time(n - 6) \geq 16 * Time(n - 8) ...$ \\
+$Time(n) \geq 2^{n/2}$ \\
+So computing $T(n)$ requires exponentially many operations.
+
+\subsection*{b}
+Assuming $T(0), T(1), T(2)...T(n -2), T(n - 1)$ are already computed, it takes $n$ multiplication steps, $T(0) * T(1), T(1) * T(2)...T(n - 2) * T(n - 1)$ and $n$ addition steps to compute $T(n)$, so it takes $2n = O(n)$ steps to do the multiplication and addition. \\
+From the bottom up, $T(0), T(1), T(2)...T(n - 1)$ need to be computed, so that is $n$ computations, each of which take $O(n)$ steps. Therefore by starting from the bottom up and caching results, computing $T(n)$ takes $O(n^2)$ steps.
+
+\subsection*{c}
+\begin{verbatim}
+int T(int n) {
+    int T[n + 1];
+    T[0] = 2;
+    T[1] = 2;
+    
+    int sum = 0;
+    for(int i = 2; i <= n; i++) {
+        sum += T[i - 1] * T[i - 2];
+        T[i] = sum;
+    }
+    
+    return T[n];
+}
+\end{verbatim}
+
+\end{document}
