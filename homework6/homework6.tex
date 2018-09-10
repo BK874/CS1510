@@ -67,6 +67,15 @@ Therefore $O$ can be modified into $O'$ where $O'$ agrees with $A$ for more step
 Therefore, by contradiction, $R$ is correct. 
 
 \subsection*{b}
+The presented algorithm (hereafter referred to as $B$) is incorrect on the following input $I$: \\
+ $r = \{2, 1\}$\\
+ $c = \{1, 2\}$ \\
+ Following the steps of the algorithm, $B$ would first set $M_{1,2} = 1$ \\
+ $B$ would then arbitrarily choose from $M_{1,1}$, $M_{2,1}$, and $M_{2,2}$ to set to 1. \\
+ If $B$ chooses $M_{2,1}$ to set to 1, then the next loop would end with a failure declaration as neither of the two remaining choices ($M_{1,1}$ and $M_{2,2}$) have both $\hat r_i$ and $\hat c_i$ greater than 0. \\
+ However, a satisfactory matrix for $I$ does exist: setting $M_{1,1} = 1$, $M_{1,2} = 1$, and $M_{2,2} = 1$ will construct a satisfactory matrix. \\
+ Therefore $B(I)$ is not optimal and $B$ is incorrect.
+
 
 \section*{1}
 \subsection*{a}
