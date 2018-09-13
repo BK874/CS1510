@@ -75,35 +75,41 @@ int longestCommonSubsequence(A, l, B, m, C, n) {
 }
 \end{verbatim}
 \section*{3}
+Given strings $A$ and $B$ of length $N$ and $M$ respectively:
 \begin{verbatim}
-function shortestCommonSupersequence(a, b) {
-	if (a === "") return b;
-	if (b === "") return a;
-	
-	const [headA, ...tailA] = a;
-	const [headB, ...tailB] = b;
-	
-	if (headA === headB) return headA + shortestCommonSupersequence(tailA, tailB);
-	
-	const scss1 = shortestCommonSupersequence(a, tailB);
-	const scss2 = shortestCommonSupersequence(tailA, b);
-	
-	return scss1.length < scss2.length ? scss1 : scss2;
-}
+dyn_array = [N+1][M+1]
 
+for i in range(0, N + 1):	
+        dyn_array[0, i] = i
 
-function shortestCommonSupersequence(a, b) {
-	let SCSS = [a.length + 1][b.length + 1];
-	for(int i = 0; i < a.length; i++) {
-		SCSS[0][i] = i;
-	}
-	
-	for(int i = 0; i < b.length; i++) {
-		SCSS[i][0] = i;
-	}
-  
-	...
-}
+for i in range(0, M + 1):	
+        dyn_array[i, 0] = i
+
+for i in range(0, N + 1):
+        for j in range(0, M + 1):
+                 if A[i] == B[j]:
+                         dyn_array[i][j] = dyn_array[i-1][j-1] + 1
+                 else:
+                         dyn_array[i][j] = min(dyn_array[i-1][j], dyn_array[i][j-1])
+
+return dyn_array[N+1][M+1]
 \end{verbatim}
+\subsection*{a.}
+
+\begin{tabular}{llllllll}
+     & null & z & x & y & y & z & z \\
+null & 0    & 1 & 2 & 3 & 4 & 5 & 6 \\
+z    & 1    & 1 & 2 & 3 & 4 & 5 & 6 \\
+z    & 2    & 2 & 3 & 4 & 5 & 5 & 6 \\
+y    & 3    & 3 & 4 & 4 & 5 & 6 & 7 \\
+x    & 4    & 4 & 4 & 5 & 6 & 7 & 8 \\
+z    & 5    & 5 & 5 & 6 & 7 & 7 & 8 \\
+y    & 6    & 6 & 6 & 6 & 7 & 8 & 9 \\
+\end{tabular}
+
+\subsection*{b.}
+To find the length, simply look at the last index in the array (index [$N,M$]).  
+\subsection*{c.}
+Starting at the bottom right, trace backwards. If the letters do not match, and index $[i-1, j-1]$ does not contain a value of one less than that at $[i, j]$, then take both letters (the $i$'th letter in $A$, and the $j$'th letter in $B$). If the letters do match, move to index $[i-1, j-1]$. 
 
 \end{document}
