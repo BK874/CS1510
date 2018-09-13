@@ -1,0 +1,74 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+\usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework N}
+\author{Brian Knotten, Brett Schreiber}
+\maketitle
+
+\section*{3}
+\begin{verbatim}
+function shortestCommonSupersequence(a, b) {
+	if (a === "") return b;
+	if (b === "") return a;
+	
+	const [headA, ...tailA] = a;
+	const [headB, ...tailB] = b;
+	
+	if (headA === headB) return headA + shortestCommonSupersequence(tailA, tailB);
+	
+	const scss1 = shortestCommonSupersequence(a, tailB);
+	const scss2 = shortestCommonSupersequence(tailA, b);
+	
+	return scss1.length < scss2.length ? scss1 : scss2;
+}
+
+
+function shortestCommonSupersequence(a, b) {
+	let SCSS = [a.length + 1][b.length + 1];
+	for(int i = 0; i < a.length; i++) {
+		SCSS[0][i] = i;
+	}
+	
+	for(int i = 0; i < b.length; i++) {
+		SCSS[i][0] = i;
+	}
+  
+	...
+}
+\end{verbatim}
+
+\end{document}
