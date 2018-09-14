@@ -40,16 +40,19 @@
 \maketitle
 
 \section*{21}
-If it is the case that both the husband and the wife have the same list, then there is not enough information to determine if a fair partition is possible. \\
+Algorithm: \\
 On both the husband's and the wife's turns they will greedily select the highest available item on their respective lists. They will alternate between the husband and the wife according to the following pattern: H, W, WH,WHHW,...where the each step of the pattern is defined as the inverse of the prior sequence. \\
-Assuming each item on the list has a distinct value, the highest item on a list has value at least $\Sigma / n + \epsilon$ where $\Sigma =$ the total value of all items on the list, $n =$ the number of items on the list, and $\epsilon =$ some small constant value. It follows that all subsequent items on the list must have value at most $\Sigma / n + \sigma$ where $\sigma$ is a smaller constant than that of the item directly above it on the list. \\ 
-Because the algorithm always takes the highest available item on each list it will always produce the highest value combination of items using the above values for both lists. If both the husband and the wife are not satisfied with this combination, then this implies that the husband and wife both prioritize that item at the same position, and since one will eventually get it and the other won't, then their private valuations can be such that we do not have enough information to determine if a fair partition is possible. 
-
+Assuming each item on the list has a distinct value, the highest item on a list has value at least $\Sigma / n + \epsilon$ where $\Sigma =$ the total value of all items on the list, $n =$ the number of items on the list, and $\epsilon =$ some small constant value. This is because if item $i$ is the highest item on the list, then it must have value greater than every other item on the list, so its value must be at least greater than one $nth$ of the total list value. The second highest item on the list must then have value at most $\Sigma / n - \theta$ where $\theta =$ a small constant that may $=0$. It follows that all subsequent items on the list must have value at most $\Sigma / n - \sigma$ where $\sigma$ is a greater constant than that of the item directly above it on the list (additionally, $sum(\theta, \sigma_1, \sigma_2, ...\sigma_{n-2}) = \epsilon$). This is because each item, starting with the second highest, must have a smaller value than that of the item above it. \\ \\
+If it is the case that both the husband and the wife have the same list, then there is not enough information to determine if a fair partition is possible. \\ \\
+If it is the case that both the husband and wife are satisfied with the generated combination, then the combination is a fair partition and we are done. \\ \\
+Because the algorithm always takes the highest available item on each list it will always produce the highest value combination of items using the above values for both lists. If both the husband and the wife are not satisfied with this combination, then this implies that the husband and wife both prioritize that item at the same position, and since one will eventually get it and the other won't, then their private valuations can be such that we do not have enough information to determine if a fair partition is possible. It may be the case that prior item selections are weighted heavily enough to satisfy the husband and wife, but because we only know the absolute min value of the highest item and the absolute max value of the subsequent items, we cannot assume a great enough value for satisfaction and therefore we do not have enough information to determine if a fair partition is possible. \\ \\
+Assume to reach a contradiction that this algorithm, hereafter referred to as $A$, is not correct. Therefore there exists some input $I$ that causes $A$'s output to be suboptimal. Define $OPT(I)$ to be the optimal output on $I$ that agrees with $A(I)$ for the most steps (where a step is selecting one item for either the husband or the wife - we assume the husband for this proof but it works the same for the wife). Let $k$ be the time at which $OPT(I)$ and $A(I)$ disagree. Then: \\
 $OPT(I)$ has H take $G_m$ at time $k$.\\
 $A(I)$ has H take $G_h$ at time $k$. \\
-$G_h$ has higher value than $G_m$ because $A(I)$ took it and $OPT$ and $A$ agreed up to this point. \\
+$G_h$ has higher value than $G_m$ because $A(I)$ took it and $OPT(I)$ and $A(I)$ agreed up to this point. \\
 Construct $OPT'(I)$ by having $OPT'(I)$ take $G_h$ instead of $G_m$. \\
-$OPT'(I)$ obviously agrees for one more step and increases $H$'s overall value so it is still over 50\%.
+$OPT'(I)$ obviously agrees for one more step and increases $H$'s overall value so it is still over 50\%. \\
+Therefore we have a contradiction and $A(I)$ is correct.
 
 
 \section*{2}
