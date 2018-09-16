@@ -58,6 +58,63 @@ def MED(A, B):
                             )
 \end{verbatim}
 
+\section*{17}
+If it is possible to divide the gems into groups $P$ and $Q$, then there must exist some subcollection (either $P$ or $Q$) such that the sum of the gems add up to $L/2$, and which is made up of exactly half the emeralds ($|E|/2$) and half the rubys ($|R|/2$).
+\begin{verbatim}
+# Recursive solution
+function possible(valueToReach, i, emeraldQuota, rubyQuota):
+    # Base cases: leftover value or not enough of each quota.
+    if valueToReach == 0:
+        return emeraldQuota == 0 && rubyQuota == 0            
+    else if (emeraldQuota == 0 && rubyQuota == 0) || i == |E| + |R|:
+        return false
+
+    if possible(valueToReach, i + 1, emeraldQuota, rubyQuota):
+        return true
+    
+    else let gem = gems[i]
+    if gem is an emerald:
+        return possible(valueToReach - value(gem), i + 1, emeraldQuota - 1, rubyQuota)
+    else gem is a ruby:
+        return possible(valueToReach - value(gem), i + 1, emeraldQuota, rubyQuota - 1)
+        
+        
+# Call the function. Is is possible to reach half the sum of the gem values with half the gems?
+possible(L/2, 0, |E|/2, |R|/2)
+
+# Iterative solution
+possible[L/2 + 1][|E| + |R|][|E|/2][|R|/2];
+for (int i = 0; i <= L/2; i++) {
+    for(int j = 0; j < |E| + |R|; j++) {
+        for(int k = 0; k <= |E|/2; k++) {
+            for(int l = 0; l <= |R|/2; l++) {
+                if(i == 0) possible[i][j][k][l] = k == 0 && l == 0;
+                else if ((k == 0 && l == 0) || j == |E| + |R|) possible[i][j][k][l] = false;
+            }
+        }
+    }
+}
+
+
+for (int i = L/2; i >= 0; i--) {
+    for(int j = |E| + |R|; j >= 0; j++) {
+        for(int k = 0; k < |E|/2; k++) {
+            for(int l = 0; l < |R|/2; l++ {
+                if(possible[i][j + 1][k][l])
+                    possible[i][j][k][l] = true;
+                else let gem = gems[j];
+                if(gem is an emerald)
+                    possible[i][j][k][l] = possible[i - value(gem)][j + 1][k - 1][l]
+                else(gem is a ruby)
+                    possible[i][j][k][l] = possible[i - value(gem)][j + 1][k][l - 1]
+            }
+        }
+    }
+}
+
+return possible[L/2][|E| + |R|][|E|/2][|R|/2];
+\end{verbatim}
+
 \section*{18}
 \begin{verbatim}
 int totalNewlines = n;
