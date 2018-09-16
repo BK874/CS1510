@@ -58,4 +58,24 @@ def MED(A, B):
                             )
 \end{verbatim}
 
+\section*{18}
+\begin{verbatim}
+int totalNewlines = n;
+
+int MinimumPenalty[n + 1][totalNewlines + 1];
+int max = 0;
+for(int i = 0; i <= n; i++) {
+    MinimumPenalty[i][numberOfNewlines] = MinimumPenalty[i - 1][numberOfNewlines] - w[i];
+    MinimumPenalty[i][numberOfNewlines + 1] = L - w[i];
+
+    if(minumumPenalty[i][numberOfNewlines + 1] < MinimumPenalty[i][numberOfNewlines]) {
+        max = max(max, MinumumPenalty[i][numberOfNewlines + 1])
+        numberOfNewlines++;
+    } else {
+        max = max(max, MinimumPenalty[i][numberOfNewlines]);
+    }
+}
+
+return max;
+\end{verbatim}
 \end{document}
