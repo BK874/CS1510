@@ -52,7 +52,7 @@ def MED(A, B):
              for j in range(1, m + 1):
                    D[i, j] = min(
                             if A[i] == B[i]:   D[i-1, j-1]
-                            else:  D[i-1, j-1] + 5
+                                   else:  D[i-1, j-1] + 5
                             D[i-1, j] + 3          #deletion
                             D[i, j-1] + 4          #insertion
                             )
