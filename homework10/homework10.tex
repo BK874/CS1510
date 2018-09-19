@@ -39,6 +39,18 @@
 \author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
 \maketitle
 
+\section*{5}
+\begin{tabular}{llllll}
+                           & $K_1$                            & $K_2$                             & $K_3$                             & $K_4$                             & $K_5$                             \\ \cline{2-6} 
+\multicolumn{1}{l|}{$K_1$} & \multicolumn{1}{l|}{0.5 ($K_1$)} & \multicolumn{1}{l|}{0.6 ($K_1$)}  & \multicolumn{1}{l|}{0.85 ($K_2$)} & \multicolumn{1}{l|}{1.4 ($K_1$)}  & \multicolumn{1}{l|}{2.5 ($K_4$)}  \\ \cline{2-6} 
+\multicolumn{1}{l|}{$K_2$} & \multicolumn{1}{l|}{}            & \multicolumn{1}{l|}{0.05 ($K_2$)} & \multicolumn{1}{l|}{0.2 ($K_3$)}  & \multicolumn{1}{l|}{0.55 ($K_4$)} & \multicolumn{1}{l|}{1.05 ($K_4$)} \\ \cline{2-6} 
+\multicolumn{1}{l|}{$K_3$} & \multicolumn{1}{l|}{}            & \multicolumn{1}{l|}{}             & \multicolumn{1}{l|}{0.1 ($K_3$)}  & \multicolumn{1}{l|}{0.4 ($K_4$)}  & \multicolumn{1}{l|}{0.95 ($K_5$)} \\ \cline{2-6} 
+\multicolumn{1}{l|}{$K_4$} & \multicolumn{1}{l|}{}            & \multicolumn{1}{l|}{}             & \multicolumn{1}{l|}{}             & \multicolumn{1}{l|}{0.2 ($K_4$)}  & \multicolumn{1}{l|}{0.65 ($K_5$)} \\ \cline{2-6} 
+\multicolumn{1}{l|}{$K_5$} & \multicolumn{1}{l|}{}            & \multicolumn{1}{l|}{}             & \multicolumn{1}{l|}{}             & \multicolumn{1}{l|}{}             & \multicolumn{1}{l|}{0.35 ($K_5$)} \\ \cline{2-6} 
+\end{tabular}
+
+To construct the optimal tree, start in the upper right corner of the table. $K_4$ is the root of the tree, and it has two subtrees: one of $K_1, K_2, K_3$ on the left, and $K_5$ as a leaf on the right. The root of the left subtree is the root of the optimal solution of $K_1$ through $K_3$, so look at coordinate $(1, 3)$ in the table to find $K_2$ as the root, which must have $K_1$ and $K_3$ as its left and right leaves respectively.
+
 \section*{6}
 The algorithm will iterate over a $n\times n$ matrix, $D$, where $n$ is the number of points in the input. Each row and column will represent a point in $P$, so that $D[i, j]$ represents some relation between points $i$ and $j$. Each cell will contain a value. This value corresponds to the edge length $(P_i, P_j)$ plus the minimum length of cuts up until that edge is considered. \\
 The algorithm begins by fixing an edge in the polygon, specifically edge $P_1$ and $P_n$. This edge corresponds with the bottom left corner of the matrix, $D[0, n]$. Which edge is fixed has no effect on the algorithm, as it will still consider every way of cutting the polygon with $n-3$ edges (resulting in $n-2$ triangles). \\
