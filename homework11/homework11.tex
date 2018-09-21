@@ -65,4 +65,13 @@ Let u, v = MostProfitableEndpoints[i - 1]\\
 \\
 Output MostProfitableEndpoints[n]
 
+\section*{9}
+An algorithm for this problem is a modified form of the Optimal Binary Search Tree dynamic algorithm. Like the OBST dynamic programming algorithm, this algorithm caches the minimum weight of a tree with keys $K_l$ and $K_r$ in a 2D array, Weight[l][r]. It also stores the key $K_i$ where $l \leq i \leq r$ that should be used as the root of the OBST for keys from $K_l$ to $K_r$ in a 2D array, Root[l][r]. Our algorithm differs from the OBST algorithm in that there is a third 2D array, Height[l][r] which stores the height of the OBST with keys from $K_l$ to $K_r$.\\
+\\
+The base case is the same as with the OBST algorithm. When $l = r$, that is, on the diagonal of the 2D array, the only key that can be considered as the (childless) root is $K_l$. So Root[l][r] = $K_l$ and Weight[l][r] = $w_l$. Moreover, since the sole key does not have any children, Height[l][r] = 1.
+\\
+The recursive case considers all keys from $K_l$ to $K_r$. Like the OBST algorithm, consider the key $K_i$ that has the minimum weight of the sum of its subtrees Weight[l][i-1] + Weight[i + 1][r] plus the sum of the weight of all the keys $K_l$ through $K_r$, and make Root[l][r] = $K_i$. But do not consider $K_i$ if Height[l][i - 1] - Height[i + 1][r] > 1 or < -1. Discard $K_i$ as a candidate root if this is the case.
+\\
+As with OBST, output the tree from $K_0$ to $K_n$. This algorithm is very similar, only it requires caching a third property of the subtrees, and has greater scrutiny over candidate roots.
+
 \end{document}
