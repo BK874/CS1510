@@ -1,0 +1,53 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 12}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\subsection*{13}
+Define $S$ to be the running sum of values, and $L$ to be the total sum of values in the input.\\
+The decision tree can be constructed as follows: for $0\leq i \leq n$, at depth $i$, have the left branch add $-v_i$ to S (that is, setting $x_i$ to 1), and the right branch add $+v_i$ (setting $x_i$ to 0). For both branches, subtract (positive) $v_i$ from $L$. A solution can then be found at any leaf containing an $S$ value of 0. This will check all possible $2^n$ possibilities. The tree can then be pruned to run in linear time by following the rules: 
+\begin{enumerate}
+\item If two nodes at the same depth have the same value, prune one of them. 
+\item If $|S+(-1)^{x_i} v_i| > L$ for a depth $i$ (where $||$ is absolute value). 
+\end{enumerate}
+Note that if $|S+(-1)^{x_i} v_i| = L$, that sub-tree will contain a solution (if $S$ is negative, add the remaining values, and if $S$ is positive, subtract the remaining values). \\
+The first rule works because two nodes at the same depth still have the same remaining values to decide over, so one can arbitrarily be pruned. The second rule works, because if a node has an $|S|$ value larger than the sum of the remaining values, there is no way any combination of additions or subtractions could bring $|S|$ to zero. \\
+This pruned decision tree can be visualized in a table that is of size $n\times L$, and can thus be traversed in time $nL$. Because $L$ is a constant, we can say that this algorithm runs in linear time. 
+
+\subsection*{14}
+Define $S$ to be the running sum of values, and $V$ to be the set containing the input values. \\
+The decision tree can be constructed as follows: for $0\leq i \leq n$, at depth $i$ have the left branch subtract $v_i$ from $S$ and the right branch add $v_i$ to $S$. A solution can be found at any branch where $S\% n = L$. This tree, as in the previous example, will list all possible $2^n$ possibilities. It can be pruned by the following rules:   
+\begin{enumerate}
+\item If two nodes at the same depth have the same value, prune one of them. 
+\item
+\end{enumerate}
+The first rule works for the same reason as it does in question 13: all nodes at the same depth have the same remaining values to decide over, so if two have the same $S$ value, one can arbitrarily be pruned. 
+
+\end{document}
