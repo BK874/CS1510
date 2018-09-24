@@ -76,4 +76,9 @@ int A(int running_sum, int running_product, int i) {
 Output A(0, 1, 0);
 \end{verbatim}
 
+\subsection*{15}
+The algorithm works by considering every possible capacity from 1 to $W$ and, for each capacity, considering the best possible value if each item was the last one selected. The algorithm utilizes two one-dimensional arrays: $M[W]$ (stores the max value for each capacity) and $CVL$ (CurrentValueLast - stores the values of each item if it was taken last). \\ \\
+Let M[0] = 0. For each capacity $x$ from 1 to $W$, consider each item $i$ from 1 to $n$. If the weight of the currently considered item is less than the current capacity, let $CVL[i] = M[x - w_i]$. If the weight of the item is greater than the current capacity, then let $CVL[i] = 0$. After considering each item, let $M[x] = max(CVL)$. At the end of the outer loop, return $M[W]$ = the max value at capacity $W$. \\ \\
+The algorithm loops from 1 to $W$, and within each iteration loops over all the items (1 to $n$) and loops over the array $CLV$, which has length $n$. The algorithm takes time $W \times 2n = O(Wn)$
+
 \end{document}
