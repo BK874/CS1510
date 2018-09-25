@@ -63,10 +63,7 @@ function A(start, end, i) {
 
 
 \subsection*{b}
-Consider all possible combinations of inclusion and exclusion as a binary tree, where the left child of the root does not include the first interval, and the right child does, and so on. Further assume the intervals are ordered by start time.\\
-
-There are $2^n$ leaves in the tree but only one optimal solution. So we must develop some pruning rules to decrease the size of the tree.
-Define $C$ to be the collection of intervals and $L$ to be the total sum of the lengths of the intervals in $C$. 
+Define $C$ to be the collection of intervals sorted by start time and $L$ to be the total sum of the lengths of the intervals in $C$. 
 The decision tree can be constructed as follows: for $0 \leq i \leq n$ at depth $i$ have the right branch add interval $v_i$ to $C$ and add the length of $v_i$ to $L$ and have the left branch exclude $v_i$ from $C$ and $L$. This tree would enumerate all possible combinations of intervals and have $2^n$ leaves. \\
 The tree can be pruned using the following rules:
 \begin{enumerate}
