@@ -1,0 +1,75 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 13}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\section*{10}
+\subsection*{a}
+Given an array of $n$ intervals (sorted by lowest start point), the following is a recursive solution to determine the biggest collection of non-overlapping intervals.
+\begin{verbatim}
+# Assume the intervals are in order by start time.
+intervals[n];
+
+function A(start, end, i) {
+    if i > n:
+        return 0
+    
+    let interval = intervals[i]
+    let length = interval.end - interval.start
+   
+    # Discard the potential interval if it falls out of bounds of the allowed space
+    # and continue with the rest of the intervals.
+    if interval.start < start || interval.end > end:
+        return return A(start, end, i + 1)
+    
+    
+    # Otherwise, take the maximum value of either taking the interval in the solution or not.
+    # If it is in the solution, then the start point for the recursive subproblem must be the end of the interval, since
+    # the interval occupies the space between start and its end. If there was a smaller interval that could fit in before, then
+    # it would have been considered earlier, since the intervals are sorted by start time.
+    return max(
+        A(interval.end, end, i + 1) + length,
+        A(start, end, i + 1)
+    )
+}
+\end{verbatim}
+
+
+\subsection*{b}
+Consider all possible combinations of inclusion and exclusion as a binary tree, where the left child of the root does not include the first interval, and the right child does, and so on. Further assume the intervals are ordered by start time.\\
+
+There are 2^n leaves in the tree but only one optimal solution. So we must develop some pruning rules to decrease the size of the tree.
+\begin{enumerate}
+\item If a node $v$ contains two or more intervals that overlap, prune the tree rooted at $v$. It cannot possibly have the solution due to the restriction against overlaps.
+\item If two nodes $u$ and $v$ rooted at the same level have equal sums of their respective intetrvals' lengths, and $u$'s last interval ends later than $v$'s last interval, then prune $u$. $v$ has more free space and therefore can consider more future intervals, so it is the better choice. (It could be argued that $v$ has free space between its intervals that $u$ doesn't have, but since the intervals are considered in sorted order, any future intervals will start after the end of this free space.) 
+\end{enumerate}
+
+At any given level, there are at most $some number$ of nodes being considered. Since this number is polynomial in the input size, a dynamic programming algorithm can be used.
+\end{document}
