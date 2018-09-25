@@ -66,10 +66,14 @@ function A(start, end, i) {
 Consider all possible combinations of inclusion and exclusion as a binary tree, where the left child of the root does not include the first interval, and the right child does, and so on. Further assume the intervals are ordered by start time.\\
 
 There are $2^n$ leaves in the tree but only one optimal solution. So we must develop some pruning rules to decrease the size of the tree.
+Define $C$ to be the collection of intervals and $L$ to be the total sum of the lengths of the intervals in $C$. 
+The decision tree can be constructed as follows: for $0 \leq i \leq n$ at depth $i$ have the right branch add interval $v_i$ to $C$ and add the length of $v_i$ to $L$ and have the left branch exclude $v_i$ from $C$ and $L$. This tree would enumerate all possible combinations of intervals and have $2^n$ leaves. \\
+The tree can be pruned using the following rules:
 \begin{enumerate}
 \item If a node $v$ contains two or more intervals that overlap, prune the tree rooted at $v$. It cannot possibly have the solution due to the restriction against overlaps.
-\item If two nodes $u$ and $v$ rooted at the same level have equal sums of their respective intetrvals' lengths, and $u$'s last interval ends later than $v$'s last interval, then prune $u$. $v$ has more free space and therefore can consider more future intervals, so it is the better choice. ($v$ could have free space in between its intervals that $u$ doesn't have, but since the intervals are considered in sorted order, any future intervals will start after the end of this free space.) 
+\item If two nodes $u$ and $v$ rooted at the same level have equal sums of their respective intervals' lengths, and $u$'s last interval ends later than $v$'s last interval, then prune $u$. $v$ has more free space and therefore can consider more future intervals, so it is the better choice. ($v$ could have free space in between its intervals that $u$ doesn't have, but since the intervals are considered in sorted order, any future intervals will start after the end of this free space.) 
+\item If two nodes $u$ and $v$ are rooted at the same level and end with the same interval (i.e. the last interval included in $u$ is $i$ and the last interval included in $v$ is also $i$) and $u$ has a shorter total length, prune $u$. Because $u$ and $v$ have the same endpoint (the endpoint of $i$) and we are considering the intervals in sorted order by starting point, this leaves a maximum of one node per interval considered thus far per level i.e. at level $m$ there are a max of $m$ intervals being considered. 
 \end{enumerate}
-
-At any given level, there are at most $some number$ of nodes being considered. Since this number is polynomial in the input size, a dynamic programming algorithm can be used.
+The first rule works by the definition of the problem: no two intervals can overlap, so any combination of intervals in the subtree of that node is invalid. The second rule works because two nodes at the same depth have the same intervals left to consider and, because we are considering the intervals in sorted order by starting point, none of the remaining nodes can be inserted into earlier spaces. Therefore the length of nodes in the subtree of the remaining node will be at least as long as those in the subtree(s) of the pruned node(s). The third rule works because by the same logic as the second. \\
+At any given level $n$, there are at most $n$ nodes being considered. Therefore this algorithm is $O(n^2)$ in the input size.\\
 \end{document}
