@@ -60,7 +60,20 @@ function A(start, end, i) {
     )
 }
 \end{verbatim}
-
+This can be converted into a dynamic programming algorithm. The algorithm will operate on an $n\times n$ array, $A$. Each cell in the array will be a tuple of the form $(l, e)$ where $l$ is the length of the sequence of intervals chosen at that point, and $e$ is the end point of the last interval. \\
+Some definitions: $I_i$ is interval $i$ from the input (assuming the intervals are sorted in order by their start point). $.len$ is the length of a sequence of intervals. $.end$ is the endpoint of a sequence of intervals, and $.start$ is the start point of a sequence of intervals. \\
+We can define $A[i, k]$ by:
+\begin{enumerate}
+\item If we can add $I_i$ to $A[i-1, k]$ (if $I_i.start>=A[i-1,k].end$), then $A[i,k]$ = max(\\
+$A[i,k]$.len,\\
+$A[i-1, k].len + I_i.len$)\\
+That is, take the max length of what was already in the cell, and the length you'd get by adding $I_i$. If the lengths are the same, take the set of intervals with the earlier end point. 
+\item If $I_i$ cannot be added, then $A[i, k]$ = max\\
+$A[i,k].len$\\
+$A[i-1, k].len$\\
+Same as in rule 1, if the lengths are the same, take the one with the earlier end point. 
+\end{enumerate}
+The output of the algorithm will be the maximum length value found in the last row. This algorithm works by building up the table, which is of size $n\times n$, so it will run in polynomial time. 
 
 \subsection*{b}
 Define $C$ to be the collection of intervals sorted by start time and $L$ to be the total sum of the lengths of the intervals in $C$. 
