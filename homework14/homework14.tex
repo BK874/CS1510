@@ -1,0 +1,55 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 14}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\section*{19}
+\subsection*{a}
+\begin{verbatim}
+T[n]
+C[n]
+P[k]
+
+A(i, j):
+	  if j > k or i > n: return 0 # No more opportunities
+
+	  if t[i] == p[j]:
+		  return max(
+		  	A(i + i, j + i) + C[i], # Either take the opportunity and use T[i] for P[j], therefore moving to the next P to fill...
+		  	A(i + 1, j) # Or, skip this T[i], and look for a better one to fill P[j]
+		  )
+		
+	  else:
+		  return A(i + 1, j)
+\end{verbatim}
+
+\section*{22}
+
+\end{document}
