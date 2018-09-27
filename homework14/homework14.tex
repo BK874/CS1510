@@ -109,5 +109,13 @@ Consider a tree of height $k$ where each node has $n$ children. At depth $i$, we
 \end{enumerate}
 
 \section*{22}
+$A[i, j]$ = the lowest cost of the first $j$ trips with purchasing $i$ cards. Output the minimum value over the last column (considered all n trips). 
+\\
+Pruning rule:
+\begin{enumerate}
+\item If two nodes at the same depth have purchased the same amount of cards, prune the one that has the higher cost. 
+\end{enumerate}
+This pruning rule alone is enough to bring the size of the tree down to $n\times n$. The height of the tree will be $n$, as at each level $i$, we decide whether to purchase a card at $d_i$, and there are $n$ dates in $D$. Further, at each level $i$, there will be at max $i$ purchased cards, and we will only have one node corresponding to each possible number of cards purchased.  \\
+Thus, the tree can be constructed with a table of size $n\times n$. 
 
 \end{document}
