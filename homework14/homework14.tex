@@ -85,7 +85,21 @@ You can alternatively enumerate all the subsequences of T as a binary tree, wher
 \item For any node $v$, if the sequence in $v$ is not a prefix of $P$, (for example, $v = XYY$ and $P = XYXX$, then prune $v$. This also applies to any $v$ larger than $P$, since a string $a$ cannot be a prefix of $b$ if $|a| > |b|$. $v$ cannot possibly be a solution since the children of $v$ only append to the end of $v$'s sequence, and cannot therefore rectify any differences between $v$'s sequence and $P$. This limits the depth of the tree from $n$ to $k$, since any sequence larger than $k$ cannot be a prefix of $P$ since $|P| = k$.
 \item For any two nodes $u$ and $v$ at the same level where the string $u = $ string $v$, if the cost of $u$ is greater than or equal to the cost of $v$, then prune the tree rooted at $v$. Any item $v$ can append in the future, $u$ can also append and still have a greater or equal total cost. So $v$'s tree does not contain the solution.
 \end{enumerate}
-Applying both pruning rules leaves at most $i$ nodes at depth $i$, rather than $2^i$ nodes, since there can only be one node representing a substring of size $j$ where $0 \leq j \leq i$, since there is only one valid prefix of length $j$ and only one prefix that has the highest cost. So there are $i$ nodes at depth $i$: the maximum cost prefix of length $0$, the maxmimum cost prefix of length $1$, ... the maximum cost prefix of length $i - 1$, and the maximum cost prefix of length $i$. This is $i$ strings in total at depth $i$.
+Applying both pruning rules leaves at most $i$ nodes at depth $i$, rather than $2^i$ nodes, since there can only be one node representing a substring of size $j$ where $0 \leq j \leq i$, since there is only one valid prefix of length $j$ and only one prefix that has the highest cost. So there are $i$ nodes at depth $i$: the maximum cost prefix of length $0$, the maxmimum cost prefix of length $1$, ... the maximum cost prefix of length $i - 1$, and the maximum cost prefix of length $i$. This is $i$ strings in total at depth $i$. \\
+
+Since the tree is of depth $k$ and breadth at most $n$, we can make a polynomial algorithm using a 2d array $A[k][n]$, where $A[i][j]$ represents the maximum aggregate cost of the prefix of the first $i$ elements of $P$ of length $j$. Here is the dynamic algorithm:
+\begin{verbatim}
+
+for i = 1 to k do: # For each level of the tree
+    for j = 1 to i do: # For each node at depth i (containing a prefix of size j)
+        if T[i + 1] == P[i + 1]: # Only consider adding a new element if it matches the prefix
+            A[i + 1][j + 1] = max(
+                A[i + 1][j + 1] # Compete with what's currently in the cell
+                A[i][j] + C[i + 1]
+            )
+
+Output A[k][n]
+\end{verbatim}
 
 \section*{22}
 
