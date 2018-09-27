@@ -82,8 +82,8 @@ Output A[n][k]
 \subsection*{b}
 You can alternatively enumerate all the subsequences of T as a binary tree, where, given a vertex at depth $i$, the left child represents omitting $T[i + 1]$ and the right child represents appending $T[i + 1]$ with cost $C[i + 1]$ into the solution set. Since it is a binary tree, it has $2^n$ leaves representing solutions, so the following pruning rules must be applied.
 \begin{enumerate}
-\item For any node $v$, if the sequence in $v$ is not a prefix of $P$, (for example, $v = XYY$ and $P = XYXX$, then prune $v$. This also applies to any $v$ larger than $P$, since a string $a$ cannot be a prefix of $b$ if $|a| > |b|$. $v$ cannot possibly be a solution since the children of $v$ only append to the end of $v$'s sequence, and cannot therefore rectify any differences between $v$'s sequence and $P$.
-\item For any two nodes $u$ and $v$ at the same level that represent the same prefix of $P$, if the cost of $u$ is greater than the cost of $v$, then prune the tree rooted at $v$. Any item $v$ can append in the future, $u$ can also append and still have a greater total cost. So $v$'s tree does not contain the solution.
+\item For any node $v$, if the sequence in $v$ is not a prefix of $P$, (for example, $v = XYY$ and $P = XYXX$, then prune $v$. This also applies to any $v$ larger than $P$, since a string $a$ cannot be a prefix of $b$ if $|a| > |b|$. $v$ cannot possibly be a solution since the children of $v$ only append to the end of $v$'s sequence, and cannot therefore rectify any differences between $v$'s sequence and $P$. This limits the depth of the tree from $n$ to $k$, since any sequence larger than $k$ cannot be a prefix of $P$ since $|P| = k$.
+\item For any two nodes $u$ and $v$ at the same level that represent the same prefix of $P$, if the cost of $u$ is greater than or equal to the cost of $v$, then prune the tree rooted at $v$. Any item $v$ can append in the future, $u$ can also append and still have a greater or equal total cost. So $v$'s tree does not contain the solution. This limits the breadth of the tree from 
 \end{enumerate}
 
 \section*{22}
