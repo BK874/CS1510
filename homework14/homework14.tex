@@ -101,6 +101,13 @@ for i = 1 to k do: # For each level of the tree
 Output A[k][n]
 \end{verbatim}
 
+\subsection*{c}
+Consider a tree of height $k$ where each node has $n$ children. At depth $i$, we are considering the $j$th child where $1 \leq j \leq n$  such that the child represents appending $T[j]$ to the solution, (that is, matching $P[i + 1]$ with $T[j]$). The solution would be at the leaves, where a certain node will have matched $P$ from $0$ to $k$. But the tree has a branching factor of $n$, so it needs to be pruned down from $n^k$ leaves. Here are the pruning rules:
+\begin{enumerate}
+\item Given a node $v$ at depth $i$, prune $v$ if the last character in the sequence of $v$ is not equal to $P[i]$. This means that the matching is not correct, and it cannot be corrected by adding more onto it. So the solution will not be in the tree rooted at $v$.
+\item Given a node $u$ at depth $i$, if $u$ is the $j$th child of his parent node $v$, prune the $0..j$th child of $u$. These children are adding characters which are not in increasing order, so they cannot be a part of the solution. So prune these children of $u$.
+\end{enumerate}
+
 \section*{22}
 
 \end{document}
