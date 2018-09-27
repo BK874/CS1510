@@ -32,23 +32,59 @@
 
 \section*{19}
 \subsection*{a}
+A recursive algorithm for this problem is as follows:
+In short, keep track of the current indices of $T$ and $P$ to find the optimal solution of either taking one from $T$ to match with $P$ or not. After exhausting all possible options to take, return the choices that yield the maximum cost. 
 \begin{verbatim}
 T[n]
 C[n]
 P[k]
 
 A(i, j):
-	  if j > k or i > n: return 0 # No more opportunities
+    if j == 0 or i == 0: return 0 # No more opportunities
 
-	  if t[i] == p[j]:
-		  return max(
-		  	A(i + i, j + i) + C[i], # Either take the opportunity and use T[i] for P[j], therefore moving to the next P to fill...
-		  	A(i + 1, j) # Or, skip this T[i], and look for a better one to fill P[j]
-		  )
+    if T[i] == P[j]:
+        return max(
+            A(i - i, j - i) + C[i], # Either take the opportunity and use T[i] for P[j], therefore moving to the next P to fill...
+            A(i - 1, j) # Or, skip this T[i], and look for a better one to fill P[j]
+        )
 		
-	  else:
-		  return A(i + 1, j)
+    else:
+        return A(i - 1, j)
+	
+
+Output A(n, k)
 \end{verbatim}
+
+To convert this into a dynamic programming algorithm, use a 2-dimensional array to keep track of the indices $i$ and $j$ where $A[i][j]$ means: The maximum cost achievable considering the first $i$ items of $T$ and the first $j$ items of $P$. \\
+
+Filling this array $A$ requires time $O(nk)$, where $n$ is the number of items in $T$ and $k$ is the number of items in $P$. Since $k \leq n$, the time complexity is therefore $O(n^2)$ in the worst case. \\
+
+Here is the code for the dynamic solution:
+\begin{verbatim}
+# Base case: with none of T or P to consider, the only available cost is 0.
+A[0][0] = 0
+
+for i = 1 to n do:
+    for j = 1 to k do:
+        
+	if T[i] == P[j]:
+	    A[i][j] = max(
+                A[i + 1][j + 1] + C[i],
+                A[i + 1][j]
+            )
+        else:
+            A[i][j] = A[i + 1][j]
+
+
+Output A[n][k]
+\end{verbatim}
+
+\subsection*{b}
+You can alternatively enumerate all the subsequences of T as a binary tree, where, given a vertex at depth $i$, the left child represents omitting $T[i + 1]$ and the right child represents appending $T[i + 1]$ with cost $C[i + 1]$ into the solution set. Since it is a binary tree, it has $2^n$ leaves representing solutions, so the following pruning rules must be applied.
+\begin{enumerate}
+\item For any node $v$, if the sequence in $v$ is not a prefix of $P$, (for example, $v = XYY$ and $P = XYXX$, then prune $v$. This also applies to any $v$ larger than $P$, since a string $a$ cannot be a prefix of $b$ if $|a| > |b|$. $v$ cannot possibly be a solution since the children of $v$ only append to the end of $v$'s sequence, and cannot therefore rectify any differences between $v$'s sequence and $P$.
+\item For any two nodes $u$ and $v$ at the same level that represent the same prefix of $P$, if the cost of $u$ is greater than the cost of $v$, then prune the tree rooted at $v$. Any item $v$ can append in the future, $u$ can also append and still have a greater total cost. So $v$'s tree does not contain the solution.
+\end{enumerate}
 
 \section*{22}
 
