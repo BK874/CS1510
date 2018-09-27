@@ -44,7 +44,7 @@ A(i, j):
 
     if T[i] == P[j]:
         return max(
-            A(i - i, j - i) + C[i], # Either take the opportunity and use T[i] for P[j], therefore moving to the next P to fill...
+            A(i - 1, j - 1) + C[i], # Either take the opportunity and use T[i] for P[j], therefore moving to the next P to fill...
             A(i - 1, j) # Or, skip this T[i], and look for a better one to fill P[j]
         )
 		
