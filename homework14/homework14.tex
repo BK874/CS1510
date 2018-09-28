@@ -109,13 +109,33 @@ Consider a tree of height $k$ where each node has $n$ children. At depth $i$, we
 \end{enumerate}
 
 \section*{22}
-$A[i, j]$ = the lowest cost of the first $j$ trips with purchasing $i$ cards. Output the minimum value over the last column (considered all n trips). 
-\\
 Pruning rule:
 \begin{enumerate}
 \item If two nodes at the same depth have purchased the same amount of cards, prune the one that has the higher cost. 
 \end{enumerate}
 This pruning rule alone is enough to bring the size of the tree down to $n\times n$. The height of the tree will be $n$, as at each level $i$, we decide whether to purchase a card at $d_i$, and there are $n$ dates in $D$. Further, at each level $i$, there will be at max $i$ purchased cards, and we will only have one node corresponding to each possible number of cards purchased.  \\
-Thus, the tree can be constructed with a table of size $n\times n$. 
+Thus, the tree can be constructed with a table of size $n\times n$.
+
+$A[i][j]$ = the lowest cost of the first $j$ trips having had the opportunity to purchase $i$ Bahncards. Output the minimum value over the last column (considered all n trips). 
+
+\begin{verbatim} 
+A[0][0] = 0 # With no tickets and no trips, the total cost is 0
+
+# Fill in the first row
+for j = 1 to n do:
+    A[0][i] = f[i] + A[0][j - 1] # The sum of all the trips (without any discounts) is the sum of the previous trips plus the fare of the current trip.
+    
+for j = 1 to n do: # Going down each row of the tree for each trip j
+    for i = j to n do: # Choosing to purchase i tickets at each level
+        A[i + 1][j + 1] = A[i][j] + f[i] + min(
+	    0, # Not purchasing a ticket
+	    A[i][j] + B + f[i] - (sum of the costs of trips from d[j] to d[j] + L) / 2 # Choosing to buy a ticket for this trip
+	)
+
+
+Output A[n][n] # Output the cost of taking n trips, having had the opportunity to purchase n Bahncards
+\end{verbatim}
+
+The result will be in the bottom right, since it will have had n opportunities to purchase Bahncards, but the algorithm can choose not to purchase the $i$th Bahncard. To retrieve the dates of purchase, keep track of the dates when a Bahncard is worth it to purchase (this can be tracked in a boolean 1-dimensional array where each index $i$ indicates purchasing a ticket at date $d_i$).
 
 \end{document}
