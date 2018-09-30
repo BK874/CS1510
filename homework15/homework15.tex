@@ -44,6 +44,48 @@ for broadcasts $i = k$ to 1:\\
 \tab\tab\tab $minSum = totalWaitTime$\\
 \tab\tab\tab $bTimes =$ current positions of the $k$ broadcasts\\
 The first for loop iterates over the $k$ broadcasts. The second for loop iterates over the $k$ broadcasts, and for each loop it considers a max of ${n \choose k}$ combinations. Note that due to the symmetry of binomial coefficients, ${n \choose k} = {n \choose n-k}$. Therefore ${n \choose k}$ reaches is max value when $k = \lfloor\dfrac{n}{2}\rfloor$ or $\lceil\dfrac{n}{2}\rceil$. Therefore the algorithm is $O(min(n^{k}, n^{n-k}))$
+
+\section*{23}
+This problem is a variation of the set partition problem where we are partitioning a set of size $n$ (the $n$ request times) into $k$ subsets (each subset is the collection of requests satisfied if the information is sent at one of the $k$ broadcasts). The decision tree for this problem can be thought of as:
+\begin{itemize}
+\item Each node has a branching factor of $n$ and stores the cumulative waiting times given the partitions applied up until that point.
+\item The children of each node represent placing a partition at that position in $R$. So, the first child represents placing a partition at $R_0$, the second child a partition at $R_1$, etc. 
+\item At depth $i$, $i$ partitions have been placed. 
+\end{itemize}
+Thus, the root of the tree would be null, and the first level would contain the waiting times resulting from placing a partition at $R_0...R_n$. Note that the sum of the waiting times in solutions that do not broadcast pages to users (that is, there are users requesting the page after the last partition) is $\infty$, because a valid solution must have every request met.\\
+This will cover all $\binom{n}{k}$ possible ways to partition $R$ $k$ times. This tree can then be pruned and turned into a dynamic programming algorithm with the following rules:
+\begin{enumerate}
+\item If a node has more than $k$ partitions, prune it. (this limits the height of the tree to $k$).
+\item For nodes at the same depth (IE have made the same number of partitions), prune all but the one with the shortest cumulative wait time. 
+\end{enumerate}
+This limits the height of the tree to $k$, and the number of nodes at each depth to $n$ (the sums must be calculated, and then pruned). The solution would then be found at the leaves, and would be the minimum sum over all the leaves. \\
+This tree can then be imagined as an $n\times k$ table, where the rows represent the number of partitions (the depth of the tree) and the columns represent the places you can place the next partition (the children of each node in the tree). Position $A[i, j]$ can be described as follows:
+\begin{itemize}
+\item The cumulative waiting time if adding the $j'th$ partition at time $i$. 
+\end{itemize}
+This algorithm is polynomial, as it takes time $nk$ to traverse the table, and $n$ time to compute the sum at each index, resulting in a runtime of $O(n^3)$. 
+\begin{verbatim}
+A = [n, k] 
+Broadcast = [k]                      #array containing the times of the broacasts
+for i = 1 to k do:
+     Broadcast[i] = -1
+
+for i = n to 1 do:                     #initialize first row. Set all solutions that do not meet all 
+     if R[i-1] != 0:                      #requests to infinity. IE where to place first partition, 
+          R[i] = waitTime(i)                #which must alwaysbe immediately 
+          Broadcast[1] = i                  #after the last non-zero request
+          for j = 1 to i do:
+               R[j] = infinity         
+               
+for j = 2 to k do:                     #iterate over the rest of the possible k partitions 
+     for i = n to 1 do:
+          A[i,j] = waitTime(Broadcast[1..j], i)       #calculate wait time given the previous 
+                                                       #partitions points,with a new partition at time i
+output min(A[:, k])
+\end{verbatim}
+$min(A[:, i])$ can be defined as the minimum value over all columns in the $i'th$ row. $partSum(i...)$ is the sum of wait times of partitioning $R$ at times $i...$. The time for one partition can be computed as:
+$$\sum_{x=1}^{i} (i-x)R_x + \sum_{y=i}^{n} (n-y)R_y $$
+This equation would be extended with more summations for further partitions. The runtime of this function is $n$, as it just sums over the values in the array. 
 \section*{26}
 
 \end{document}
