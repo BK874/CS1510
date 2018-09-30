@@ -59,38 +59,53 @@ This will cover all $\binom{n}{k}$ possible ways to partition $R$ $k$ times. Thi
 \item For nodes at the same depth (IE have made the same number of partitions), prune all but the one with the shortest cumulative wait time. 
 \end{enumerate}
 This limits the height of the tree to $k$, and the number of nodes at each depth to $n$ (the sums must be calculated, and then pruned). The solution would then be found at the leaves, and would be the minimum sum over all the leaves. \\
-This tree can then be imagined as an $n\times k$ table, where the rows represent the number of partitions (the depth of the tree) and the columns represent the places you can place the next partition (the children of each node in the tree). Position $A[i, j]$ can be described as follows:
-\begin{itemize}
-\item The cumulative waiting time if adding the $j'th$ partition at time $i$. 
-\end{itemize}
-This algorithm is polynomial, as it takes time $nk$ to traverse the table, and $n$ time to compute the sum at each index, resulting in a runtime of $O(n^3)$. 
+This tree can then be imagined as an $n\times k$ table, where the rows represent the number of partitions (the depth of the tree) and the columns represent the places you can place the next partition (the children of each node in the tree). $A[i, j] =$ The total waiting time of adding the $j$th partition at time $i$. \\
+A supplemental array $Broadcasts[n]$ is needed, where $Broadcasts[i] = 1$ if the optimal solution should broadcast at time $i + 1$, otherwise, $Broadcasts[i] = 0$.
+This algorithm is polynomial, as it takes time $nk$ to traverse the table, and $n$ time to compute the sum at each index, resulting in a runtime of $O(n^3)$.
 \begin{verbatim}
-A = [n, k] 
-Broadcast = [k]                      #array containing the times of the broacasts
-for i = 1 to k do:
-     Broadcast[i] = -1
+for i = 1 to n do:
+    Broadcasts[i] = 0
 
-for i = n to 1 do:                     #initialize first row. Set all solutions that do not meet all 
-     if R[i-1] != 0:                      #requests to infinity. IE where to place first partition, 
-          R[i] = waitTime(i)                #which must alwaysbe immediately 
-          Broadcast[1] = i                  #after the last non-zero request
-          for j = 1 to i do:
-               R[j] = infinity         
-               
-for j = 2 to k do:                     #iterate over the rest of the possible k partitions 
-     for i = n to 1 do:
-          A[i,j] = waitTime(Broadcast[1..j], i)       #calculate wait time given the previous 
-                                                       #partitions points,with a new partition at time i
-output min(A[:, k])
+for i = n to 1 do:                # Initialize first row. Set all solutions that do not meet all 
+   if R[i-1] != 0:                # requests to infinity. So the first broadcast should always
+       R[i] = waitTime(i)         # be immediately after the last request.
+       Broadcasts[i] = 1
+       for j = 1 to i do:
+           R[j] = infinity         
+
+    for j = 2 to k do:                            # For each new opportunity to broadcast (level of the tree)
+        minimum_time = n                          # Keep track of the broadcast time which minimizes cost
+        
+        for i = n to 1 do:                        # For each time that can broadcast (node in the tree level)        
+            sum = 0                               # Calculate the wait time with the current broadcasts
+            time_waiting = 1
+            for s = n to 1 do:                    # For each time interval
+                if Broadcasts[s] == 1 or s == i:  # If this time has a previous or currently-considered broadcast,
+                    time_waiting = 1              # Reset the wait-time
+                
+                sum = sum + R[s] * time_waiting   # Sum up the wait times of each requester
+                multiplier = multiplier + 1
+                
+            A[i, j] = sum
+            
+            if A[i, j] < A[i, minimum_time]:      # If a smaller wait time is found, redefine the minimum time
+                minimum_time = j
+        
+        Broadcasts[minimum_time] = 1              # After all wait times have been considered,
+                                                  # broadcast at the time which minimizes wait time
+
+Output Broadcasts                                 # Output the whole binary Broadcasts array,
+                                                  # which gives the solution of when to broadcast.
 \end{verbatim}
-$min(A[:, i])$ can be defined as the minimum value over all columns in the $i'th$ row. $partSum(i...)$ is the sum of wait times of partitioning $R$ at times $i...$. The time for one partition can be computed as:
-$$\sum_{x=1}^{i} (i-x)R_x + \sum_{y=i}^{n} (n-y)R_y $$
-This equation would be extended with more summations for further partitions. The runtime of this function is $n$, as it just sums over the values in the array. 
+
 \section*{26}
-The decision tree in this problem is similar to that in the previous problem, but instead of having a branching factor of just $n$, it will have a branching factor of $n\times j$, in order to account for placing the partition at any one of the $n$ times for all $j$ pages. The table will also be similar, but will now need a 3'rd dimension. Where each of these newer dimension'd tables accounts for a single page. That is, $A[p, q, r]$ represents:
-\begin{itemize}
-\item The total waiting time if broadcasting page $r$ at time $p$, having a total of $q$ broadcasts. 
-\end{itemize}
-The broadcast array will also get another dimension. Now, $Broadcast[p, r]$ is 1 if page $p$ is broadcast at time $r$.   
+
+The decision tree in this problem is similar to that in the previous problem, but instead of having a branching factor of just $n$, it will have a branching factor of $n\times j$, in order to account for placing the partition at any one of the $n$ times for all $j$ pages. The table will also be similar, but will now need a 3rd dimension to account for each page. That is, $A[p, q, r]$ represents: the minimum total waiting time of broadcasting Page $r$ at time $p + 1$, having made $q$ broadcasts in total. \\
+The broadcast array will also get another dimension. Now, $Broadcast[p, r] = 1$ if page $r$ is broadcast at time $p + 1$, otherwise, $Broadcast[p, r] = 0$. \\
+
+\begin{verbatim}
+
+\end{verbatim}
+
 \end{document}
 
