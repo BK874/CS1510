@@ -87,6 +87,10 @@ $min(A[:, i])$ can be defined as the minimum value over all columns in the $i'th
 $$\sum_{x=1}^{i} (i-x)R_x + \sum_{y=i}^{n} (n-y)R_y $$
 This equation would be extended with more summations for further partitions. The runtime of this function is $n$, as it just sums over the values in the array. 
 \section*{26}
-
+The decision tree in this problem is similar to that in the previous problem, but instead of having a branching factor of just $n$, it will have a branching factor of $n\times j$, in order to account for placing the partition at any one of the $n$ times for all $j$ pages. The table will also be similar, but will now need a 3'rd dimension. Where each of these newer dimension'd tables accounts for a single page. That is, $A[p, q, r]$ represents:
+\begin{itemize}
+\item The total waiting time if broadcasting page $r$ at time $p$, having a total of $q$ broadcasts. 
+\end{itemize}
+The broadcast array will also get another dimension. Now, $Broadcast[p, r]$ is 1 if page $p$ is broadcast at time $r$.   
 \end{document}
 
