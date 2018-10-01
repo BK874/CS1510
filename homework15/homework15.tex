@@ -64,48 +64,80 @@ A supplemental array $Broadcasts[n]$ is needed, where $Broadcasts[i] = 1$ if the
 This algorithm is polynomial, as it takes time $nk$ to traverse the table, and $n$ time to compute the sum at each index, resulting in a runtime of $O(n^3)$.
 \begin{verbatim}
 for i = 1 to n do:
-    Broadcasts[i] = 0
+    Broadcasts[i] = 0                         # Initially, no broadcasts have been made
 
-for i = n to 1 do:                # Initialize first row. Set all solutions that do not meet all 
-   if R[i-1] != 0:                # requests to infinity. So the first broadcast should always
-       R[i] = waitTime(i)         # be immediately after the last request.
-       Broadcasts[i] = 1
-       for j = 1 to i do:
-           R[j] = infinity         
+for j = 1 to k do:                            # For each new opportunity to broadcast (level of the tree)
+    minimum_time = n                          # Keep track of the broadcast time which minimizes cost
+    
+    for i = n to 1 do:                        # For each time that can broadcast (node in the tree level)  
+  
+        sum = 0                               # Calculate the wait time with the current broadcasts
+  
+        time_waiting = infinity               # Initially set the wait time to infinity so that unresolved requests
+                                              # are waiting forever.
 
-    for j = 2 to k do:                            # For each new opportunity to broadcast (level of the tree)
-        minimum_time = n                          # Keep track of the broadcast time which minimizes cost
-        
-        for i = n to 1 do:                        # For each time that can broadcast (node in the tree level)        
-            sum = 0                               # Calculate the wait time with the current broadcasts
-            time_waiting = 1
-            for s = n to 1 do:                    # For each time interval
-                if Broadcasts[s] == 1 or s == i:  # If this time has a previous or currently-considered broadcast,
-                    time_waiting = 1              # Reset the wait-time
+        for s = n to 1 do:                    # For each time interval
+            if Broadcasts[s] == 1 or s == i:  # If this time has a previous or currently-considered broadcast,
+                time_waiting = 1              # Reset the wait-time
                 
-                sum = sum + R[s] * time_waiting   # Sum up the wait times of each requester
-                multiplier = multiplier + 1
+            sum = sum + R[s] * time_waiting   # Sum up the wait times of each requester
+            time_waiting = time_waiting + 1   # As it loops backwards in time, increase the wait time multiplier
                 
-            A[i, j] = sum
+        A[i, j] = sum
             
-            if A[i, j] < A[i, minimum_time]:      # If a smaller wait time is found, redefine the minimum time
-                minimum_time = j
+        if A[i, j] < A[i, minimum_time]:      # If a smaller wait time is found, redefine the minimum time
+            minimum_time = j
         
-        Broadcasts[minimum_time] = 1              # After all wait times have been considered,
-                                                  # broadcast at the time which minimizes wait time
+        Broadcasts[minimum_time] = 1          # After all wait times have been considered,
+                                              # broadcast at the time which minimizes wait time
 
-Output Broadcasts                                 # Output the whole binary Broadcasts array,
-                                                  # which gives the solution of when to broadcast.
+Output Broadcasts                             # Output the whole binary Broadcasts array,
+                                              # which has a 1 in the best times to broadcast.
 \end{verbatim}
 
 \section*{26}
 
-The decision tree in this problem is similar to that in the previous problem, but instead of having a branching factor of just $n$, it will have a branching factor of $n\times j$, in order to account for placing the partition at any one of the $n$ times for all $j$ pages. The table will also be similar, but will now need a 3rd dimension to account for each page. That is, $A[p, q, r]$ represents: the minimum total waiting time of broadcasting Page $r$ at time $p + 1$, having made $q$ broadcasts in total. \\
-The broadcast array will also get another dimension. Now, $Broadcast[p, r] = 1$ if page $r$ is broadcast at time $p + 1$, otherwise, $Broadcast[p, r] = 0$. \\
+The decision tree in this problem is similar to that in the previous problem, but instead of having a branching factor of just $n$, it will have a branching factor of $n\times j$, in order to account for placing the partition at any one of the $n$ times for all $j$ pages. The table will also be similar, but will now need a 3rd dimension to account for each page. That is, $A[p, q, r]$ represents: the minimum total waiting time of broadcasting Page $r$ at time $p + 1$, having made $q$ broadcasts in total. \\\\
+The broadcast array will also get another dimension. Now, $Broadcasts[p, r] = 1$ if page $r$ is broadcast at time $p + 1$, otherwise, $Broadcasts[p, r] = 0$.
+\\\\
+Moreover, the increasing waiting for time must be considered for each page, so now $TimeWaiting$ is an array of size $j$, where $TimeWaiting[r] =$ the current amount of time waiting for page $r$.
+\\\\
+The same pruning rules in 23 apply to 26. 
 
 \begin{verbatim}
+for p = 1 to n do:
+    for r = 1 to j do:
+        Broadcasts[p, r] = 0 # Initially, no broadcasts have been made for any page
 
+for q = 1 to k do:
+    minimum_time = n
+    minimum_page = j
+    
+    for p = n to 1 do:
+        for r = 1 to n do:                          # For each page
+            sum = 0
+        
+            TimeWaiting[r] = infinity               # Reset time_waiting to infinity so that unresolved requests wait forever.
+        
+            for s = n to 1 do:                      # For each time interval
+            
+                if Broadcasts[s, r] == 1 or s == p: # If this page at this time has a previous or currently-considered broadcast
+                    TimeWaiting[r] = 1              # Reset the time waiting for that particular page
+
+                sum = sum + R[s, r] * TimeWaiting[r]
+                TimeWaiting[r] = TimeWaiting[r] + 1
+                
+            A[p, q, r] = sum
+        
+            if A[p, q, r] < A[p, minimum_time, minimum_page]:
+                minimum_time = p
+                minimum_page = r
+        
+    Broadcasts[minimum_time, q, minimum_page] = 1
+
+Output Broadcasts                                   # Output the whole binary Broadcasts array,
+                                                    # which has a 1 in the best times to broadcast
+                                                    # for each page.
 \end{verbatim}
 
 \end{document}
-
