@@ -1,0 +1,50 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 15}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\section*{20}
+The decision tree can be thought of as:
+\begin{itemize}
+  \item Each node has a branching factor of 2 and stores the cumulative distance traveled by the taxis (separately) up to this point.
+  \item The left child of a node a level $i$ represents taxi $A$ visiting the point $p_{i+1}$ and the right child represents taxi $B$ visiting the point $p_{i+1}$. (why would both visit? edge cases? - at best it would add no extra distance?)
+  \item At depth $i$, $i$ points have been visited.
+  \item The root of the tree would represent no nodes having been visited by either taxi and would therefore have 0 for the distance traveled by both taxis.
+\end{itemize}
+Because each point needs to be visited by at least one taxi, and there are no discernible benefits(?) for having both taxis visit a point, each point is either visited by taxi $A$ or by taxi $B$. Therefore there are $2^n$ possible paths and the decision tree described above enumerates all $2^n$ possible path pairs through the points in order. \\
+The decision tree can be pruned an transformed into a dynamic pruning algorithm using the following rules:
+\begin{enumerate}
+  \item
+  
+\end{enumerate}
+  
+\section*{21}
+
+\end{document}
