@@ -31,20 +31,34 @@
 \maketitle
 
 \section*{20}
-The decision tree can be thought of as:
+A decision tree is as follows:
+The decision tree can be thought of as follows for each node $v$ at depth $i$:
 \begin{itemize}
-  \item Each node has a branching factor of 2 and stores the cumulative distance traveled by the taxis (separately) up to this point.
-  \item The left child of a node a level $i$ represents taxi $A$ visiting the point $p_{i+1}$ and the right child represents taxi $B$ visiting the point $p_{i+1}$. (why would both visit? edge cases? - at best it would add no extra distance?)
+  \item $v$ designates each of $p_1,p_2,...p_i$ into lists $A$ and $B$, which represent the routes that either taxi $A$ or taxi $B$ travels.
+  \item $v$'s left child copies the assignments of $v$ to $A$ and $B$, but appends point $p_{i + 1}$ to $A$.
+  \item $v$'s right child copies the assignments of $v$ to $A$ and $B$, but appends point $p_{i + 1}$ to $B$.
   \item At depth $i$, $i$ points have been visited.
-  \item The root of the tree would represent no nodes having been visited by either taxi and would therefore have 0 for the distance traveled by both taxis.
 \end{itemize}
-Because each point needs to be visited by at least one taxi, and there are no discernible benefits(?) for having both taxis visit a point, each point is either visited by taxi $A$ or by taxi $B$. Therefore there are $2^n$ possible paths and the decision tree described above enumerates all $2^n$ possible path pairs through the points in order. \\
-The decision tree can be pruned an transformed into a dynamic pruning algorithm using the following rules:
+Because each point needs to be visited by at least one taxi, and since there are no benefits for having both taxis visit a point, each point is either visited by taxi $A$ or by taxi $B$. So there are $2^n$ possible point designations at the leaves of the decision tree. \\
+The decision tree can be pruned using the following rules:
 \begin{enumerate}
-  \item
+  \item If two nodes $u$ and $v$ have the same total distance, $dist(u_A) + dist(u_B) = dist(v_A) + dist(v_B)$, prune $v$.
   
 \end{enumerate}
-  
+
+Let $taxi[i, a, b] =$ the minimum total distance of designating $A$ and $B$ over points $p_1...p_i$, and $A$'s last stop is $p_a$, and $B$'s last stop is $p_b$.
+
+\begin{verbatim}
+taxi(i, a, b):
+    if i > n:
+        return 0
+    
+    return min(
+        dist(p[a], p[i]) + taxi(i + 1, i, b)
+        dist(p[b], p[i]) + taxi(i + 1, a, i)
+    )
+\end{verbatim}
+
 \section*{21}
 
 \end{document}
