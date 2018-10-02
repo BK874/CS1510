@@ -46,8 +46,6 @@ The decision tree can be pruned using the following rules:
   
 \end{enumerate}
 
-Let $taxi[i, a, b] =$ the minimum total distance of designating $A$ and $B$ over points $p_1...p_i$, and $A$'s last stop is $p_a$, and $B$'s last stop is $p_b$.
-
 \begin{verbatim}
 taxi(i, a, b):
     if i > n:
@@ -58,6 +56,18 @@ taxi(i, a, b):
         dist(p[b], p[i]) + taxi(i + 1, a, i)
     )
 \end{verbatim}
+
+Let $taxi[i, a, b] =$ the minimum total distance of designating $A$ and $B$ over points $p_1...p_i$, and $A$'s last stop is $p_a$, and $B$'s last stop is $p_b$. The dynamic solution algorithm is:
+
+\begin{verbatim}
+for a = 1 to n do:
+    for b = 1 to n do:
+        for i = n to 1 do:
+        
+            taxi[a, b, i] = min(
+                                taxi[i, b, i + 1] + dist(p[a], p[i]),
+					                      taxi[a, i, i + 1] + dist(p[b], p[i])
+				                    )
 
 \section*{21}
 
