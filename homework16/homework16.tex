@@ -68,7 +68,18 @@ for a = 1 to n do:
                                 taxi[i, b, i + 1] + dist(p[a], p[i]),
 					                      taxi[a, i, i + 1] + dist(p[b], p[i])
 				                    )
-
+\end{verbatim}
 \section*{21}
-
+The decision tree can be defined as: 
+\begin{itemize}
+\item Every node $v$ contains the cumulative response time up until that point in the path, and the path taken to get to $v$. 
+\item Every node having at most $n$ children, where each child represents the next point to travel to
+\item The leaves being paths covering all $n$ points
+\item The solution being the minimum response time found at the leaves
+\end{itemize}
+Without pruning, the size of the tree will be $n^n$ (height of $n$ since every path must cover all points, and a branching factor of $n$). The tree can then be pruned using the following rules:
+\begin{enumerate}
+\item If a node visits a point in its path that it has already visited, prune it.
+\item If 2 nodes at the same depth have visited the same points in its path, prune the one with the longer cumulative response time.
+\end{enumerate}
 \end{document}
