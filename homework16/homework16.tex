@@ -66,20 +66,50 @@ for a = 1 to n do:
         
             taxi[a, b, i] = min(
                                 taxi[i, b, i + 1] + dist(p[a], p[i]),
-					                      taxi[a, i, i + 1] + dist(p[b], p[i])
-				                    )
+					            taxi[a, i, i + 1] + dist(p[b], p[i])
+				            )
 \end{verbatim}
 \section*{21}
-The decision tree can be defined as: 
+The decision tree of depth $n$ can be defined as follows. Given a node $v$ at depth $i$: 
 \begin{itemize}
-\item Every node $v$ contains the cumulative response time up until that point in the path, and the path taken to get to $v$. 
-\item Every node having at most $n$ children, where each child represents the next point to travel to
-\item The leaves being paths covering all $n$ points
-\item The solution being the minimum response time found at the leaves
+\item $v$ contains a list of stops of length $i$ and the cumulative response time to make $i$ stops. 
+\item $v$ has $n$ children, where the $j$th child cointains $v$'s path appended with $x_j$.
 \end{itemize}
-Without pruning, the size of the tree will be $n^n$ (height of $n$ since every path must cover all points, and a branching factor of $n$). The tree can then be pruned using the following rules:
+Therefore, the solution is the leaf node (a path of $n$ stops) with the minimum average response time. Without pruning, the size of the tree will be $n^n$ (height of $n$ since every path must cover all points, and a branching factor of $n$). The tree can then be pruned using the following rules:
 \begin{enumerate}
-\item If a node visits a point in its path that it has already visited, prune it.
-\item If 2 nodes at the same depth have visited the same points in its path, prune the one with the longer cumulative response time.
+\item If a node $v$ visits a point in its path that it has already visited, prune $v$.
+\item If nodes $u$ and $v$ are at the same depth and have visited the same points, and $u$ has an equal or shorter average response time, then prune $v$.
 \end{enumerate}
+
+The first pruning rule ensures that every node $v$ at depth $i$ only has $n - i$ children, since $i$ children are already somewhere in $v$'s path.
+\\\\
+The second pruning rule ensures that at every depth $i$, there will only be one node $v$ whose path goes through the set of $i$ points. That is, every node at a given depth are only distinguished by the points they go through.
+
+$A[i, j] =$ The average response time making $i$ stops in total, and ending at point $x_j$.
+
+A supplementary array Visited is needed, where $Visited[i] = 1$ if point $x_i$ has been visited during the algorithm, otherwise $Visited[i] = 0$.
+
+\begin{verbatim}
+for i = 1 to n do:
+    Visited[i] = 0
+
+for i = 1 to n do:           # For every next stop $i$
+    
+    for j = 1 to n do:       # For every point being considered:
+        if Visited[j] = 1:   # If that point has already been added,
+            continue         # Skip it
+
+
+        if A[i - 1, j] < A[i - 1, minimum]:
+            minimum = j
+
+
+    A[i, minimum] = 0
+    Visited[minimum] = 1
+
+
+Output A[n, k] where k produces the minimum average waiting time. 
+
+\end{verbatim}
+
 \end{document}
