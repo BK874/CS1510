@@ -1,0 +1,46 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 17}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\section*{24}
+Define $S_1$ to be the set of boxes on the left side of the scale, and $S_2$ to be the boxes on the right side of the scale. The algorithm begins by sorting the boxes in order from least to most heavy. This can be done in $nlogn$ time using any fast sorting method (Merge, quick, etc). 
+The decision tree can be defined as:
+\begin{itemize}
+\item The root of the tree represent the scale with all $n$ boxes in $S_1$
+\item For a node $v$ at depth $i$, take $v's$ left child to be moving $B_i+1$ to $S_2$, and $v's$ right child to leave $B_i+1$ in $S_1$. 
+\end{itemize}
+The size of this tree will be $2^n$. The depth will be $n$, as each depth $i$ represents deciding over box $B_i$, and each node has a branching factor of $2^n$. \\
+The tree can be pruned with the following rules:
+\begin{enumerate}
+\item If a node $v$ has a configuration of $S_1$ and $S_2$ such that $|S_2|>|S_1|$ (that is, the scale is tipped to the right), prune $v$. 
+\end{enumerate}
+The first pruning rule works because if we are deciding over boxes from least to most heavy, and never considering a box twice, a scale tipped to the right can never be reconciled, as we will only have heavier boxes to decide over in the future, and adding any boxes to $S_2$ will only make that side heavier. Thus a scale tipped to the right will always stay tipped to the right. 
+\end{document}
