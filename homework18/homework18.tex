@@ -1,0 +1,45 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 18}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\section*{28}
+The decision tree for this problem can be constructed with the following rules:
+\begin{itemize}
+\item Nodes in the tree have $n$ children, where the $i'th$ child for $1<=i<=n$ corresponds to choosing $v_i$ to be a center point. Thus, the tree has height $k$ and will contain all solutions at the leaves.  
+\item The nodes will store the current aggregate distance, that is, the sum of all the distances from each $v\in V$ to its closest center point $c\in C$. 
+\end{itemize}
+The total size of the tree is $n^k$. This can then be pruned with the following rules:
+\begin{enumerate}
+\item If a node at depth $i$ already exists in $C$, prune it. That is, if that vertex has already been added to $C$, remove that sub tree, as a valid solution contains $k$ different vertices in $C$. 
+\item If two nodes $u$ and $v$ at depth $i$ have the same $c_1...c_{i-1}$ center points, and $D_u < D_v$, prune $v$ (where $D_u$ is the total aggregate distance for $u$). 
+\end {enumerate}
+
+\end{document}
