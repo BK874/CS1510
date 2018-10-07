@@ -41,5 +41,6 @@ The total size of the tree is $n^k$. This can then be pruned with the following 
 \item If a node at depth $i$ already exists in $C$, prune it. That is, if that vertex has already been added to $C$, remove that sub tree, as a valid solution contains $k$ different vertices in $C$. 
 \item If two nodes $u$ and $v$ at depth $i$ have the same $c_1...c_{i-1}$ center points, and $D_u < D_v$, prune $v$ (where $D_u$ is the total aggregate distance for $u$). 
 \end {enumerate}
-The first pruning rule leaves the tree as still roughly $n^k$. However, under the second pruning rule, every depth $i$ is limited to $n$ nodes. This is because at depth $i-1$, for some node $v$, all of $v's$ children have have the same $c_1...c_{i-1}$, and only one will not be pruned, that is the one with the shortest $D$. This brings the size of the tree down to $nk$.
+The first pruning rule leaves the tree as still roughly $n^k$. However, under the second pruning rule, every depth $i$ is limited to $n$ nodes. This is because at depth $i-1$, for some node $v$, all of $v's$ children have have the same $c_1...c_{i-1}$, and only one will not be pruned, that is the one with the shortest $D$. This brings the size of the tree down to $nk$.\\
+At each node $v$, a new aggregate distance must be calculated, which takes $n$ calculations, which leaves this tree with a run time of $n^2 k$. 
 \end{document}
