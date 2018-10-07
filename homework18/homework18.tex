@@ -48,7 +48,7 @@ The dynamic algorithm is given as follows:
 A = [k, n]                          %construct A to be an array of size k by n
 A[0, :] = infinity                  %having zero centers gives a distance of infinity
 for i = 1 to k do                 %loop over the rows
-     last_v = min(A[i-1, :])  %grab the minimum D from the previous row. use this V for subsequenc
+     last_v = min(A[i-1, :])  %grab the minimum D from the previous row. use this V for subsequent
                                          %calculations on the current row
      for j = 1 to no do          %for each row, check all possible center values
          if(last_v != v[j])          %can't repeat a vertex in the solution
