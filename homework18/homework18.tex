@@ -61,14 +61,14 @@ The pruning rules are as follows:
         \\\\
         This pruning rule reduces the number of nodes at any given depth to $k$,
         since no two nodes at the same depth can use the same number of volumes,
-        since one of them will be pruned.
+        since one of them will be pruned. Therefore the tree is of size $nk$.
 \end{enumerate}
 
 With these pruning rules, the tree can be turned into a 2-dimensional array $A$,
 where $A[i, j] =$ the least difference in pages between the smallest and largest
  volumes of a partition of chapters $x_1$ through $x_i$ into $j$ volumes.
 \\\\
-The algorithm to populate $A$ is as follows:
+The algorithm to populate $A$ is as follows and runs in $O(nk)$:
 \begin{verbatim}
 for i = 1 to n do:
     A[i, 1]                   # Base case: having only 1 volume implies 0 distance
@@ -112,7 +112,7 @@ The total size of the tree is $n^k$. This can then be pruned with the following 
 \item If two nodes $u$ and $v$ at depth $i$ have the same $c_1...c_{i-1}$ center points, and $D_u < D_v$, prune $v$ (where $D_u$ is the total aggregate distance for $u$).
 \end {enumerate}
 The first pruning rule leaves the tree as still roughly $n^k$. However, under the second pruning rule, every depth $i$ is limited to $n$ nodes. This is because at depth $i-1$, for some node $v$, all of $v's$ children have have the same $c_1...c_{i-1}$, and only one will not be pruned, that is the one with the shortest $D$. This brings the size of the tree down to $nk$.\\
-At each node $v$, a new aggregate distance must be calculated, which takes $n$ calculations, which leaves this tree with a run time of $n^2 k$. \\
+At each node $v$, a new aggregate distance must be calculated, which takes $n$ calculations, which leaves this tree with a run time of $O(n^2 k)$. \\
 The dynamic algorithm is given as follows:
 \begin{verbatim}
 A = [k, n]                          # Construct A to be an array of size k by n
@@ -125,7 +125,7 @@ for i = 1 to k do                   # For each row
                                     # and use it for calculations on the current row.
 
      for j = 1 to no do             # For each row, check all possible center values
-         if(last_v != v[j])         # Disregard already-used vertices
+         if(last_v != V[j])         # Disregard already-used vertices
                A[i, j] = new_dist(last_v, V[j]) # Calculate new distance with V[j] as a new center
 
 output min(A[k, :])                 # Return the minimum value in the last row
