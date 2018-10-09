@@ -1,0 +1,60 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts} 
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"  
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map" 
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number 
+\newcommand{\Q}{\mathbb{Q}} % rational number 
+\newcommand{\R}{\mathbb{R}} % real number 
+\newcommand{\Z}{\mathbb{Z}} % integers 
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 19}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+\section*{1}
+Here, we will reduce standard matrix multiplication to multiplication of two lower triangular matrices. Assume we have an algorithm $multTri(A, B)$ that solves multiplication of two lower triangular matrices in $O(n^2)$ time. Given as input to standard matrix multiplication two matrices $A$ and $B$, both of which are $n\times n$, we can construct two new matrices that will be passed into $multTri(A', B')$ by doing the following: 
+\[
+A' = 
+\begin{bmatrix}
+    0 & 0 & 0 \\
+    0 & 0 & 0 \\
+    0 & A & 0 
+\end{bmatrix}
+\]
+\[
+B' = 
+\begin{bmatrix}
+    0 & 0 & 0 \\
+    B & 0 & 0 \\
+    0 & 0 & 0 
+\end{bmatrix}
+\]
+Where $0$ represents an $n \times n$ matrix of all zeros. Both of these matrices will be $3n\times 3n$. Both transformations take $n^2$ time, as it would take constant time to construct a $3n\times 3n$ matrix of zeros, then $n^2$ time to copy over the elements of $A$ and $B$ into the correct places in $A'$ and $B'$. Multiplying $A'$ and $B'$ gives us the $3n \times 3n$ array: \\
+\[
+A' \times B' = 
+\begin{bmatrix}
+    0 & 0 & 0 \\
+    0 & 0 & 0 \\
+    AB & 0 & 0 
+\end{bmatrix}
+\]
+We can then output the bottom left $n\times n$ elements in the matrix, which takes $n^2$ time. These elements are exactly the values of the elements of $A\times B$. Thus, we have converted the input from matrix multiplication to input for $multTri(A,B)$ in $n^2$ time, and converted the output from $multTri(A,B)$ to the output for standard matrix multiplication in $n^2$ time, so if an $O(n^2)$ algorithm exists for $multTri(A,B)$, so does one exist for standard matrix multiplication. 
+\end{document}
