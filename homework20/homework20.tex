@@ -31,7 +31,18 @@
 \author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
 \maketitle
 \section*{3}
-
+To prove that if there is an $O(n^k)$ algorithm for squaring an degree $n$ polynomial (call this $Square(C)$), then there is an $O(n^k)$ algorithm for multiplying 2 degree $n$ polynomials (call this $Mult(A, B)$), we must transform the input of $Mult(A, B)$ to the input of $Square(C)$ in polynomial time, and then transform the output of $Square(C)$ to the output of $Mult(A, B)$, also in polynomial time. \\
+Given as input to $Mult(A, B)$ two degree $n$ polynomials $A$ and $B$, we can construct a polynomial $C$ by doing the following: 
+\begin{itemize}
+\item Initialize the solution polynomial $P$ to 0, so $P=0$. 
+\item Let $j$ be the number of coefficient variable pairs in $A$ and $k$ be the number of pairs in $B$. Note that since $A$ and $B$ are both degree $n$, $j$ and $k$ can be no greater than $n$. 
+\item For $1<=i<=j$, take the $i'th$ coefficient variable pair from $A$ and add it to $B$, so $C_i$ = $c_{ai}x_{ai} + B$
+\item Pass $C_i$ into $Square(C)$.
+\item From the output of $Square(C_i)$, add the $c_2x_2 ... c_{k+1}x_{k+1}$ coefficient variable pairs to $P$. 
+\item Repeat for all $i's$ up to $j$
+\end{itemize}
+Our code will then simply return $P$ as the solution to $Mult(A, B)$. Note that the code for $Mult(A, B)$ will call $Square(C)$ $j$ times, although since $j$ is a constant less than $n$, and we are assuming $Square(C)$ has an $O(n^k)$ algorithm, the running time for calling $Square(C)$ will still be polynomial (constant times polynomial). The transformation of $A$ into $C_i$ takes constant time, as we just add a term from $A$ to $B$. The transformation of the output also takes poly time, as we are simply grabbing $k$ terms from the output of $Square(C)$ and adding them to $P$, and repeating this a constant number of times. \\
+As an example, consider the two polynomials $A=a^2 + b$ and $B = c^2 + d$. This algorithm will construct $C_1 = a^2 + c^2 + d$. The output of $Square(C_1)$ will then be $a^4 + a^2c^2 + a^2d...$ (we don't care about the rest of the output). We ignore the first term ($a^4$) and add the terms $a^2c^2$ and $a^2d$ to $P$, so now $P = a^2c^2 + a^2d$. Now, construct $C_2 = b + c^2 + d$. Squaring $C_2$ gives us $b^2 + bc^2 + bd ...$. We then add $bc^2$ and $bd$ to $P$, giving us $P=a^2c^2 + a^2d + bc^2 + bd$, the solution to $A\times B$. 
 \section*{5}
 To prove that if an algorithm for one of Undirected Graph Isomorphism, Directed Graph Isomorphism, and Mixed Graph Isomorphism implies that they all do, the following reductions need to be made:
 \begin{itemize}
