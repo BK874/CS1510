@@ -1,0 +1,54 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map"
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number
+\newcommand{\Q}{\mathbb{Q}} % rational number
+\newcommand{\R}{\mathbb{R}} % real number
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 20}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+\section*{3}
+
+\section*{5}
+To prove that if an algorithm for one of Undirected Graph Isomorphism, Directed Graph Isomorphism, and Mixed Graph Isomorphism implies that they all do, the following reductions need to be made:
+
+\subsection*{Directed Graph Isomorphism $\leq_p$ Mixed Graph Isomorphism}
+Assume there exists an algorithm for Mixed Graph Isomorphism called $MISO$. Then it is possible to construct a poly-time algorithm for Directed Graph Isomorphism called $DISO$ as follows:
+\\\\
+$DISO(G, H):$\\
+\tab return $MISO(G, H)$
+\\\\
+A purely directed graph can be thought of as a special case of a mixed graph, so an algorithm for Mixed Graph Isomorphism works just as well on inputs that only have directed edges. Moreover, since $MISO$ is poly-time, and since $DISO$ makes no transformations from input to input or from output to output, then $DISO$ is also poly-time.
+
+\subsection*{Undirected Graph Isomorphism $\leq_p$ Mixed Graph Isomorphism}
+Assume there exists an algorithm for Mixed Graph Isomorphism called $MISO$. Then it is possible to construct a poly-time algorithm for Undirected Graph Isomorphism called $UISO$ as follows:
+\\\\
+$UISO(G, H):$\\
+\tab return $MISO(G, H)$
+\\\\
+A purely undirected graph can be thought of as a special case of a mixed graph, so an algorithm for Mixed Graph Isomorphism works just as well on inputs that only have directed edges. Moreover, since $MISO$ is poly-time, and since $UISO$ makes no transformations from input to input or from output to output, then $UISO$ is also poly-time.
+\\\\
+
+\end{document}
