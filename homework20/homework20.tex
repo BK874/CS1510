@@ -49,6 +49,21 @@ $UISO(G, H):$\\
 \tab return $MISO(G, H)$
 \\\\
 A purely undirected graph can be thought of as a special case of a mixed graph, so an algorithm for Mixed Graph Isomorphism works just as well on inputs that only have directed edges. Moreover, since $MISO$ is poly-time, and since $UISO$ makes no transformations from input to input or from output to output, then $UISO$ is also poly-time.
-\\\\
 
+\subsection*{Undirected Graph Isomorphism $\leq_p$ Directed Graph Isomorphism}
+Assume there exists an algorithm for Directed Graph Isomorphism called $DISO$. Then it is possible to construct a poly-time algorithm for Undirected Graph Isomorphism called $UISO$ as follows:
+\\\\
+$UISO(G, H):$\\
+\tab Let $G' = Directed(G)$\\
+\tab Let $H' = Directed(H)$\\
+\tab return $DISO(G', H')$
+\\\\
+Where $Directed$ is a supplementary function as follows:
+$Directed(G):$\\
+\tab for each undirected edge $e$ between $u$ and $v$ in $G$:\\
+\tab\tab add a directed edge from $u$ to $v$ into $G'$ and\\
+\tab\tab add a directed edge from $v$ to $u$ in $G'$\\
+\tab return $G'$
+\\\\
+An undirected graph can be thought of as a special case of a directed graph where each undirected edge corresponds to two mutual directed edges. Since two directed graphs can only be isomorphic if they both share these pairs of mutual directed edges, the algorithm remains correct after the input has been transformed. Since this transformation is polynomial in the number of edges, and since the output does not need to be transformed, then $UISO$ is also a poly-time algorithm.
 \end{document}
