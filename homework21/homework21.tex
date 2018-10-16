@@ -32,13 +32,23 @@
 \section*{6}
 
 \subsection*{3-Sum $\leq_{n \log n}$ 3-Sum-Part}
-3-SumAlgorithm($z_1,...z_n$)\\
-\tab Let $A = \{z_1,...z_n\}$\\
-\tab Let $B = \{z_1,...z_n\}$\\
-\tab Let $C = \{z_1,...z_n\}$\\
+3-SumAlgorithm($z_1,...,z_n$)\\
+\tab Let $A = \{z_1,...,z_n\}$\\
+\tab Let $B = \{z_1,...,z_n\}$\\
+\tab Let $C = \{z_1,...,z_n\}$\\
 \tab Return 3-Sum-PartAlgorithm($A, B, C$)
 \\\\
 Since 3-Sum-Part still contains the restriction that $i \neq j \neq k$, then the existence of a 3-Sum all from one set is equivalent to the existence of a 3-Sum of three equal sets. Since the transformation of the input takes $O(n)$ time, and since there is no transformation of the boolean output, the overall algorithm preserves the $O(n \log n)$ runtime.
+
+\subsection*{3-Sum-Part $\leq_{n \log n}$ 3-Sum}
+3-Sum-PartAlgorithm($A$, $B$, $C$)\\
+\tab Let $A'$ = $A \cdot 2 + 3$; that is, for each element in $A$ we are multiplying by 2 and adding 3.\\
+\tab Let $B'$ = $B \cdot 2 + 5$; that is, for each element in $B$ we are multiplying by 2 and adding 5.\\
+\tab Let $C'$ = $C \cdot 2 - 8$; that is, for each element in $C$ we are multiplying by 2 and subtracting 8.\\
+\tab Let S = \{$A', B', C'$\} = \{$a'_1,...,a'_n, b'_1,...,b'_n, c'_1,...,c'_n$ \}\\
+\tab Return 3-SumAlgorithm(S)\\\\
+This reduction works assuming all elements in $A$, $B$, $C$ are integers. Because every element in $A$ and $B$ is being doubled and then increased by a positive amount, the sum of any three elements from $A$ or any three elements from $B$ is being increased by a positive amount, preventing the sum from being 0. By the same logic, decreasing every element of $C$ decreases the overall sum of its elements, preventing it from being 0. Because every element is doubled (and is an integer), the edge case of the sum of the elements of one of the collections being 0 after transformation is prevented - ex: $A = \{ -3, -3, -3\}$. \\
+Since the transformation takes $O(n)$ time, and there is no transformation of the boolean output, the overall algorithm preserves the $O(n \log n)$ runtime.
 
 \subsection*{3-Sum $\leq_{n \log n}$ 3-Colinear}
 This is a reduction we learned in class.
