@@ -1,0 +1,64 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map"
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number
+\newcommand{\Q}{\mathbb{Q}} % rational number
+\newcommand{\R}{\mathbb{R}} % real number
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 21}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+\section*{6}
+
+\subsection*{3-Sum $\leq_{n \log n}$ 3-Sum-Part}
+3-SumAlgorithm($z_1,...z_n$)\\
+\tab Let $A = \{z_1,...z_n\}$\\
+\tab Let $B = \{z_1,...z_n\}$\\
+\tab Let $C = \{z_1,...z_n\}$\\
+\tab Return 3-Sum-PartAlgorithm($A, B, C$)
+\\\\
+Since 3-Sum-Part still contains the restriction that $i \neq j \neq k$, then the existence of a 3-Sum all from one set is equivalent to the existence of a 3-Sum of three equal sets. Since the transformation of the input takes $O(n)$ time, and since there is no transformation of the boolean output, the overall algorithm preserves the $O(n \log n)$ runtime.
+
+\subsection*{3-Sum $\leq_{n \log n}$ 3-Colinear}
+This is a reduction we learned in class.
+\\\\
+3-SumAlgorithm($z_1,...,z_n$):\\
+\tab for $i = 1$ to $n$ do:\\
+\tab\tab Let $p_i = (z_i, z_i^3)$\\
+\tab Return 3-ColinearAlgorithm($p_1,...,p_n$)
+\\\\
+As discussed in class,
+\begin{align*}
+a + b + c = 0 &\iff \frac{b^3 - a^3}{b - a} &= \frac{c^3 - b^3}{c - b}\\
+&\iff \frac{(b - a)(b^2 + ba + a^2)}{b - a} &= \frac{(c - b)(c^2 + cb + b^2)}{c - b}\\
+&\iff b^2 + ba + a^2 &= c^2 + cb + b^2\\
+&\iff b^2 + ba + a^2 - c^2 - cb - b^2 &= 0\\
+&\iff ba + a^2 - c^2 - cb &= 0\\
+&\iff b(a - c) + (a - c)(a + c) &= 0\\
+&\iff (a - c)(a + b + c) &= 0\\
+&\iff a + b + c &= 0
+\end{align*}
+
+\section*{7}
+\end{document}
