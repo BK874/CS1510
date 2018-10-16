@@ -60,5 +60,13 @@ a + b + c = 0 &\iff \frac{b^3 - a^3}{b - a} &= \frac{c^3 - b^3}{c - b}\\
 &\iff a + b + c &= 0
 \end{align*}
 
+\subsection*{3-Colinear-Line $\leq_{n \log n}$  3-Colinear}
+An instance of 3-Colinear-Line can be thought of as a special case of an instance of 3-Colinear with an extra restriction of not being true when the only colinear line in the input has a slope of 0. So the algorithm is as follows:
+\\\\
+3-Colinear-LineAlgorithm($p_1,...,p_n$)
+\tab Return 3-Colinear-Line($p_1,...,p_n$) where horizontal lines have been filtered out.
+\\\\
+3-Colinear-LineAlgorithm retains $O(n \log n)$ runtime because there is no transformation of input to output.
+
 \section*{7}
 \end{document}
