@@ -91,9 +91,9 @@ a - 2b + c &= 0
 So there must exist three numbers $a$, $-2b$, and $c$ in an instance of 3-Sum which makes it true. So try manipulating each possible $b$ in the 3-Colinear-Line instance to get an output for 3-SumAlgorithm. So the algorithm for 3-Colinear-Line is as follows:
 \\\\
 3-Colinear-LineAlgorithm($p_1,...,p_n$):\\
-\tab For $i = 1 to n$ do:\\
+\tab For $i = 1$ to $n$ do:\\
 \tab\tab Let $(x_i, y_i) = p_i$ for $i = 1$ to $n$.\\
-\tab\tab If 3-SumAlgorithm(x_1,...-2x_i,...x_n) then return True\\
+\tab\tab If 3-SumAlgorithm($x_1,...-2x_i,...x_n$) then return True\\
 \tab Otherwise return false.
 
 \section*{7}
