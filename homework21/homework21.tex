@@ -60,14 +60,14 @@ This is a reduction we learned in class.
 \\\\
 As discussed in class,
 \begin{align*}
-a + b + c = 0 &\iff \frac{b^3 - a^3}{b - a} &= \frac{c^3 - b^3}{c - b}\\
-&\iff \frac{(b - a)(b^2 + ba + a^2)}{b - a} &= \frac{(c - b)(c^2 + cb + b^2)}{c - b}\\
-&\iff b^2 + ba + a^2 &= c^2 + cb + b^2\\
-&\iff b^2 + ba + a^2 - c^2 - cb - b^2 &= 0\\
-&\iff ba + a^2 - c^2 - cb &= 0\\
-&\iff b(a - c) + (a - c)(a + c) &= 0\\
-&\iff (a - c)(a + b + c) &= 0\\
-&\iff a + b + c &= 0
+\frac{b^3 - a^3}{b - a} &= \frac{c^3 - b^3}{c - b}\\
+\frac{(b - a)(b^2 + ba + a^2)}{b - a} &= \frac{(c - b)(c^2 + cb + b^2)}{c - b}\\
+b^2 + ba + a^2 &= c^2 + cb + b^2\\
+b^2 + ba + a^2 - c^2 - cb - b^2 &= 0\\
+ba + a^2 - c^2 - cb &= 0\\
+b(a - c) + (a - c)(a + c) &= 0\\
+(a - c)(a + b + c) &= 0\\
+a + b + c &= 0
 \end{align*}
 
 \subsection*{3-Colinear-Line $\leq_{n \log n}$  3-Colinear}
@@ -96,5 +96,15 @@ So there must exist three numbers $a$, $-2b$, and $c$ in an instance of 3-Sum wh
 \tab\tab If 3-SumAlgorithm($x_1,...-2x_i,...x_n$) then return True\\
 \tab Otherwise return false.
 
+\subsection*{3-Sum-Part $\leq_{n \log n}$ 3-Colinear-Line}
+Since 3-Colinear-Line requires that solution points all have different y-coordinates, and since a solution to 3-Sum-Part requires that each term comes from a different set, it seems best to transform the input of 3-Sum-Part by turning each term from $A$ into $(a_i, 0)$, each term from $B$ into $(b_i, 1)$, and each term from $c$ into $(c_i, 2)$. Then, the points are fed to the 3-Colinear-Line algorithm. If true, then output true. Otherwise, try again with $A$'s points at 1 rather than 0, and $B$'s points at 0 rather than 1. Continue permuting until the 3-Colinear-Line outputs true. If not, output false.
+
+\subsection*{Summary}
+Starting with a poly-time algorithm for 3-Sum, we can obtain an algorithm for 3-Colinear-Line and 3-Sum-Part.\\
+Starting with a poly-time algorithm for 3-Sum-Part, we can obtain an algorithm for 3-Sum, which in turn gives an algorithm for 3-Colinear-Line.\\
+Starting with a poly-time algorithm for 3-Colinear, we can obtain an algorithm for 3-Colinear-Line and 3-Sum, which in turn gives an algorithm for 3-Sum-Part.\\
+Strating with a poly-time algorithm for 3-Colinear-Line, we can obtain an algorithm for 3-Sum-Part, which in turn gives an algorithm for 3-Sum.
+
 \section*{7}
+The only instances of LineSplit which output false are ones where every line segment intersects another line segment so that you could, for example, draw every line segment on the plane without lifting your pencil off the page. So in a reduction from 3-Sum, a 3-Sum instance does not contain 3 terms that sum to 0 if and only if the instance of LineSplit has the property described above. Then, the 3-Sum algorithm can return the result of the call to the LineSplit algorithm. Since the reduction must be done in $O(n \log n)$, that implies that the transformation should only require one pass over the 3-Sum input. This means that the transformation is local, such as every number in 3-Sum being transformed to a line segment independently. Beyond this, we could not find the transformation.
 \end{document}
