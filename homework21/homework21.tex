@@ -78,5 +78,23 @@ An instance of 3-Colinear-Line can be thought of as a special case of an instanc
 \\\\
 3-Colinear-LineAlgorithm retains $O(n \log n)$ runtime because there is no transformation of input to output.
 
+\subsection{3-Colinear-Line $\leq_{n \log n}$ 3-Sum}
+If an instance of 3-Colinear-Line is true, then it must have three points $(a, 0) (b, 1), (c, 2)$, which are colinear, since this problem does not allow horizontal lines as solutions. Therefore the slope between $a$ and $b$ must be the same as the slope between $b$ and $c$ as follows:
+\\\\
+\begin{align*}
+\frac{2 - 1}{c - b} &= \frac{1 - 0}{b - a}\\
+\frac{1}{c - b} &= \frac{1}{b - a}\\
+c - b &= b - a\\
+a - 2b + c &= 0
+\end{align*}
+
+So there must exist three numbers $a$, $-2b$, and $c$ in an instance of 3-Sum which makes it true. So try manipulating each possible $b$ in the 3-Colinear-Line instance to get an output for 3-SumAlgorithm. So the algorithm for 3-Colinear-Line is as follows:
+\\\\
+3-Colinear-LineAlgorithm($p_1,...,p_n$):\\
+\tab For $i = 1 to n$ do:\\
+\tab\tab Let $(x_i, y_i) = p_i$ for $i = 1$ to $n$.\\
+\tab\tab If 3-SumAlgorithm(x_1,...-2x_i,...x_n) then return True\\
+\tab Otherwise return false.
+
 \section*{7}
 \end{document}
