@@ -50,13 +50,13 @@ All Hamiltonian Cycles are simple Hamiltonian Paths with an extra edge from the 
 
 \subsection*{DoubleFixedHamiltonianPath $\leq_p$ SingleFixedHamiltonianPath}
 DoubleFixedHamiltonianPathAlgorithm($G, u, v$):\\
-\tab Let $nexts = \{v\}$
+\tab Let $nexts = \{v\}$\\
 \tab while $nexts \neq \phi$ \\
 \tab\tab Let $next = nexts.pop()$ \\
 \tab\tab if SingleFixedHamitonianPathAlgorithm($G - next, u$) $\land nexts = \phi$:\\
 \tab\tab\tab return False\\
 \tab\tab $G = G - next$\\
-\tab\tab $nexts = nexts \union next.unvisitedNeighbors$ except $u$
+\tab\tab $nexts = nexts \union next.unvisitedNeighbors$ except $u$\\
 \tab return True
 \\\\
 If there exists a Hamiltonian path in $G$ from $u$ to $v$, then there must exist a Hamiltonian path in $G - v$ from $u$ to one of $v$'s neighbors. Otherwise, there was never a Hamiltonian path in $G$ from $u$ to $v$ to begin with. This algorithm visits each of $v$'s neighbors, and neighbors of neighbors, and so on, and if all vertices are visited without a Hamiltonian path being deemed impossible, then it can return true. Otherwise, at some point a Hamiltonian path from $u$ to $v$ is impossible, so return false. This algorithm takes polynomial time because it makes at most $n$ calls to the (assumed polynomial) SingleFixedHamiltonianPathAlgorithm.
@@ -69,18 +69,18 @@ If a Hamiltonian Cycle algorithm is poly-time, then it can make a poly-time Doub
 \section*{10}
 In order to prove Hamiltonian Cycle is self reducible, we must show that we can use HamiltonianCycleDecisionAlgorithm to output a list of edges constituting a HC in $G$, in polynomial time.
 \\\\
-OptimalHamiltonianCycle($G$):
+OptimalHamiltonianCycle($G$):\\
 \tab if not HamiltonianCycleDecision($G$):\\
 \tab\tab return False
 \\\\
-\tab for each edge $e \in G$:
+\tab for each edge $e \in G$:\\
 \tab\tab if not HamiltonianCycleDecisionAlgorithm($G - e$):\\
 \tab\tab\tab $path = path + e$\\
 \tab\tab else:\\
 \tab\tab\tab $G = G - e$\\
-\tab Return $path$
-The general strategy of this algorithm is to look at an edge $e$ in $G$, determine if we can still form an HC in $G$ when we remove $e$. If so, we can safely add $e$ to our solution. If not, we can exclude $e$. We repeat this until there are no edges left in $G$.
-The number of times $HCD$ will be called inside of $HCO$ is at most $n$, where $n$ is the number of edges in $G$. Thus, we have proven that Hamiltonian Cycle is self reducible, since if we can determine whether a graph has an Hamiltonian Cycle in polynomial time, then we can find the Hamiltonian Cycle in polynomial time.  
+\tab Return $path$\\
+The general strategy of this algorithm is to look at an edge $e$ in $G$ and determine if we can still form a Hamiltonian Cycle in $G$ when we remove $e$. If so, we can safely add $e$ to our solution. If not, we can exclude $e$. We repeat this until there are no edges left in $G$.
+The number of times HamiltonianCycleDecisionAlgorithm will be called inside of OptimalHamiltonianCycle is at most $n$, where $n$ is the number of edges in $G$. Thus, we have proven that Hamiltonian Cycle is self reducible, since if we can determine whether a graph has a Hamiltonian Cycle in polynomial time, then we can find the Hamiltonian Cycle in polynomial time.  
 \section*{12}
 Vertex Cover is self-reducible if Optimal Vertex Cover $\leq_p$ Vertex Cover Decision. An algorithm for Optimal Vertex Cover takes as input a graph $G$ and returns $k$ vertices where $k$ is the smallest number of vertices needed for a vertex cover.
 \\\\
