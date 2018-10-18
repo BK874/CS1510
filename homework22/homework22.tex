@@ -30,7 +30,7 @@
 \author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
 \maketitle
 \section*{10}
-Define $HCD(G)$ to be the algorithm for the decision problem for if a Hamiltonian Cycle exists for a graph $G$, and $HCO(G)$ to be optimization problem for actually finding the Hamiltonian Cycle in graph $G$. That is $HCD(G)$ will output 1 if an HC exists in $G$, and a 0 if not, and $HCO(G)$ will actually output the edges that constitute a HC in $G$, or 0 if one doesn't exist. The claim is that $HCO(G) \leq _{poly} HCD(G)$, IE Hamiltonian Cycle is self reducible. \\
+Define $HCD(G)$ to be the algorithm for the decision problem for if a Hamiltonian Cycle exists for a graph $G$, and $HCO(G)$ to be optimization problem for actually finding the Hamiltonian Cycle in graph $G$. That is $HCD(G)$ will output 1 if an HC exists in $G$, and a 0 if not, and $HCO(G)$ will actually output the edges that constitute a HC in $G$, or 0 if one doesn't exist. The claim is that $HCO(G) \leq_p HCD(G)$, IE Hamiltonian Cycle is self reducible. \\
 In order to prove this, we must show that we can use $HCD(G)$ to output a list of edges constituting a HC in $G$, in polynomial time. \\
 First, assume graph $G$ is defined as a list of vertices and a list of edges. Consider the following pseudo-code: 
 \begin{verbatim}
@@ -53,18 +53,23 @@ The general strategy of this algorithm is to look at an edge $e$ in $G$, determi
 \end{itemize}
 The number of times $HCD$ will be called inside of $HCO$ is at most $n$, where $n$ is the number of edges in $G$, as each time it is called at least 1 edge is removed. Similarly, $isHC$ will take at most $n$ time, as if $HC$ is a hamiltonian cycle, the max edges it could contain will be $n$. This results in a total run time of $n + n = O(n)$, a polynomial. Thus, we have proven that Hamiltonian Cycle is self reducible, and if we can determine whether a graph has an HC in polynomial time, we can find the HC in polynomial time.  
 \section*{12}
-Same idea as 10. To prove $VC$ is self reducible, we must show that $VCO \leq _{poly} VCD$. Given the graph $G$ and $k$:
-\begin{verbatim}
-VCO(V, E, k):
-      if VCD(V, E, k):                         #initial check, make sure G has a VC of size k
-            VC = []                              
-            while V.hasNext:                    #continue until no V's left
-                 testVertex = V.pop              #remove a vertex to check 
-                 if VCD(V, E, k -1):           #check if we still have a VC after removing the vertex
-                      VC.append(testVertex)   #if so, add it to the solution
-                      k -= 1
-            return isVC(VC, V, E, k)
-      return 0
-\end{verbatim}
-The number of times $VCD$ will be called inside $VCO$ will be at most $n$, where $n$ is the number of vertices in $G$. Further, $isVC$ will take at most $nk$ time, as it will need to go through the $k$ vertices in $VC$, and determine if all of the $n$ edges are incident to the $k$ vertices. This results in a runtime of $O(n + nk) = O(n)$. Thus, if $VCD$ has a polynomial time algorithm, so does $VCO$, and Vertex Cover is self reducible. 
+Vertex Cover is self-reducible if Optimal Vertex Cover $\leq_p$ Vertex Cover Decision. An algorithm for Optimal Vertex Cover takes as input a graph $G$ and returns $k$ vertices where $k$ is the smallest number of vertices needed for a vertex cover.
+\\\\
+OptimalVertexCoverAlgorithm($G$):\\
+# First, find the minimum number of vertices needed for a vertex cover by continually incrementing the number of vertices allowed until a vertex cover possible.
+\tab Let $k = 0$\\
+\tab while !VertexCoverDecision($G, k$):\\
+\tab\tab $k = k + 1$
+\\\\
+\tab for each $v \in G$:\\
+\tab\tab # Try removing $v$ and all edges adjacent to $v$ in the graph. That is, assume $v$ is in a solution to the Vertex Cover.\\
+\tab\tab if VertexCoverDecisionAlgorithm($G - v, k - 1$): # If a vertex cover is possible with the rest of the graph,\\
+\tab\tab\tab $S = S \cup \{v\}$ # Then $v$ was a viable vertex to cover in the optimal solution, so append it to the solution set.\\
+\tab\tab\tab # Continue with the reduced problem size\\
+\tab\tab\tab $G = G - v$\\
+\tab\tab\tab $k = k - 1$
+\\\\
+\tab Return $S$
+\\\\
+The number of times VertexCoverDecisionAlgorithm will be called inside OptimalVertexCoverAlgorithm will be at most $2n$, where $2n$ is the number of vertices in $G$. Thus, if VertexCoverDecisionAlgorithm has a polynomial time algorithm, then so does OptimalVertexCoverAlgorithm, since $2n$ calls to a poly-time algorithm is still poly-time. So Vertex Cover is self reducible. 
 \end{document}
