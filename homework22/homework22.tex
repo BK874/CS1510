@@ -46,7 +46,7 @@ A Single Fixed Hamiltonian Path can be discovered with a Double Fixed Hamiltonia
 DoubleFixedHamiltonianPathAlgorithm($G, u, v$):\\
 \tab return $\bigvee_{(u', v') \notin G} HamiltonianCycleAlgorithm(G + (u', v')$)
 \\\\
-All Hamiltonian Cycles are simple Hamiltonian Paths with an extra edge from the start vertex to the end vertex. Therefore, if there exists a Hamiltonian Cycle in the graph $G'$ which contains an extra edge from the start vertex to the end vertex, then there also contains a Hamiltonian Path in $G$ without the extra edge. This algorithm takes polynomial time because it makes at most $n$ calls to the (assumed polynomial) HamiltonianCycleAlgorithm..
+All Hamiltonian Cycles are simple Hamiltonian Paths with an extra edge from the start vertex to the end vertex. Therefore, if there exists a Hamiltonian Cycle in the graph $G'$ which contains an extra edge from the start vertex to the end vertex, then there also contains a Hamiltonian Path in $G$ without the extra edge. This algorithm takes polynomial time because it makes at most $n$ calls to the (assumed polynomial) HamiltonianCycleAlgorithm.
 
 \section*{10}
 Define $HCD(G)$ to be the algorithm for the decision problem for if a Hamiltonian Cycle exists for a graph $G$, and $HCO(G)$ to be optimization problem for actually finding the Hamiltonian Cycle in graph $G$. That is $HCD(G)$ will output 1 if an HC exists in $G$, and a 0 if not, and $HCO(G)$ will actually output the edges that constitute a HC in $G$, or 0 if one doesn't exist. The claim is that $HCO(G) \leq_p HCD(G)$, IE Hamiltonian Cycle is self reducible. \\
