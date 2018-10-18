@@ -44,7 +44,7 @@ A Single Fixed Hamiltonian Path can be discovered with a Double Fixed Hamiltonia
 
 \subsection*{DoubleFixedHamiltonianPath $\leq_p$ HamiltonianCycle}
 DoubleFixedHamiltonianPathAlgorithm($G, u, v$):\\
-\tab return $\bigvee_{(u', v') \notin G} HamiltonianCycleAlgorithm(G + (u', v')$)
+\tab return HamiltonianCycleAlgorithm($G + (u, v)$)
 \\\\
 All Hamiltonian Cycles are simple Hamiltonian Paths with an extra edge from the start vertex to the end vertex. Therefore, if there exists a Hamiltonian Cycle in the graph $G'$ which contains an extra edge from the start vertex to the end vertex, then there also contains a Hamiltonian Path in $G$ without the extra edge. This algorithm takes polynomial time because it makes at most $n$ calls to the (assumed polynomial) HamiltonianCycleAlgorithm.
 
