@@ -48,29 +48,39 @@ DoubleFixedHamiltonianPathAlgorithm($G, u, v$):\\
 \\\\
 All Hamiltonian Cycles are simple Hamiltonian Paths with an extra edge from the start vertex to the end vertex. Therefore, if there exists a Hamiltonian Cycle in the graph $G'$ which contains an extra edge from the start vertex to the end vertex, then there also contains a Hamiltonian Path in $G$ without the extra edge. This algorithm takes polynomial time because it makes at most $n$ calls to the (assumed polynomial) HamiltonianCycleAlgorithm.
 
-\section*{10}
-Define $HCD(G)$ to be the algorithm for the decision problem for if a Hamiltonian Cycle exists for a graph $G$, and $HCO(G)$ to be optimization problem for actually finding the Hamiltonian Cycle in graph $G$. That is $HCD(G)$ will output 1 if an HC exists in $G$, and a 0 if not, and $HCO(G)$ will actually output the edges that constitute a HC in $G$, or 0 if one doesn't exist. The claim is that $HCO(G) \leq_p HCD(G)$, IE Hamiltonian Cycle is self reducible. \\
-In order to prove this, we must show that we can use $HCD(G)$ to output a list of edges constituting a HC in $G$, in polynomial time. \\
-First, assume graph $G$ is defined as a list of vertices and a list of edges. Consider the following pseudo-code: 
-\begin{verbatim}
-HCO(V, E):
-      if HCD(V, E):                                    #initial check, make sure G has an HC
-           HC = []                                     #initialize solution 
-           while E.hasNext:                           #continue until no edges left 
-                testEdge = E.pop                      #remove an edge from the graph
-                if HCD(V, E):                         #check if HC exists in G minus one edge
-                      HC.append(testEdge)            #if so, add the edge we removed to solution
-           return isHC(HC, V, E)                       #function to determine if a path is a HC for a graph
-     return 0
+\subsection*{DoubleFixedHamiltonianPath $\leq_p$ SingleFixedHamiltonianPath}
+DoubleFixedHamiltonianPathAlgorithm($G, u, v$):\\
+\tab Let $nexts = \{v\}$
+\tab while $nexts \neq \phi$ \\
+\tab\tab Let $next = nexts.pop()$ \\
+\tab\tab if SingleFixedHamitonianPathAlgorithm($G - next, u$) $\land nexts = \phi$:\\
+\tab\tab\tab return False\\
+\tab\tab $G = G - next$\\
+\tab\tab $nexts = nexts \union next.unvisitedNeighbors$ except $u$
+\tab return True
+\\\\
+If there exists a Hamiltonian path in $G$ from $u$ to $v$, then there must exist a Hamiltonian path in $G - v$ from $u$ to one of $v$'s neighbors. Otherwise, there was never a Hamiltonian path in $G$ from $u$ to $v$ to begin with. This algorithm visits each of $v$'s neighbors, and neighbors of neighbors, and so on, and if all vertices are visited without a Hamiltonian path being deemed impossible, then it can return true. Otherwise, at some point a Hamiltonian path from $u$ to $v$ is impossible, so return false. This algorithm takes polynomial time because it makes at most $n$ calls to the (assumed polynomial) SingleFixedHamiltonianPathAlgorithm.
 
-\end{verbatim}
-The general strategy of this algorithm is to look at an edge $e$ in $G$, determine if we can still form an HC in $G$ when we remove $e$. If so, we can safely add $e$ to our solution. If not, we can exclude $e$. We repeat this until there are no edges left in $G$, and then we test if the cycle we've found is actually a HC. Note that $isHC$ could be defined very simply by checking that:
-\begin{itemize}
-\item All edges in $HC$ exist in $E$
-\item No vertex in $V$ is visited more than once in $HC$
-\item $HC$ spans all vertices in $V$
-\end{itemize}
-The number of times $HCD$ will be called inside of $HCO$ is at most $n$, where $n$ is the number of edges in $G$, as each time it is called at least 1 edge is removed. Similarly, $isHC$ will take at most $n$ time, as if $HC$ is a hamiltonian cycle, the max edges it could contain will be $n$. This results in a total run time of $n + n = O(n)$, a polynomial. Thus, we have proven that Hamiltonian Cycle is self reducible, and if we can determine whether a graph has an HC in polynomial time, we can find the HC in polynomial time.  
+\subsection*{Summary}
+If a Double Fixed Hamiltonian Path algorithm is poly-time, then it is possible to make both a poly-time Hamiltonian Cycle algorithm and a poly-time Single Fixed Hamiltonian Path algorithm.\\
+If a Single Fixed Hamiltonian Path algorithm is poly-time, then it can make a poly-time Double Fixed Hamiltonian Path algorithm, which in turn can make a poly-time Hamiltonian Cycle algorithm. \\
+If a Hamiltonian Cycle algorithm is poly-time, then it can make a poly-time Double Fixed Hamiltonian Path Algorithm, which in turn turn can make a poly-time Single Fixed Hamiltonian Path.
+
+\section*{10}
+In order to prove Hamiltonian Cycle is self reducible, we must show that we can use HamiltonianCycleDecisionAlgorithm to output a list of edges constituting a HC in $G$, in polynomial time.
+\\\\
+OptimalHamiltonianCycle($G$):
+\tab if not HamiltonianCycleDecision($G$):\\
+\tab\tab return False
+\\\\
+\tab for each edge $e \in G$:
+\tab\tab if not HamiltonianCycleDecisionAlgorithm($G - e$):\\
+\tab\tab\tab $path = path + e$\\
+\tab\tab else:\\
+\tab\tab\tab $G = G - e$\\
+\tab Return $path$
+The general strategy of this algorithm is to look at an edge $e$ in $G$, determine if we can still form an HC in $G$ when we remove $e$. If so, we can safely add $e$ to our solution. If not, we can exclude $e$. We repeat this until there are no edges left in $G$.
+The number of times $HCD$ will be called inside of $HCO$ is at most $n$, where $n$ is the number of edges in $G$. Thus, we have proven that Hamiltonian Cycle is self reducible, since if we can determine whether a graph has an Hamiltonian Cycle in polynomial time, then we can find the Hamiltonian Cycle in polynomial time.  
 \section*{12}
 Vertex Cover is self-reducible if Optimal Vertex Cover $\leq_p$ Vertex Cover Decision. An algorithm for Optimal Vertex Cover takes as input a graph $G$ and returns $k$ vertices where $k$ is the smallest number of vertices needed for a vertex cover.
 \\\\
