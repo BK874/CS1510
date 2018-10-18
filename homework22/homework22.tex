@@ -29,6 +29,25 @@
 \title{Homework 22}
 \author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
 \maketitle
+\section*{8}
+\subsection*{HamiltonianCycle $\leq_p$ DoubleFixedHamiltonianPath}
+HamiltonianCycleAlgorithm($G$):\\
+\tab return $\bigvee_{v \in G)$ DoubleFixedHamiltonianPathAlgorithm($G, v, v$)
+\\\\
+A Hamiltonian Cycle is a special case of a Hamiltonian Path where the start and end vertices happen to be the same vertex. This algorithm takes polynomial time because it makes at most $n$ calls to the (assumed polynomial) DoubleFixedHamiltonianPathAlgorithm.
+
+\subsection*{SingleFixedHamiltonianPath $\leq_p$ DoubleFixedHamiltonianPath}
+SingleFixedHamiltonianPath($G, u$):\\
+\tab return $\bigvee_{v \in G}$ DoubleFixedHamiltonianPathAlgorithm($G, u, v$)
+\\\\
+A Single Fixed Hamiltonian Path can be discovered with a Double Fixed Hamiltonian Path algorithm by trying all possible endpoint vertices and seeing if a hamiltonian path exists between those two vertices. This algorithm takes polynomial time because it makes at most $n$ calls to the (assumed polynomial) DoubleFixedHamiltonianPathAlgorithm.
+
+\subsection*{DoubleFixedHamiltonianPath $\leq_p$ HamiltonianCycle}
+DoubleFixedHamiltonianPathAlgorithm($G, u, v$):\\
+\tab return $\bigvee_{(u', v') \notin G} HamiltonianCycleAlgorithm($G + (u', v')$)
+\\\\
+All Hamiltonian Cycles are simple Hamiltonian Paths with an extra edge from the start vertex to the end vertex. Therefore, if there exists a Hamiltonian Cycle in the graph $G'$ which contains an extra edge from the start vertex to the end vertex, then there also contains a Hamiltonian Path in $G$ without the extra edge. This algorithm takes polynomial time because it makes at most $n$ calls to the (assumed polynomial) HamiltonianCycleAlgorithm..
+
 \section*{10}
 Define $HCD(G)$ to be the algorithm for the decision problem for if a Hamiltonian Cycle exists for a graph $G$, and $HCO(G)$ to be optimization problem for actually finding the Hamiltonian Cycle in graph $G$. That is $HCD(G)$ will output 1 if an HC exists in $G$, and a 0 if not, and $HCO(G)$ will actually output the edges that constitute a HC in $G$, or 0 if one doesn't exist. The claim is that $HCO(G) \leq_p HCD(G)$, IE Hamiltonian Cycle is self reducible. \\
 In order to prove this, we must show that we can use $HCD(G)$ to output a list of edges constituting a HC in $G$, in polynomial time. \\
