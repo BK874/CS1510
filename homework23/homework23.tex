@@ -93,7 +93,7 @@ This is an NP-hard problem, because a poly-time algorithm for this problem impli
 \\\\
 The fact that $G'$ always has an independent set of $3n/4$ vertices implies that CliqueAndIndependentSetAlgorithm on $G'$ will return true if and only if $G'$ (and therefore $G$) has a clique of size $3n/4$. This algorithm is poly-time because the transformation adds only a linear number of vertices.
 \subsection*{f}
-
+This is an NP-hard problem. A poly time algorithm $FixedISorClique$ for this problem implies a poly-time algorithm for the $3n/4$ independent set problem. The reduction from independent set uses a combination of the solutions from sections b and d above. That is, if $k = 3n/4$, then no transformation is applied. If $k < 3n/4$, then we add $3n/4 - k$ disconnected vertices. If $k > 3n/4$, we add $k-3n/4$ vertices connected to all other vertices. Then, if $FixedISorClique$ returns true, then construct a new graph $G'$ by adding $n$ new vertices, $3n/4$ of which are disconnected and $n/4$ of which are connected in such a way that they cannot be in the independent set. Then apply the algorithm $FixedISorClique$ to $G'$ and return the results. By the same logic in b and d, $FixedISorClique$ returns true iff $G'$ has an independent set of size $3n/4 + 3n/4$, implying the existence of an independent set of size $3n/4$ in the original graph $G$.
 \subsection*{16}
 A 3-COLOR algorithm makes a choice at every vertex $v_i$ either to color it red, green, or blue. We can model that in a Boolean formula as three variables $r_i$, $g_i$, $b_i$, such that only one of the three can be true. So in the formula $F$ there is a clause $(r_i \oplus g_i \oplus b_i)$, which in CNF is:
 \begin{align*}
