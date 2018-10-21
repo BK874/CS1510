@@ -39,6 +39,33 @@ A 3-COLOR algorithm makes a choice at every vertex $v_i$ either to color it red,
 (\neg b_i \lor \neg r_i) &\land \\
 (r_i \lor g_i \lor b_i) 
 \end{align*}
+Moreover, for each edge $(v_i, v_j) \in G$, it cannot be the case that they are the same color, which corresponds to the variables $r_i$ and $r_j$ not both being true, same with $g_i$ and $g_j$, and $b_i$ and $b_j$. So in the formula $F$ there is a clause $(\neg (r_i \land r_j)) \land \neg (g_i \land g_j) \land \neg (b_i \land b_j))$, which in CNF is:
+
+\begin{align*}
+(\neg r_i \lor \neg r_j) &\land \\
+(\neg g_i \lor \neg g_j) &\land \\
+(\neg b_i \lor \neg b_j)
+\end{align*}
+
+So an algorithm for 3-COLOR is:\\
+3-COLORAlgorithm($G$):\\
+\tab Let $F = \emptyset$ \\
+\tab for each vertex $v_i \in G$: \\
+\tab\tab $F = F \union$ (vertex CNF described above)
+\\\\
+\tab for each edge $(v_i, v_j) \in G$: \\
+\tab\tab $F = F \union$ (edge CNF described above)
+\\\\
+\tab return CNF-SATAlgorithm($F$)
+\\\\
+
+It must be shown that $F$ is satisfiable if and only if $G$ is 3-Colorable.
+\\\\
+If $G$ is 3-Colorable, then each vertex is one of $\{r, g, b\}$. For each vertex $v_i$ colored $c$, let $c_i$ be true, and the other two colors associated with $i$ to be false in $F$, and this will satisfy $F$.
+\\\\
+If $F$ is satisfiable, then for all $i$, one of $r_i, g_i, b_i$ is true. Use this to color the vertex $v_i$ and it will give a valid 3-Coloring of $G$.
+\\\\
+Moreover, it must be shown that the transformation from $G$ to $F$ is polynomial. Since each vertex yields 4 clauses and each edge yields 3 clauses, which are both constant-size, the transformation is still polynomial in the number of vertices and number of edges, $O(n^2)$.
 \subsection*{17}
 
 \end{document}
