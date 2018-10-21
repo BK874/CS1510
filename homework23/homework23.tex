@@ -42,7 +42,7 @@ In the case where $k$ is less than $3n/4$, we can construct $G'$ by adding cliqu
 This is an NP-hard problem, because a poly-time algorithm for this problem implies a poly-time algorithm for the clique problem.
 \\\\
 CliqueAlgorithm($G, k$):\\
-\tab Let $G' = G + k$ new vertices not connected to any other vertices.
+\tab Let $G' = G + k$ new vertices not connected to any other vertices.\\
 \tab return CliqueAndIndependentSetAlgorithm($G, k$)
 \\\\
 The fact that $G'$ always has an independent set of $k$ vertices implies that CliqueAndIndependentSetAlgorithm on $G'$ will return true if and only if $G'$ (and therefore $G$) has a clique of size $k$. This algorithm is poly-time because the transformation adds only a linear number of vertices.
@@ -53,7 +53,7 @@ The fact that $G'$ always has an independent set of $k$ vertices implies that Cl
 This is an NP-hard problem, because a poly-time algorithm for this problem implies a poly-time algorithm for the 3n/4 clique problem.
 \\\\
 3n/4CliqueAlgorithm($G$):\\
-\tab Let $G' = G + 3n/4$ new vertices not connected to any other vertices.
+\tab Let $G' = G + 3n/4$ new vertices not connected to any other vertices.\\
 \tab return 3n/4CliqueAndIndependentSetAlgorithm($G$)
 \\\\
 The fact that $G'$ always has an independent set of $3n/4$ vertices implies that CliqueAndIndependentSetAlgorithm on $G'$ will return true if and only if $G'$ (and therefore $G$) has a clique of size $3n/4$. This algorithm is poly-time because the transformation adds only a linear number of vertices.
