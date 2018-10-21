@@ -75,6 +75,15 @@ CliqueAlgorithm($G, k$):\\
 The fact that $G'$ always has an independent set of $k$ vertices implies that CliqueAndIndependentSetAlgorithm on $G'$ will return true if and only if $G'$ (and therefore $G$) has a clique of size $k$. This algorithm is poly-time because the transformation adds only a linear number of vertices.
 
 \subsection*{d}
+This is an NP-hard problem. A poly time algorithm for CliqueOrIndependentSet implies a poly time algorithm for IndependentSet. Consider the following pseudocode:
+\begin{verbatim}
+IndependentSet(G, k):
+     if CliqueOrIndependentSet(G, k):                            //initial check
+           G' = addDisconnectedVertices(G, n)         //add n disconnected vertices
+           return CliqueOrIndependentSet(G', k+n)
+     return false                                           //if neither, return false
+\end{verbatim}
+Here, if CliqueOrIndependentSet returns true for the original $G$, we know that either a clique of size $k$ exists, or an independent set of size $k$ exists, or both. From here, we can transform $G$ so that the output of CliqueOrIndependentSet will tell us exactly which of clique or independent set of size $k$ existed in the original $G$. By adding $n$ disconnected vertices to $G$, we have ensured that any independent set of size $i$ in $G$ now has size $i + n$, as the $n$ disconnected vertices will be independent to all other vertices and can be added to any independent set to increase its size by $n$. However, since the max size a clique in $G$ could be is $n$, and the added vertices do not contribute to any cliques (other than the 1 clique they are a part of by themselves), the max clique size in $G'$ is still n, making a clique size of $k+n$ impossible. This ensures that if CliqueOrIndependentSet returns true, it cannot be the case that it is returning true for a clique of size $k+n$, and thus an independent set of size $k+n$ exists in $G'$, and an independent set of size $k$ existed in $G$. 
 
 \subsection*{e}
 This is an NP-hard problem, because a poly-time algorithm for this problem implies a poly-time algorithm for the 3n/4 clique problem.
