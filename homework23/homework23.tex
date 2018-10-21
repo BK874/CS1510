@@ -84,7 +84,6 @@ IndependentSet(G, k):
      return false                                           //if neither, return false
 \end{verbatim}
 Here, if CliqueOrIndependentSet returns true for the original $G$, we know that either a clique of size $k$ exists, or an independent set of size $k$ exists, or both. From here, we can transform $G$ so that the output of CliqueOrIndependentSet will tell us exactly which of clique or independent set of size $k$ existed in the original $G$. By adding $n$ disconnected vertices to $G$, we have ensured that any independent set of size $i$ in $G$ now has size $i + n$, as the $n$ disconnected vertices will be independent to all other vertices and can be added to any independent set to increase its size by $n$. However, since the max size a clique in $G$ could be is $n$, and the added vertices do not contribute to any cliques (other than the 1 clique they are a part of by themselves), the max clique size in $G'$ is still n, making a clique size of $k+n$ impossible. This ensures that if CliqueOrIndependentSet returns true, it cannot be the case that it is returning true for a clique of size $k+n$, and thus an independent set of size $k+n$ exists in $G'$, and an independent set of size $k$ existed in $G$. 
-
 \subsection*{e}
 This is an NP-hard problem, because a poly-time algorithm for this problem implies a poly-time algorithm for the 3n/4 clique problem.
 \\\\
@@ -93,7 +92,7 @@ This is an NP-hard problem, because a poly-time algorithm for this problem impli
 \tab return 3n/4CliqueAndIndependentSetAlgorithm($G$)
 \\\\
 The fact that $G'$ always has an independent set of $3n/4$ vertices implies that CliqueAndIndependentSetAlgorithm on $G'$ will return true if and only if $G'$ (and therefore $G$) has a clique of size $3n/4$. This algorithm is poly-time because the transformation adds only a linear number of vertices.
-
+\subsection*{f}
 
 \subsection*{16}
 A 3-COLOR algorithm makes a choice at every vertex $v_i$ either to color it red, green, or blue. We can model that in a Boolean formula as three variables $r_i$, $g_i$, $b_i$, such that only one of the three can be true. So in the formula $F$ there is a clause $(r_i \oplus g_i \oplus b_i)$, which in CNF is:
