@@ -123,9 +123,13 @@ If $F$ is satisfiable, then for all $i$, one of $r_i, g_i, b_i$ is true. Use thi
 Moreover, it must be shown that the transformation from $G$ to $F$ is polynomial. Since each vertex yields 4 clauses and each edge yields 3 clauses, which are both constant-size, the transformation is still polynomial in the number of vertices and number of edges, $O(n^2)$.
 \subsection*{17}
 In order to reduce the Vertex Cover problem to the Dominating Set problem, given the graph $G$ and desired cover size $k$, we will construct a graph $G'$ such that $G'$ has a dominating set of size $k$ iff $G$ has a vertex cover of size $k$. \\
-Let $V$ and $E$ be the set of all vertices and edges in $G$ respectively. We will construct $G'$ as follows: \\
-$V' = V + $ a vertex $u$ for each edge in $E$.\\
-$E' = E + $ an edge between each $u, v$ such that $v$ is an endpoint of the edge $u$ represents in $G$ + an edge between every $x \in V$ that does not already have an edge in $E$.\\\\
+Let $V$ and $E$ be the set of all vertices and edges in $G$ respectively. We will construct $G'$ as follows:
+\\\\
+$V'$ contains all the vertices in $V$ as well as new utility vertices corresponding to each edge in $E$. \\
+$V' = \{v | v \in V\} \union \{ v' | (u, v) \in E\}$
+\\\\
+$E'$ contains all the edges in $V$ as well as new edges connecting each utility vertex to the endpoints of the edge it was derived from. Moreover, all vertices originally in $V$ have new edges between them.\\
+$E' = \{(u, v), (u, v'), (v', v) | (u, v) \in E\} \union \{(u, v) | (u, v) \in V \times V \land u \neq v \}$.\\\\
 To prove that $G'$ has a dominating set of size $k$ iff $G$ has a vertex cover of size $k$ we must prove the relationship in both directions: \\
 First, assume $G$ has a vertex cover $VC$ of size $k$. Then $G'$ has a dominating set $DS = VC$ of size $k$ as every vertex $v \in VC$ has a representative vertex $u$ in $G'$ that is connected to every other vertex in $G'$ representing a vertex in $G$ and every vertex in $G'$ representing an edge in $G$ must connected to at least one vertex in $VC$ because at least one of that edge's endpoints in $G$ must be a vertex in $VC$ by the definition of a vertex cover. \\\\
 Second, assume $G'$ has a dominating set $DS$ of size $k$. If $DS$ contains any vertices representing an edge in $G$, replace it with one of the vertices representing an endpoint of its edge in $G$. $DS$ is still a dominating set because any edge-representing vertex removed is next to its replacement (one of its endpoints) and every vertex that was next to the removed vertex is also next to its replacement (every endpoint is connected to every other endpoint by our construction). By definition, the vertices of $G'$ are all either in $DS$ or are connected by an edge to a vertex in $DS$. We can therefore construct a vertex cover $VC$ of $G$ by taking every vertex in $G$ that is a vertex represented by a vertex in $DS$ i.e. $VC = DS$. $VC$ must be a vertex cover of $G$ as for any edge in $G$ there must be a vertex in $DS$ that is connected to the vertex representing that edge in $G'$ by the definition of a dominating set. Because $VC = DS$, that vertex is one of the endpoints of that edge in $G$ and is in $VC$.
