@@ -1,0 +1,44 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map"
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number
+\newcommand{\Q}{\mathbb{Q}} % rational number
+\newcommand{\R}{\mathbb{R}} % real number
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 23}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+\subsection*{14}
+
+\subsection*{16}
+A 3-COLOR algorithm makes a choice at every vertex $v_i$ either to color it red, green, or blue. We can model that in a Boolean formula as three variables $r_i$, $g_i$, $b_i$, such that only one of the three can be true. So in the formula $F$ there is a clause $(r_i \oplus g_i \oplus b_i)$, which in CNF is:
+\begin{align*}
+(\neg r_i \lor \neg g_i) &\land \\
+(\neg g_i \lor \neg b_i) &\land \\
+(\neg b_i \lor \neg r_i) &\land \\
+(r_i \lor g_i \lor b_i) 
+\end{align*}
+\subsection*{17}
+
+\end{document}
