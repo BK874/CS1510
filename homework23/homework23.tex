@@ -30,6 +30,12 @@
 \author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
 \maketitle
 \subsection*{14}
+\subsection*{a}
+The idea is to reduce Clique to an instance of Clique with a fixed $k$, specifically where $k=3n/4$. Call this new problem $3n/4Clique$. Obviously, if the $k$ for Clique already equals $3n/4$, no transformation needs to be made, and the output of $3n/4Clique$ would equal the output of $Clique$. \\
+In the case where $k$ is greater than $3n/4$, we can construct $G'$ as input to  $3n/4Clique$ by adding vertices to $G$, such that all the added vertices have no edges connecting them to any other vertices, until $3n/4 = k$. These new vertices will obviously not contribute to any cliques existing in $G$, as they have no connections. 
+Now, if $3n/4Clique$ returns true for $G'$, we know that there must be a clique of size $k$ in $G$, as $G'$ maintains all the cliques from $G$, with some added disconnected vertices to ensure that $k=3n/4$. IE it could not be the case that $G'$ has a clique of size $3n/4$ while $G$ does not have a clique of size $k$, as those $3n/4 -k$ vertices that were added could not contribute to any cliques. This transformation certainly takes polynomial time, as it simply requires adding a constant number of disconnected vertices.\\
+In the case where $k$ is less than $3n/4$, we can construct $G'$ by adding cliques of size $(3n/4) - k$ to every vertex $V$, where each vertex in the new added clique connects to $V$, as well as all neighbor vertices to $V$ in $G$. Now, any vertex in $G$ that previously belonged to a clique of size $i$ belongs to a clique of size $i + (3n/4) - k$. Thus, if a clique of size $k$ exists in $G$, a clique of size $(3n/4) - k + k = 3n/4$ exists in $G'$. Further, if no clique of size $k$ exists in $G$, there won't be a clique of size $3n/4$ in $G'$, as none of the newly added cliques are connected to each other, and only add $(3n/4) - k$ to each already existing clique in $G$. This transformation will take polynomial time in the input, as we will need to add $n$ new cliques to the graph, each of constant size, and need to make at most $n$ new connections for each added clique (must connect to each vertices neighbors, vertices can have at most $n-1$ neighbors). 
+
 
 \subsection*{16}
 A 3-COLOR algorithm makes a choice at every vertex $v_i$ either to color it red, green, or blue. We can model that in a Boolean formula as three variables $r_i$, $g_i$, $b_i$, such that only one of the three can be true. So in the formula $F$ there is a clause $(r_i \oplus g_i \oplus b_i)$, which in CNF is:
