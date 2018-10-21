@@ -85,13 +85,7 @@ IndependentSet(G, k):
 \end{verbatim}
 Here, if CliqueOrIndependentSet returns true for the original $G$, we know that either a clique of size $k$ exists, or an independent set of size $k$ exists, or both. From here, we can transform $G$ so that the output of CliqueOrIndependentSet will tell us exactly which of clique or independent set of size $k$ existed in the original $G$. By adding $n$ disconnected vertices to $G$, we have ensured that any independent set of size $i$ in $G$ now has size $i + n$, as the $n$ disconnected vertices will be independent to all other vertices and can be added to any independent set to increase its size by $n$. However, since the max size a clique in $G$ could be is $n$, and the added vertices do not contribute to any cliques (other than the 1 clique they are a part of by themselves), the max clique size in $G'$ is still n, making a clique size of $k+n$ impossible. This ensures that if CliqueOrIndependentSet returns true, it cannot be the case that it is returning true for a clique of size $k+n$, and thus an independent set of size $k+n$ exists in $G'$, and an independent set of size $k$ existed in $G$. 
 \subsection*{e}
-This is an NP-hard problem, because a poly-time algorithm for this problem implies a poly-time algorithm for the 3n/4 clique problem.
-\\\\
-3n/4CliqueAlgorithm($G$):\\
-\tab Let $G' = G + 3n/4$ new vertices not connected to any other vertices.\\
-\tab return 3n/4CliqueAndIndependentSetAlgorithm($G$)
-\\\\
-The fact that $G'$ always has an independent set of $3n/4$ vertices implies that CliqueAndIndependentSetAlgorithm on $G'$ will return true if and only if $G'$ (and therefore $G$) has a clique of size $3n/4$. This algorithm is poly-time because the transformation adds only a linear number of vertices.
+By the pigeonhole principle, a graph can never have 3/4 of its vertices in an independent set while also having 3/4 of its vertices in a clique.
 \subsection*{f}
 This is an NP-hard problem. A poly time algorithm $FixedISorClique$ for this problem implies a poly-time algorithm for the $3n/4$ independent set problem. The reduction from independent set uses a combination of the solutions from sections b and d above. That is, if $k = 3n/4$, then no transformation is applied. If $k < 3n/4$, then we add $3n/4 - k$ disconnected vertices. If $k > 3n/4$, we add $k-3n/4$ vertices connected to all other vertices. Then, if $FixedISorClique$ returns true, then construct a new graph $G'$ by adding $n$ new vertices, $3n/4$ of which are disconnected and $n/4$ of which are connected in such a way that they cannot be in the independent set. Then apply the algorithm $FixedISorClique$ to $G'$ and return the results. By the same logic in b and d, $FixedISorClique$ returns true iff $G'$ has an independent set of size $3n/4 + 3n/4$, implying the existence of an independent set of size $3n/4$ in the original graph $G$.
 \subsection*{16}
