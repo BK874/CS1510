@@ -36,4 +36,23 @@ $$x + \overline x \leq 1$$
 $$x + \overline x \geq 1$$
 This forces every literal $x$ and its negation $\overline x$ to have one assigned to 1, and one to 0. If both were assigned to  
 
+\subsection*{18}
+First, we will show that a similar problem that we are calling Fixed-Vertex Triad-Free Set is NP-Hard. Fixed Vertex Triad-Free Subset is a similar problem to finding a triad-free set in a graph $G$, except that one vertex $v \in G$ must be included in the solution set $S$.
+\\
+Independent Set $\leq_p$ Fixed-Vertex Tried-Free Set. Given an input graph $G$ and an integer $k$, construct a graph $G' = G + v$, where $v$ is connected to every other vertex in $G'$. Call the Fixed Vertex Triad-Free Set algorithm on $G'$ and $k + 1$, and let the fixed vertex be $v$. The algorithm will return true if and only if there exists an independent set of size $k$ in $G$.
+\\
+This is because for every edge $(v_i, v_j) \in G$, there is a corresponding set of edges that forms a triangle $\{(v_i, v_j), (v_i, v), (v_j, v)\} \in G'$. Since $v$ must be in $S$, that means only one of $v_i$ and $v_j$ can be picked. If they were both picked, it would create a triad.
+\\
+If $G$ has an independent set of size $k$, then $G'$ has a fixed-vertex triad-free set of size $k + 1$. Add the fixed-vertex $v$ to $G$'s independent set to get a fixed-vertex triad-free set of size $k + 1$ for $G'$. Conversely, if $G'$ has a fixed-vertex triad-free set of size $k + 1$, then $G$ has an independent set of size $k$. Simply remove the fixed-vertex from $G'$'s solution set to get an independent set of size $k$ for $G$.
+\\
+Now we must show that Triad-Free Set is NP-Hard. Fixed-Vertex Triad-Free Set $\leq_p Triad-Free Set$. The algorithm is as follows:
+\\\\
+FixedVertexTriadFreeSetAlgorithm($G, k, v$):\\
+\tab Let $S = $ TriadFreeSet($G, k$)
+\tab if there does not exist a set, return false. It cannot be the case that there exists a solution to our stricter problem if there is not a solution to the more general problem.\\
+\tab If $v \in S$, return $S$, since the solution has $v$ in it.\\
+\tab Otherwise, $v \notin S$. \\
+\tab If $v$ is not a part of any triangles, then return a solution set $S'$ which includes $v$ and excludes some other arbitrary vertex. It is a valid solution since $v$ cannot inadvertently create any triads.\\
+\tab If $v$ is a part of some triangles, then...
+
 \end{document}
