@@ -58,4 +58,17 @@ FixedVertexTriadFreeSetAlgorithm($G, k, v$):\\
 \tab If $v$ is not a part of any triangles, then return a solution set $S'$ which includes $v$ and excludes some other arbitrary vertex. It is a valid solution since $v$ cannot inadvertently create any triads.\\
 \tab If $v$ is a part of some triangles, then...
 
+\subsection*{20}
+In order to reduce the Vertex Cover problem to the presented problem, hereafter referred to as the Walkable Subset problem, given a the Graph $H$ and a desired cover size $\ell$, we will construct a graph $G$ such that $G$ has a walkable subset $WS$ of $G's$ vertices $V_G$ such that all the vertices in a given subset $R$ are within $WS$, $|WS| \leq$ and integer $k$, and, for every pair of vertices $x, y \in R$, one can walk from $x$ to $y$ in $G$ only traversing vertices in $WS$. We will construct $G$, $R$, and $k$ as follows: \\\\
+Let $R =$ a single source vertex $v_s$ + one vertex $v_e$ for every edge in $H$\\
+Let $G = R$ + one vertex $v_v$ for each vertex in $H$\\
+We want $G$ to have edges so that the vertices in $R$ can be connected using only a few more vertices iff $H$ has a vertex cover of size $\ell$. \\
+We accomplish this by connecting every vertex $v_v \in G$ corresponding to a vertex in $H$ to the source vertex $v_s$ and by connecting every $v_e$ to the vertices $v_v$ corresponding to the endpoints of the edge it is representing in $H$.
+Let $k = \ell + |E_H| + 1$ where $|E_H|$ = the number of edges in $H$ i.e. the number of $v_e$ vertices in $G$.\\\\
+Clearly this transformation is polynomial in the size of $H$, as $G$ is constructed using one vertex for each edge ($|E_H|)$ and vertex ($|V_H|$) in $H$ + one additional vertex ($v_s$) + $|E_H|$ edges to connect the $v_v$ to $v_s$ + $2|E_H|$ to connect every $v_e$ to its endpoints. So in total the transformation takes $\approx 4|E_H| + |V_H| + 1 = O(|E_H| + |V_H|)$.\\
+To prove $G$ has a walkable subset including $R$ and at most $\ell + |E_H| + 1$ vertices iff $H$ has a vertex cover of size $\ell$ we must prove the relationship both ways: \\\\
+First, assume $H$ has a vertex cover $VC$ of size $\ell$. A walkable subset $WS$ can be constructed from $G$ as follows: take the source vertex $v_s$, the edge vertices $v_e$, and $VC$. Note that there exists a path from $v_s$ to all $v_e$ by our construction of $G$ and the definition of $VC$ as a valid vertex cover. Further, $|WS| = |VC| + |E_H| + |v_s| = \ell + |E_H| + 1$ as required. \\\\
+Second, assume $G$ has a walkable subset $WS$ of size at most $\ell + |E_H| + 1$. A vertex cover $VC$ of $H$ can be constructed simply by taking the vertices of $H$ that are vertices in $WS$ as no edge vertex $v_e$ of $WS$ has a single edge connected to the source vertex $v_s$ of $WS$, but must all be in $WS$ as $WS$ contains $R$ by definition, and $R$ contains all $v_e$ by our transformation. Therefore, $WS$ must have some vertices from $G$ such that there exists an edge from one of the vertices to all edge vertices i.e. the vertices form a vertex cover. This vertex cover is $\leq \ell$ as all $v_e$ and $v_s$ are in $WS$. \\
+Therefore, if given a poly-time algorithm that solves Walkable Subset, we can solve Vertex Cover in polynomial time by using the poly-time transformation given above, a call to the poly algorithm, and outputting 1 if the poly-time algorithm does, and 0 otherwise.
+
 \end{document}
