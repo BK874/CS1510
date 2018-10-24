@@ -32,9 +32,12 @@
 \subsection*{15}
 Define the problem mentioned as $I-SAT$ (for inequality satisfiability). Show that CNFSAT $\leq _{poly}$ I-SAT. That is, show that we can construct an instance of I-SAT that is satisfiable if and only if the instance of CNF-SAT that we construct it from is also satisfiable. \\
 For each literal $x$ in CNF-SAT, construct 2 inequalities as follows:\\
-$$x + \overline x \leq 1$$
-$$x + \overline x \geq 1$$
-This forces every literal $x$ and its negation $\overline x$ to have one assigned to 1, and one to 0. If both were assigned to  
+$$x + \overline x + x\overline x \leq 1$$
+$$x + \overline x + x\overline x \geq 1$$
+This forces every literal $x$ and its negation $\overline x$ to have one assigned to 1, and one to 0. If both were assigned to  0, it would violate the second inequality. If both were assigned to 1, it would violate the first inequality. If either were assigned to any value other than 0 or 1, it would violate one of the rules. Thus, every literal must be assigned a value of either 0 or 1, and both a literal and its negation may not have the same assignment. Take an assigned value of 1 to mean that literal is true in the CNF solution. \\
+For each CNF-SAT clause, construct an inequality by adding the literals in the clause together, and setting it greater than or equal to 1. For example, for the clause $(x \vee \overline y \vee  z)$:
+$$x + \overline y + z \geq q$$
+This forces at least one literal per clause to be true, while allowing for more than one to be. Doing this for every literal and clause will yield the I-SAT instance. Note that the transformation is in poly time with respect to the number of literals in the original CNFSAT instance (constant time to construct 2 inequalities for each literal) and the number of clauses (constant in the number of literals in each clause). 
 
 \subsection*{18}
 First, we will show that a similar problem that we are calling Fixed-Vertex Triad-Free Set is NP-Hard. Fixed Vertex Triad-Free Subset is a similar problem to finding a triad-free set in a graph $G$, except that one vertex $v \in G$ must be included in the solution set $S$.
