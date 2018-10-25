@@ -32,6 +32,10 @@
 \author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
 \maketitle
 \subsection*{19}
+In the given crossing gadget $G$, the vertices $x$ and $x'$ must be the same color for all 3-colorings of $G$. This is proved via contradiction. Suppose $x$ and $x'$ could be colored two different colors in a valid 3-coloring $G$. Then the graph $H$, which is identical to $G$ except for an extra edge $(x, x')$ could also be 3-colorable, since $x$ and $x'$ could just be the two different colors. In other words, an extra edge wouldn't affect the colorability if $x$ and $x'$ were able to be two different colors.
+\\
+First, a triangle within $H$ was arbitrarily chosen to be colored $1, 2, 3$. Any other 3-color attempts can be converted into this canonical form by swapping colors. For most of the coloring, vertices were forced to be a certain color due to their neighbors. There was only one point where a vertex had a choice of two different colors, which is why we present two graph colorings. Both canonical graph colorings lead to having a vertex $v$ that is adjacent to all three colors, in which case it can be deemed impossible to 3-color $H$. Below are the two graph colorings of $H$:
+\\
 \begin{tikzpicture}
     \node[circle,draw=black!80] (a) at (0, 1) {$v$};
     \node[circle,draw=black!80] (b) at (1, 1) {$1$};
@@ -91,6 +95,9 @@
     \path (l) edge[bend left=90, looseness=2] node [left] {} (m);
 \end{tikzpicture}
 
+Since $G$ is symmetrical, it is also the case that $y$ and $y'$ must be colored the same color for all 3-colorings of $G$. Consider the graph $G'$ identical to $G$ except with two more vertices, $x''$ and $y''$, and two more edges, $(x', x'')$ and $(y', y'')$. It must be the case that $x'$ and $x''$ must be different colors in all 3-colorings of $G'$, since they share an edge, and the same reasoning applies for $y'$ and $y''$. Furthermore, it must be the case that $x$ and $x''$ must be different colors, since the color of $x$ is the same as the color of $x'$, which is different from the color of $x''$. Again, the same reasoning applies to $y$ and $y''$.
+\\
+Now we can reduce 3-Color to Planar 3-Color. For every crossing in 3-color between four vertices, $x, x'', y, y''$ replace the crossing with the subgraph $G'$ described above. Now there is no longer an edge directly between $x$ and $x''$ or $y$ and $y''$, but the property that both pairs must be colored two different colors remains. Moreover, the crossing has been removed. Repeat this process for all crossings to obtain a planar graph $P$. Run the Planar 3-Color algorithm on $P$ to obtain a 3-Coloring.
 
 \subsection*{21}
 Define the problem described as VDP (vertex disjoint paths). In order to show that $3SAT \geq _{poly} VDP$, we will first show that $VDP$ is self reducible. That is, given the decision problem for VDP, we can determine the paths connecting each $(s_i, t_i)$. \\\\
