@@ -58,6 +58,8 @@
     \draw (d) -- (k) -- (g);
     \draw (i) -- (m) -- (k);
     \draw (d) -- (m);
+    \path (l) edge[bend left=90, looseness=2] node [left] {} (m);
+    %\draw [-] (l.east) to [out=1500, in=1500] (m.east);
 \end{tikzpicture}
 
 \begin{tikzpicture}
@@ -86,6 +88,7 @@
     \draw (d) -- (k) -- (g);
     \draw (i) -- (m) -- (k);
     \draw (d) -- (m);
+    \path (l) edge[bend left=90, looseness=2] node [left] {} (m);
 \end{tikzpicture}
 
 
