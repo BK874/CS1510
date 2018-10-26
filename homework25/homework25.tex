@@ -101,9 +101,41 @@ First, a triangle within $H$ was arbitrarily chosen to be colored $1, 2, 3$ (den
     \path (l) edge[bend left=90, looseness=2] node [left] {} (m);
 \end{tikzpicture}
 \\\\
-Since $G$ is symmetrical, it is also the case that $x$ and $x'$ must be colored the same color for all 3-colorings of $G$. Consider the graph $G'$ identical to $G$ except with two more vertices, $x''$ and $y''$, and two more edges, $(x', x'')$ and $(y', y'')$. It must be the case that $y'$ and $y''$ must be different colors in all 3-colorings of $G'$, since they share an edge, and the same reasoning applies for $x'$ and $x''$. Furthermore, it must be the case that $y$ and $y''$ must be different colors, since the color of $y$ is the same as the color of $y'$, which is different from the color of $y''$. Again, the same reasoning applies to $x$ and $x''$.
-\\
-Now we can reduce 3-Color to Planar 3-Color. For every crossing in 3-Color's input graph between four vertices, $x, x'', y, y''$ replace the crossing with the subgraph $G'$ described above. Now there is no longer an edge directly between $x$ and $x''$ or $y$ and $y''$, but the property that both pairs must be colored two different colors remains. Moreover, the crossing has been removed. Repeat this process for all crossings to obtain a planar graph $P$. Run the Planar 3-Color algorithm on $P$ to obtain a 3-Coloring.
+Since $G$ is symmetrical, it is also the case that $x$ and $x'$ must be colored the same color for all 3-colorings of $G$. Consider the graph $G'$ identical to $G$ except with two more vertices, $x''$ and $y''$, and two more edges, $(x', x'')$ and $(y', y'')$. It must be the case that $y'$ and $y''$ must be different colors in all 3-colorings of $G'$, since they share an edge, and the same reasoning applies for $x'$ and $x''$. Furthermore, it must be the case that $y$ and $y''$ must be different colors, since the color of $y$ is the same as the color of $y'$, which is different from the color of $y''$. Again, the same reasoning applies to $x$ and $x''$. Below is $G'$:
+\\\\
+\begin{tikzpicture}
+    \node[circle,draw=black!80] (a) at (0, 1) {$x$};
+    \node[circle,draw=black!80] (b) at (1, 1) {};
+    \node[circle,draw=black!80] (c) at (2, 2) {};
+    \node[circle,draw=black!80] (d) at (2, 0) {};
+    \node[circle,draw=black!80] (e) at (3, 1) {};
+    \node[circle,draw=black!80] (f) at (2, 1) {};
+    \node[circle,draw=black!80] (g) at (4, 1) {$x'$};
+    \node[circle,draw=black!80] (h) at (1, 2) {};
+    \node[circle,draw=black!80] (i) at (1, 0) {};
+    \node[circle,draw=black!80] (j) at (3, 2) {};
+    \node[circle,draw=black!80] (k) at (3, 0) {};
+    \node[circle,draw=black!80] (l) at (2, 3) {$y$};
+    \node[circle,draw=black!80] (m) at (2, -1) {$y'$};
+    \node[circle, ultra thick, draw=black!80] (o) at (5, 1) {$x''$};
+    \node[circle, ultra thick, draw=black!80] (p) at (2, -2) {$y''$};
+    \draw (a) -- (b) -- (c) -- (e) -- (g);
+    \draw (b) -- (d) -- (e);
+    \draw (b) -- (f) -- (e);
+    \draw (c) -- (f) -- (d);
+    \draw (a) -- (h) -- (c);
+    \draw (a) -- (i) -- (b);
+    \draw (h) -- (l) -- (j) -- (e);
+    \draw (l) -- (c);
+    \draw (j) -- (g);
+    \draw (d) -- (k) -- (g);
+    \draw (i) -- (m) -- (k);
+    \draw (d) -- (m);
+    \draw [ultra thick] (g) -- (o);
+    \draw [ultra thick] (m) -- (p);
+\end{tikzpicture}
+\\\\
+Now we can reduce 3-Color to Planar 3-Color. For every crossing in 3-Color's input graph between four vertices, $x, x'', y, y''$ replace the crossing with the subgraph $G'$ described above. Now there is no longer an edge directly between $x$ and $x''$ or $y$ and $y''$, but the property that both pairs must be colored two different colors remains. Moreover, the crossing has been removed. Repeat this process for all crossings to obtain a planar graph $P$. Run the Planar 3-Color algorithm on $P$ to obtain a 3-Coloring. Color the vertices of the input graph to 3-Color exactly as their corresponding vertices on the output graph have been colored. The transformation from input to input is poly-time as there are at most $|E|$ crossings to replace. The output transformation is also polynomial, as you simply color each of $|V|$ vertices. Therefore if there is a poly-time algorithm to decide if a planar graph is 3-colorable then there is a poly-time algorithm to decide if an arbitrary graph is 3-colorable.
 
 \subsection*{21}
 Define the problem described as VDP (vertex disjoint paths). In order to show that $3SAT \geq _{poly} VDP$, we will first show that $VDP$ is self reducible. That is, given the decision problem for VDP, we can determine the paths connecting each $(s_i, t_i)$. \\\\
