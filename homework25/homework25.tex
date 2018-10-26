@@ -146,14 +146,14 @@ Note that for each vertex added to a path $P_i$, we must make sure that that ver
 This transformation is poly time. For each tuple, we must perform BFS to get from $s_i$ to $t_i$, making one call to $VDP_{decision}$ at each point. Since BFS takes polynomial time in the number of vertices and edges in a graph ($O(|V| + |E|)$, in the worst chase, as all vertices and edges will be visited), and the number of edges is bound by the number of vertices (max E = $V^2$), if we say the number of vertices is $n$, than the time for each tuple will be $O(n^2)$. Doing this for all $k$ tuples gives us $(O(kn^2))$, where $k$ can be no larger than $n/2$ (pigeonhole principle, since we cannot repeat vertices, if each vertex in $G$ were assigned to either a source or a sink). Thus, if a polynomial time algorithm exists for $VDP_{decision}$, than one exists for $VDP_{opt}$. \\\\
 $3SAT \leq _{p} VDP_{opt}$\\\\
 Since we have shown that $VDP_{opt} \leq _{p} VDP_{decision}$, if we have a poly-time algorithm for $VDP_{opt}$, than we also have a poly-time algorithm for 3SAT (IE, if we assume we have a polynomial time algorithm for decision, than we have one for opt). \\
-We will show how to construct an instance of VDP from an instance of 3SAT, such that the VDP instance is true if and only if the 3SAT instance is satisfiable. To model choosing a variable $x$ in 3SAT as either true or false, construct the following sub-graph: \\
+We will show how to construct an instance of VDP from an instance of 3SAT, such that the VDP instance is true if and only if the 3SAT instance is satisfiable. To model choosing a variable $x_i$ in 3SAT as either true or false, construct the following sub-graph: \\
 $$\begin{tikzpicture}
-    \node[circle,draw=black!80] (a) at (0, 1) {$s_x$};
+    \node[circle,draw=black!80] (a) at (0, 1) {$s_i$};
     \node[circle,draw=black!80] (b) at (1, 2) {};
     \node[circle,draw=black!80] (c) at (2, 2) {};
     \node[circle,draw=black!80] (d) at (1.5, 1) {};
     \node[circle,draw=black!80] (e) at (3, 1) {$j$};
-    \node[circle,draw=black!80] (f) at (4, 1) {$t_x$};
+    \node[circle,draw=black!80] (f) at (4, 1) {$t_i$};
     \path[->] (a) edge node {} (b);
     \path[->] (b) edge node {} (c);
     \path[->] (c) edge node {} (e);
@@ -161,7 +161,22 @@ $$\begin{tikzpicture}
     \path[->] (a) edge node {} (d);
     \path[->] (d) edge node {} (e);
 \end{tikzpicture}$$
-Here, there are 2 possible paths from $s_x$ to $t_x$, one of length 3 and one of length 4. Due to node $j$ being a bottleneck, only one of these paths can exist in the final output (as $j$ must be a member of both paths, they could not be disjoint). Take the path of length 3 being chosen to mean set $x$ to true, and the path of length $4$ being chosen to mean setting $x$ to false (or, setting $\overline x$ to true). Construct one such subgraph for each variable in the 3SAT instance. \\
-Now, we must model the clauses in the 3SAT instance. That is, if the 3SAT formula is satisfiable, we will construct a subgraph that asserts that at least one of the literals in that clause will be true. We will construct some component $D$ for each clause.
-
+Here, there are 2 possible paths from $s_i$ to $t_i$, one of length 3 and one of length 4. Due to node $j$ being a bottleneck, only one of these paths can exist in the final output (as $j$ must be a member of both paths, they could not be disjoint). Take the path of length 3 being chosen to mean set $x$ to true, and the path of length $4$ being chosen to mean setting $x$ to false (or, setting $\overline x$ to true). Construct one such subgraph for each variable in the 3SAT instance. \\
+Now, we must model the clauses in the 3SAT instance. That is, if the 3SAT formula is satisfiable, we will construct a subgraph that asserts that at least one of the literals in that clause will be true. We will construct some component $D_j$ for each clause $(a_j \lor b_j \lor c_j)$ as follows:
+$$\begin{tikzpicture}
+    \node[circle,draw=black!80] (s) at (1, 2) {$s_j$};
+    \node[circle,draw=black!80] (a) at (0, 1) {$a_j$};
+    \node[circle,draw=black!80] (b) at (1, 1) {$b_j$};
+    \node[circle,draw=black!80] (c) at (2, 1) {$c_j$};
+    \node[circle,draw=black!80] (t) at (1, 0) {$t_j$};
+    \path[->] (s) edge node {} (a);
+    \path[->] (s) edge node {} (b);
+    \path[->] (s) edge node {} (c);
+    \path[->] (a) edge node {} (t);
+    \path[->] (b) edge node {} (t);
+    \path[->] (c) edge node {} (t);
+\end{tikzpicture}$$
+Each clause $D_j$ is considered satisfied if there exists a path between $s_j$ and $t_j$ in the subgraph. So for each clause, add the pair $(s_j, t_j)$ to the input to the $VDP$ algorithm. For a solution to exist, at least one of $a_j$, $b_j$, or $c_j$ must be disjoint for use in the path from $s_j$ to $t_j$. The trick is combining the clauses with the variable choices. Given a variable $x_i$ in the $3SAT$ instance, if $x$ were picked to be true, that means any subgraph corresponding to a clause containing $\neg x$ should not have the path $(s_j, \neg x_j, t_j)$ in the solution set.
+\\\\
+In summary: for each variable $x_i$ in $3SAT$, make two paths from $s_i$ to $t_i$ containing the vertices labelled $\neg x_j$ for all $j$. Add $(s_i, t_i)$ to the input of $VDP$. Moreover, make three paths from $s_j$ to $t_j$ going through one of $a$ $b$ and $c$ for all clauses with literals $(a \lor b \lor c)$. Add $(s_j, t_j)$ to the input of $VDP$. Run $VDP$ on this constructed graph and this list of vertex pairs which will return true if and only if the $3SAT$ instance is satisfiable. This algorithm runs in polynomial time, since for each variable only a linear number of vertices and edges are created (depending on how many clauses the variable appears in) and for each clause only a constant number of vertices and edges are created.
 \end{document}
