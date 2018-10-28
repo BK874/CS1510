@@ -43,9 +43,13 @@ $U_1$ and $U_2$ are disjoint since they do not share a triange in common, they e
 \item $\emptyset$ (which does not contain all elements of $X$ and $Y$), and
 \item $\{(x_1, y_1, z_1), (x_1, y_1, z_2)\}$ (which contains repeated elements of $X$ and $Y$).
 \end{itemize}
-
-\subsection*{b}
-
+\subsection*{b, c, d}
+Some thoughts for the rest of the sections:\\
+Create an $x$ for every variable in the formula. Every $x$ must be included $\iff$ every variable must be satisfied. \\
+Create a $y$ for every negated variable in the formula. Every $y$ must be includud $\iff$ every negated variable must be satisfied. \\
+Create a $z$ for every clause. Every $z$ must be included $\iff$ every clause is satisfied. \\
+Create constraints within $W$ such that only a variable or its negation can be included.\\
+Create constraints within $W$ to correspond to the clauses.\\
 \subsection*{23}
 Define $TRI$ to be the triangle problem described in question 22, and $DCP$ to be the Dr. Cuddy problem defined for this question. The goal is to show that $TRI \leq _{poly} DCP$. \\
 The input to $TRI$ is a set $W$ composed of the cartesian product of 3 size $n$ sets $X$, $Y$, $Z$. Note that not all of $X \times Y \times Z$ is in $W$, only a subset of all the possible cartesian products. Further, because every element of $X, Y, Z$ must be in exactly one element of the output set $U$, and thus $|U| = n$, we will only consider instances of the problem where $|W| \geq n$, as otherwise there could not be a subset of $|W|$ of size $n$, and a solution would not exist. \\
