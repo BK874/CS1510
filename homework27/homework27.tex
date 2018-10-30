@@ -135,12 +135,14 @@ $T(n, p=n)$This algorithm takes $n$ time because it makes $n$ multiplication and
 \\\\
 The efficiency of this algorithm is: $E(n, p = n^2) = \frac{S(n)}{p * T(n, p = n^2)} = \frac{n^3}{n^2 * n} = 1$.
 \\\\
-By the folding principle, the upper bound of the running time for this algorithm on $n^{1/4}$ processors is (TIME) i.e. $T(n, p = n^2) \leq \frac{1}{n^{7/4}} \cdot T(n, p = n^{1/4})$
+By the folding principle, the upper bound of the running time for this algorithm on $n^{1/4}$ processors is:\\ 
+$T(n, p = n^2) \leq \frac{1}{n^{7/4}} \cdot T(n, p = n^{1/4})$
 
 \subsection*{6.2}
 With $n^3$ processors (assuming $A$ and $B$ are both $n \times n$ square matrices) $C$ can be computed similarly to the algorithm in 6.1: each of the $n^2$ entries of $C$ will use $n$ processors to compute the $n$ products $A_{i, k} * B_{k, j}$ required for the entry $C_{i, j}$ concurrently in constant time. Then, for each entry,  the $n$ products are summed in $log(n)$ time, as at each time step the number of sums being calculated is halved.  \\\\
 The efficiency of this algorithm is: $E(n, p=n^3) = \frac{S(n)}{p * T(n, p = n^3)} = \frac{n^3}{n^3 * log(n)} = log(n)$\\\\
-By the folding principle, the upper bond of the running time for this algorithm on $n^{1/4}$ processors is (TIME) i.e. $T(n, p = n^3) \leq \frac{1}{n^{7/4}} \cdot T(n, p = n^{1/4})$
+By the folding principle, the upper bond of the running time for this algorithm on $n^{1/4}$ processors is:\\
+$T(n, p = n^3) \leq \frac{1}{n^{7/4}} \cdot T(n, p = n^{1/4})$
 
 \subsection*{6.3}
 
