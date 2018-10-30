@@ -1,0 +1,75 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows, automata}
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map"
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number
+\newcommand{\Q}{\mathbb{Q}} % rational number
+\newcommand{\R}{\mathbb{R}} % real number
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 27}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+\subsection*{1}
+\subsection*{1.1}
+A parallel algorithm for AND with $p=n$ is given:
+\begin{verbatim}
+P_And(x_1 ... x_n, p):
+   if p == 1:
+       return and(x_1...x_n)
+   else:
+       return and(P_And(x_1...x_(n/2), p/2), P_And(x_(n/2+1) ... x_n, p/2))
+\end{verbatim}
+In the case where $p=n$, the algorithm will cascade down until each processor has a single $x$ value ($n$ values, $n$ processors, each gets one). After this step, the ands will cascade upwards, with one processor anding the result of 2 processors. Thus, at the first time stamp, all $n$ processors are utilized (although, they do not really do anything, they just return the and of the single value they have), at the second time stamp, $n/2$ processors are utilized, at the third time $n/4$ processors, etc. \\
+NEED TO SPECIFY WHY ITS EREW \\
+The efficiency is clearly bad. Given the equation for efficiency: 
+$$ E(n, p) = \frac{S(n)}{pT(n, p)}$$
+Clearly, $S(n)$ will be $n$, as it takes $n$ time to and an input of size $n$ (just and the first two, then the result of that with the third, etc.). We can further define $T(n, p)$, the recurrence relation, as:
+$$T(n, p) = T(n/2, p/2) + 1 = log(n)$$
+This recurrence relation is true because at each step, we are simply doing the and of 2 elements, which takes constant time. Further, these ands happen simultaneously. Thus, we can compute the efficiency as:
+$$ E(n, p) = \frac{S(n)}{pT(n, p)} = \frac{n}{nlog(n)} = \frac{1}{log(n)}$$ 
+For large n values, this efficiency is rather bad. \\
+Using the folding principle, which states: 
+$$T(n, p) <= kT(n, kp)$$
+We can see that if we have $p=n^{1/3}$ processors instead of $n$, we'd get an upper bound on the running time of:
+$$T(n, p) <= n^{2/3}T(n, n^{1/3})$$
+IE, reducing the number of processors from $n$ to $n^{1/3}$, at most increases the run time by $n^{2/3}$. 
+\subsection*{1.2}
+The parallel algorithm for AND with $p=n/log(n)$ is the same as the algorithm when $p=n$. The difference here is that at the base level, where in the last algorithm each processor had 1 value to pass up, each processor will have $log(n)$ values that it must sequentially and. This is because the problem is split into equal size sub problems, in this case $n/p$, IE each processor initially gets a subproblem of size $n/p$. In the case where $p=n$, $n/p = 1$. However, when $p=n/log(n)$, plugging in, we get $n/p = log(n)$. That means, instead of the first step of the algorithm taking constant time, it now takes $log(n)$, as all the processors sequentially and their $log(n)$ values. Beyond this, the algorithms function almost identically, however this case will spend less time cascading answers up than the one with $p=n$. This leads us to a recurrence relation of:
+$$T(n, p) = T(n/2, p/2) + log(n) = log^2(n)$$
+And an efficiency of:
+$$ E(n, p) = \frac{S(n)}{pT(n, p)} = \frac{n}{(n/log(n))(log^2(n))} = \frac{1}{log(n)}$$ 
+Again using the folding principle, we can set an upper bound on the run time for this algorithm if we reduce the number of processors from $p=n/log(n)$ to $p=n^{1/3}$. We note that the difference in number of processors here is:
+$$\frac{n}{log(n)} - n^{1/3}$$
+NEED TO FIND THIS DIFFERENCE AND PLUG INTO FOLDING PRINCIPLE\\
+\subsection*{1.2}
+Without the restriction of an EREW machine, and with $n$ processors, we can find an algorithm for AND that takes constant time. In the first time step, the algorithm copies 1 of the input data into each processor. Then, each processor executes the following code:
+\begin{verbatim}
+processorAnd(x1):
+    if x1 == 0:
+         ans = 0 
+\end{verbatim}
+Where $ans$ is some variable that all processors have write access to, and is initialized to be 1. Thus, in the second time stamp, each processor checks their value, and either does nothing if they have a 1, or they write a 0 if they have a 0. The solution will then be stored in $ans$, which will be 1 if all the inputs are 1 (no processor overwrites it with a 0), or 0 if even one if the inputs is 0. Because we simply have a constant number of operations that each take constant time, this algorithm is O(1). \\
+NOT SURE HOW TO DEFINE RECURRENCE RELATION IN THIS INSTANCE
+\end{document}
