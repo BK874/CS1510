@@ -73,7 +73,9 @@ processorAnd(x1):
 \end{verbatim}
 Where $ans$ is some variable that all processors have write access to, and is initialized to be 1. Thus, in the second time stamp, each processor checks their value, and either does nothing if they have a 1, or they write a 0 if they have a 0. The solution will then be stored in $ans$, which will be 1 if all the inputs are 1 (no processor overwrites it with a 0), or 0 if even one if the inputs is 0. Because we simply have a constant number of operations that each take constant time, this algorithm is O(1). \\
 NOT SURE HOW TO DEFINE RECURRENCE RELATION IN THIS INSTANCE
-\subsection*{3}
+
+\section*{3}
+
 \subsection*{3.1}
 The EREW algorithm with $p=n$ is defined:
 \begin{verbatim}
@@ -92,4 +94,21 @@ $$T(n, p) = T(n/2, p/2) + 1 = log(n)$$
 As at each step, the algorithm cuts the number of arrays left to concatenate in half, and each step takes constant time. Thus, with $p=n$, we get efficiency:
 $$ E(n, p) = \frac{S(n)}{pT(n, p)} = \frac{n}{nlog(n)} = \frac{1}{log(n)}$$ 
 Similarly to problem 1, if we decrease the number of processors from $n$ to $n^{1/3}$, by the folding principle, we get an upper bound of: 
+
+
+\section*{6}
+
+\subsection*{6.1}
+In a matrix multiplication $A \times B = C$, every entry of $C$ is dependent on a row of $A$ and a column of $B$, but is independent from every other entry in $C$. Therefore all of the entries of $C$ can be computed independently at the same time.\\
+With $n^2$ processors (assuming $A$ and $B$ are both $n \times n$ square matrices, $C$ can be computed in $n$ time with the following CREW algorithm:\\
+MatrixMultiplicationAlgorithm($A, B$):\\
+\tab for each processor $p_{i, j} \in (n \times n)$, concurrently:\\
+\tab\tab let $C_{i, j} = 0$\\
+\tab\tab for $k = 1$ to $n$ do: \\
+\tab\tab\tab update $C_{i, j} += A_{i, k} * B_{k, j}$\\
+\tab Output $C$\\
+\\\\
+$T(n, p=nThis algorithm takes $n$ time because it makes $n$ multiplication and addition steps at the same time. It is an Exclusive Write algorithm because each processor only writes to one, distinct cell of $C$. It is a Concurrent Read algorithm because processors assigned cells in the same row in $C$ will both read from the same row in $A$, and processors assigned cells in the same column in $C$ will both read from the same column in $B$.
+\\\\
+The efficiency of this algorithm $E(n, p = n^2) = \frac{S(n)}{p * T(n, p = n^2)} = \frac{n}{n^2 * n} = \frac{1}{n^2}$.
 \end{document}
