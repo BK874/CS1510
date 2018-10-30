@@ -97,7 +97,6 @@ Similarly to problem 1, if we decrease the number of processors from $n$ to $n^{
 
 
 \section*{6}
-
 \subsection*{6.1}
 In a matrix multiplication $A \times B = C$, every entry of $C$ is dependent on a row of $A$ and a column of $B$, but is independent from every other entry in $C$. Therefore all of the entries of $C$ can be computed independently at the same time.\\
 With $n^2$ processors (assuming $A$ and $B$ are both $n \times n$ square matrices) $C$ can be computed in $n$ time with the following CREW algorithm:\\
@@ -110,5 +109,17 @@ MatrixMultiplicationAlgorithm($A, B$):\\
 \\\\
 $T(n, p=n)$This algorithm takes $n$ time because it makes $n$ multiplication and addition steps at the same time. It is an Exclusive Write algorithm because each processor only writes to one, distinct cell of $C$. It is a Concurrent Read algorithm because processors assigned cells in the same row in $C$ will both read from the same row in $A$, and processors assigned cells in the same column in $C$ will both read from the same column in $B$.
 \\\\
-The efficiency of this algorithm $E(n, p = n^2) = \frac{S(n)}{p * T(n, p = n^2)} = \frac{n^3}{n^2 * n} = 1$.
+The efficiency of this algorithm is: $E(n, p = n^2) = \frac{S(n)}{p * T(n, p = n^2)} = \frac{n^3}{n^2 * n} = 1$.
+\\\\
+By the folding principle, the upper bound of the running time for this algorithm on $n^{1/4}$ processors is (TIME) i.e. $T(n, p = n^2) \leq \frac{1}{n^{7/4}} \cdot T(n, p = n^{1/4})$
+
+\subsection*{6.2}
+With $n^3$ processors (assuming $A$ and $B$ are both $n \times n$ square matrices) $C$ can be computed similarly to the algorithm in 6.1: each of the $n^2$ entries of $C$ will use $n$ processors to compute the $n$ products $A_{i, k} * B_{k, j}$ required for the entry $C_{i, j}$ concurrently in constant time. Then, for each entry,  the $n$ products are summed in $log(n)$ time, as at each time step the number of sums being calculated is halved.  \\\\
+The efficiency of this algorithm is: $E(n, p=n^3) = \frac{S(n)}{p * T(n, p = n^3)} = \frac{n^3}{n^3 * log(n)} = log(n)$\\\\
+By the folding principle, the upper bond of the running time for this algorithm on $n^{1/4}$ processors is (TIME) i.e. $T(n, p = n^3) \leq \frac{1}{n^{7/4}} \cdot T(n, p = n^{1/4})$
+
+\subsection*{6.3}
+
+
 \end{document}
+
