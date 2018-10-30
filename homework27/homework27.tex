@@ -54,6 +54,7 @@ Using the folding principle, which states:
 $$T(n, p) <= kT(n, kp)$$
 We can see that if we have $p=n^{1/3}$ processors instead of $n$, we'd get an upper bound on the running time of:
 $$T(n, p) <= n^{2/3}T(n, n^{1/3})$$
+$$THIS IS NOT RIGHT!!!!$$
 IE, reducing the number of processors from $n$ to $n^{1/3}$, at most increases the run time by $n^{2/3}$. 
 \subsection*{1.2}
 The parallel algorithm for AND with $p=n/log(n)$ is the same as the algorithm when $p=n$. The difference here is that at the base level, where in the last algorithm each processor had 1 value to pass up, each processor will have $log(n)$ values that it must sequentially and. This is because the problem is split into equal size sub problems, in this case $n/p$, IE each processor initially gets a subproblem of size $n/p$. In the case where $p=n$, $n/p = 1$. However, when $p=n/log(n)$, plugging in, we get $n/p = log(n)$. That means, instead of the first step of the algorithm taking constant time, it now takes $log(n)$, as all the processors sequentially and their $log(n)$ values. Beyond this, the algorithms function almost identically, however this case will spend less time cascading answers up than the one with $p=n$. This leads us to a recurrence relation of:
@@ -72,4 +73,23 @@ processorAnd(x1):
 \end{verbatim}
 Where $ans$ is some variable that all processors have write access to, and is initialized to be 1. Thus, in the second time stamp, each processor checks their value, and either does nothing if they have a 1, or they write a 0 if they have a 0. The solution will then be stored in $ans$, which will be 1 if all the inputs are 1 (no processor overwrites it with a 0), or 0 if even one if the inputs is 0. Because we simply have a constant number of operations that each take constant time, this algorithm is O(1). \\
 NOT SURE HOW TO DEFINE RECURRENCE RELATION IN THIS INSTANCE
+\subsection*{3}
+\subsection*{3.1}
+The EREW algorithm with $p=n$ is defined:
+\begin{verbatim}
+createArray(n, x, p):
+   if p == 1:
+       A = new Array[n]
+       for i in range(0, len(A)):
+           A[i] = x
+       return A;
+   else:
+       return concat(createArray(n/2, x, p/2), createArray(n/2, x, p/2))
+\end{verbatim}
+That is, with $p=n$, at the first time stamp, each processor creates an 'array' of size 1 and sets its value at index 0 to be $x$. Then, cascading up the call tree, each processor concatenates the arrays from 2 processors, creating a larger array. So at time 2, some processor will combine 2 size 1 arrays to create a size 2 array. This continues until the final array of size $n$ is constructed. The first step of the algorithm takes constant time, as each processor simply creates a new array object and stores a value in it (and they all do this concurrently). It then takes $log(n)$ time to cascade upwards, as at each time step, the processors cut the number of array concatenations left to do in half. \\
+This leads us to a recurrence relation of:
+$$T(n, p) = T(n/2, p/2) + 1 = log(n)$$
+As at each step, the algorithm cuts the number of arrays left to concatenate in half, and each step takes constant time. Thus, with $p=n$, we get efficiency:
+$$ E(n, p) = \frac{S(n)}{pT(n, p)} = \frac{n}{nlog(n)} = \frac{1}{log(n)}$$ 
+Similarly to problem 1, if we decrease the number of processors from $n$ to $n^{1/3}$, by the folding principle, we get an upper bound of: 
 \end{document}
