@@ -155,7 +155,12 @@ By the folding principle, the upper bound of the running time for this algorithm
 $T(n, p = \frac{n^{3}}{log(n)}) \leq \frac{log(n)}{n^{11/4}} \cdot T(n, p = n^{1/4})$
 
 \subsection*{6.4}
-
+With $\frac{n^{3}}{log(n)}$ processors (assuming $A$ and $B$ are both $n \times n$ square matrices) $C$ can be computed on a EREW PRAM as follows: \\
+We will use the same algorithm as in 6.3, however we will first use the $\frac{n^{3}}{log(n)}$ processors assigned to each cell in $C$ to make $n$ copies of each entry in $A$ and $B$ used to calculate the cell entries in $log(n)$ time. We then apply the algorithm described in 6.3, but the processors assigned to each cell in $C$ now have different locations in memory to access when they access the required elements of $A$ and $B$. \\\\
+$T(n, p = \frac{n^{3}}{log(n)})$ This algorithm takes $log(n)$ time because copying the elements from $A$ and $B$ takes $log(n)$ time and applying the algorithm from 6.3 also takes $log(n)$ time. It is an Exclusive Write algorithm because each processor only writes to one, distinct cell of $C$. It is an Exclusive Read algorithm because the processors assigned to each cell each have their own unique memory location to access for every element in $A$ and $B$. \\\\
+The efficiency of this algorithm is the same as the efficiency of 6.3's algorithm: 1.\\\\
+By the folding principle. the upper bound of the running time for this algorithm is the same as the upper bound of 6.3's algorithm: \\
+$T(n, p = \frac{n^{3}}{log(n)}) \leq \frac{log(n)}{n^{11/4}} \cdot T(n, p = n^{1/4})$
 
 \end{document}
 
