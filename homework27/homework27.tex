@@ -139,14 +139,22 @@ By the folding principle, the upper bound of the running time for this algorithm
 $T(n, p = n^2) \leq \frac{1}{n^{7/4}} \cdot T(n, p = n^{1/4})$
 
 \subsection*{6.2}
-With $n^3$ processors (assuming $A$ and $B$ are both $n \times n$ square matrices) $C$ can be computed similarly to the algorithm in 6.1: each of the $n^2$ entries of $C$ will use $n$ processors to compute the $n$ products $A_{i, k} * B_{k, j}$ required for the entry $C_{i, j}$ concurrently in constant time. Then, for each entry,  the $n$ products are summed in $log(n)$ time, as at each time step the number of sums being calculated is halved.  \\\\
+With $n^3$ processors (assuming $A$ and $B$ are both $n \times n$ square matrices) $C$ can be computed on a CREW PRAM similarly to the algorithm in 6.1:\\ 
+Each of the $n^2$ entries of $C$ will use $n$ processors to compute the $n$ products $A_{i, k} * B_{k, j}$ required for the entry $C_{i, j}$ concurrently in constant time. Then, for each entry,  the $n$ products are summed in $log(n)$ time, as at each time step the number of sums being calculated is halved.  \\\\
 $T(n, p = n^3)$ This algorithm takes $log(n)$ time because it takes $log(n)$ steps to sum all $n$ products of each cell of $C$. It is an Exclusive Write algorithm because each processor only writes to one, distinct cell of $C$. It is a Concurrent Read algorithm because processors assigned cells in the same row in $C$ will both read from the same row in $A$, and processors assigned cells in the same column in $C$ will both read from the same column in $B$. \\\\
 The efficiency of this algorithm is: $E(n, p=n^3) = \frac{S(n)}{p * T(n, p = n^3)} = \frac{n^3}{n^3 * log(n)} = \frac{1}{log(n)}$\\\\
-By the folding principle, the upper bond of the running time for this algorithm on $n^{1/4}$ processors is:\\
-$T(n, p = n^3) \leq \frac{1}{n^{7/4}} \cdot T(n, p = n^{1/4})$
+By the folding principle, the upper bound of the running time for this algorithm on $n^{1/4}$ processors is:\\
+$T(n, p = n^3) \leq \frac{1}{n^{11/4}} \cdot T(n, p = n^{1/4})$
 
 \subsection*{6.3}
+With $\frac{n^3}{log(n)}$ processors (assuming $A$ and $B$ are both $n \times n$ square matrices) $C$ can be computed on a CREW PRAM as follows, similar to the algorithms in 6.2 and 6.1: \\
+Each of the processors assigned to each of the $n^2$ $C_{i, j}$ entries will compute a sub-sum of the required product sums of size $log n$ i.e. each cell in $C$ has $\frac{n}{log(n)}$ processors each computing $\sum_{k = \ell}^{m}  A_{i, k} * B_{k, j}$, where $\ell$ to $m$ is a subset of $1$ to $n$ of size $log(n)$. Each of these sub-sums are then summed in $log(n)$ time, as (similar to 6.2) at each time step the number of sums being calculated is halved. \\\\
+$T(n, p = \frac{n^3}{log(n)})$ This algorithm takes $log(n)$ time because it takes $log(n)$ steps to sum all $n$ products of each cell of $C$. It is an Exclusive Write algorithm because each processor only writes to one, distinct cell of $C$. It is a Concurrent Read algorithm because processors assigned cells in the same row in $C$ will both read from the same row in $A$, and processors assigned cells in the same column in $C$ will both read from the same column in $B$. \\\\
+The efficiency of this algorithm is: $E(n, p = \frac{n^{3}}{log(n)}) = \frac{S(n)}{p * T(n, p = \frac{n^3}{log(n)})} = \frac{n^3}{\frac{n^3}{log(n)} * log(n)} = \frac{n^3}{n^3} = 1$. \\\\
+By the folding principle, the upper bound of the running time for this algorithm on $n^(1/4)$ processors is:\\
+$T(n, p = \frac{n^{3}}{log(n)}) \leq \frac{log(n)}{n^{11/4}} \cdot T(n, p = n^{1/4})$
 
+\subsection*{6.4}
 
 
 \end{document}
