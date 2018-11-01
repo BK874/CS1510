@@ -1,0 +1,50 @@
+
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows, automata}
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map"
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number
+\newcommand{\Q}{\mathbb{Q}} % rational number
+\newcommand{\R}{\mathbb{R}} % real number
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 28}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+\section*{7}
+Calculating the result of plugging $k$ into a polynomial of degree $n$with coefficients $c_1...c_n$ can be done in $\log n$ using $\frac{n}{\log n}$ processors and the following algorithm:
+\\\\
+First, make $\frac{n}{\log n}$ copies of $k$. $k$ is only stored in one memory location, but later in the algorithm, many processors will need to access its value. So first the algorithm will spend $\log n$ time to make $\frac{n}{\log n}$ copies. Let $k$ be originally stored in memory location $l_1$. Use one processor to read $k$ from $l_1$ and copy $k$ into $l_2$. Now use two processors: one to read $k$ from $l_1$ and copy into $l_3$, and one to read $k$ from $l_2$ and copy into $l_4$. Every constant time interval, the number of memory locations that hold $k$ can double. At the $\log \frac{n}{\log n}$th time interval, $\frac{n}{2 \log n}$ processors double $\frac{n}{2 \log n}$ copies of $k$ to get $\frac{n}{\log n}$ total copies. So copying $k$ for each processor takes $\log \frac{n}{\log n}$ steps.
+\\
+Next, divide the coefficient list $c_1...c_n$ into $\frac{n}{\log n}$ equal slice. Since there are $n$ coefficients, there are $\log{n}$ coefficients in each equal slice. Assign every processor to a slice of the coefficient list. There are as many processors as there are partitions of the coefficient list.
+\\
+Each processor can perform the following task independently and at the same time: Given a unique copy of $k$ and the coefficient list slice $c_i, c_{i + 1}, c_{i + 2}, ... c_{i + \frac{n}{\log n}}$, compute the number $c_ik^i + c_{i + 1}k^{i + 1} + c_{i + 2}k^{i + 2} + ... c_{i + \frac{n}{\log n}}k^{i + \frac{n}{\log n}}$. Each processor will take $\log n$ steps to compute this since adding and multiplying takes constant time, and there are $\log n$ coefficients in each slice of the coefficient list.
+\\
+At this point there are $\frac{n}{\log n}$ numbers which were computed above. To form the full polynomial result these numbers have to be summed up. $\frac{n}{2 \log n}$ processors can each independently add the pairs of numbers from each adjacent coefficient slice. This will give a result of $\frac{n}{2 \log n}$ numbers which $\frac{n}{2 \log n}$ processors can then add. Every constant time interval, the number of summed numbers halves. At the $\log \frac{n}{\log n}$th time interval, there will be exactly one number left, which is the result of plugging $k$ into the polynomial with coefficients $c_1...c_n$.
+\\\\
+This algorithm takes $O(\log n)$ steps, since making $\frac{n}{\log n}$ copies of $k$ takes $\log \frac{n}{\log n}$ steps (less than $\log n$), the coefficient slice computation takes $\log n$ steps, and the summation of the $\frac{n}{\log n}$ slice results takes $\log \frac{n}{\log n}$ steps. This is an EREW algorithm, since $k$ is copied to ensure that no two processors are reading from the same $k$, and each processor's results are stored independently and summed into one result.
+\\
+The efficiency of this algorithm, assuming $S(n) = n$, is $E(n, p = \frac{n}{\log n}) = \frac{n}{p * \log n} = \frac{n}{\frac{n}{\log n} \log n} = \frac{n}{n} = 1$.
+
+\end{document}
