@@ -47,6 +47,39 @@ This algorithm takes $O(\log n)$ steps, since making $\frac{n}{\log n}$ copies o
 \\
 The efficiency of this algorithm, assuming $S(n) = n$, is $E(n, p = \frac{n}{\log n}) = \frac{n}{p * \log n} = \frac{n}{\frac{n}{\log n} \log n} = \frac{n}{n} = 1$.
 
+\section*{8}
+From the hint, we can generalize that:
+\[
+  \begin{bmatrix}
+    F_{n+1} \\
+    F_n 
+  \end{bmatrix}
+  =
+   \begin{bmatrix}
+    1&1 \\
+    1&0 
+  \end{bmatrix}^n
+   \begin{bmatrix}
+    1\\
+    0 
+  \end{bmatrix}
+\]
+Define the matrix:
+\[ A=\begin{bmatrix}
+    1&1 \\
+    1&0 
+  \end{bmatrix}
+\]
+The first step of the algorithm is to make $n$ copies of $A$ in memory. This allows all $n$ processors to perform operations on the matrices without violating exclusive read. This copying will take $log(n)$ time, as at the first step, a processor makes 1 copy, then 2 processors use the existing 2 copies to make 2 more, etc. At this point, we use $n/2$ processors to square $n/2$ copies of $A$, and store the results somewhere separately from each other in memory. The next step uses $n/4$ processors to square the $n/4$ results from the previous step. This continues until we are left with the resulting $2x2$ matrix that is $A^n$. This matrix will have the form:
+\[
+  \begin{bmatrix}
+    F_{n+1} & F_n \\
+    F_n & F_{n-1} 
+  \end{bmatrix}
+\]
+The algorithm then writes $F_n$ to the location in memory associated with the answer. \\
+Because each step of the algorithm cuts the number of matrices left to square in half, and we have the same number of matrices to square as $n$, the number of steps of the algorithm is $log(n)$. Each step takes constant time, as each processor squares their $2x2$ matrix, which simply consists of calculating a constant number of additions and multiplications, which are assumed to take constant time (as per the question). At each step, all the matrix squaring occurs in parallel. Thus, the runtime for this algorithm is $O(log(n) + log(n) + 1) = O(log(n)$. \\
+This algorithm is exclusive read. Because we make $n$ copies of the $A$ matrix at the start, and each processor writes its result to a different location, we ensure exclusive read. Further, the algorithm is exclusive write, since again each processor writes the result of their operation to a separate memory location, and the actual return value isn't set until the end, when a single processor sets it. 
 \section*{25}
 In a directed acyclic graph, there must exist at least one vertex $h$ which does not have any incoming edges. If $h$ didn't exist, then there would be a cycle, and therefore it wouldn't be an acyclic graph. For the same reason, there must exist at least one vertex $t$ which does not have any incoming edges.
 \\
