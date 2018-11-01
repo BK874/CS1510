@@ -33,7 +33,7 @@
 \author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
 \maketitle
 \section*{7}
-Calculating the result of plugging $k$ into a polynomial of degree $n$with coefficients $c_1...c_n$ can be done in $\log n$ using $\frac{n}{\log n}$ processors and the following algorithm:
+Calculating the result of plugging $k$ into a polynomial of degree $n$ with coefficients $c_1...c_n$ can be done in $\log n$ using $\frac{n}{\log n}$ processors and the following algorithm:
 \\\\
 First, make $\frac{n}{\log n}$ copies of $k$. $k$ is only stored in one memory location, but later in the algorithm, many processors will need to access its value. So first the algorithm will spend $\log n$ time to make $\frac{n}{\log n}$ copies. Let $k$ be originally stored in memory location $l_1$. Use one processor to read $k$ from $l_1$ and copy $k$ into $l_2$. Now use two processors: one to read $k$ from $l_1$ and copy into $l_3$, and one to read $k$ from $l_2$ and copy into $l_4$. Every constant time interval, the number of memory locations that hold $k$ can double. At the $\log \frac{n}{\log n}$th time interval, $\frac{n}{2 \log n}$ processors double $\frac{n}{2 \log n}$ copies of $k$ to get $\frac{n}{\log n}$ total copies. So copying $k$ for each processor takes $\log \frac{n}{\log n}$ steps.
 \\
@@ -70,7 +70,7 @@ Define the matrix:
     1&0 
   \end{bmatrix}
 \]
-The first step of the algorithm is to make $n$ copies of $A$ in memory. This allows all $n$ processors to perform operations on the matrices without violating exclusive read. This copying will take $log(n)$ time, as at the first step, a processor makes 1 copy, then 2 processors use the existing 2 copies to make 2 more, etc. At this point, we use $n/2$ processors to square $n/2$ copies of $A$, and store the results somewhere separately from each other in memory. The next step uses $n/4$ processors to square the $n/4$ results from the previous step. This continues until we are left with the resulting $2x2$ matrix that is $A^n$. This matrix will have the form:
+The first step of the algorithm is to make $n$ copies of $A$ in memory. This allows all $n$ processors to perform operations on the matrices without violating exclusive read. This copying will take $log(n)$ time, as at the first step, a processor makes 1 copy, then 2 processors use the existing 2 copies to make 2 more, etc. Note that the multiplication of 2x2 matrices is associative, so we can use $n/2$ processors to square $n/2$ copies of $A$, and store the results somewhere separately from each other in memory. The next step uses $n/4$ processors to square the $n/4$ results from the previous step. This continues until we are left with the resulting $2x2$ matrix that is $A^n$. This matrix will have the form:
 \[
   \begin{bmatrix}
     F_{n+1} & F_n \\
@@ -81,7 +81,7 @@ The algorithm then writes $F_n$ to the location in memory associated with the an
 Because each step of the algorithm cuts the number of matrices left to square in half, and we have the same number of matrices to square as $n$, the number of steps of the algorithm is $log(n)$. Each step takes constant time, as each processor squares their $2x2$ matrix, which simply consists of calculating a constant number of additions and multiplications, which are assumed to take constant time (as per the question). At each step, all the matrix squaring occurs in parallel. Thus, the runtime for this algorithm is $O(log(n) + log(n) + 1) = O(log(n)$. \\
 This algorithm is exclusive read. Because we make $n$ copies of the $A$ matrix at the start, and each processor writes its result to a different location, we ensure exclusive read. Further, the algorithm is exclusive write, since again each processor writes the result of their operation to a separate memory location, and the actual return value isn't set until the end, when a single processor sets it. 
 \section*{25}
-In a directed acyclic graph, there must exist at least one vertex $h$ which does not have any incoming edges. If $h$ didn't exist, then there would be a cycle, and therefore it wouldn't be an acyclic graph. For the same reason, there must exist at least one vertex $t$ which does not have any incoming edges.
+In a directed acyclic graph, there must exist at least one vertex $h$ which does not have any incoming edges. If $h$ didn't exist, then there would be a cycle, and therefore it wouldn't be an acyclic graph. 
 \\
 Let the algorithm be as follows:
 Find all vertices in $G$ which do not have any incoming edges and collect them into a set $H$. (These vertices are operations which do not require any prior operations to be completed before they can start.) Divide $H$ into $p$ equal parts, and let each processor perform $|H|/p$ of the operations. When all the processors complete, remove $H$ from $G$ to produce a smaller DAG. Then, repeat the process above until an empty graph is reached.
