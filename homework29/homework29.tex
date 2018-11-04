@@ -57,14 +57,9 @@ Below is an algorithm for one of the $(n - 1)^2$ processors, $i, j$. (Without lo
         \If{$C[j] \neq C[n - i + j]$}
             \State $M[i] \gets 0$ \Comment{If any of the pairs of characters don't match, then that $k$ isn't viable.}
         \EndIf
-        \If{$M[i] \geq M[j]$} \Comment{Perform all possible pairwise comparisons of $M$.}
-            \State $T[i, j] \gets 1$ \Comment{Record which indices are greater.}
-        \Else
-            \State $T[i, j] \gets 0$
-        \EndIf
         \State $And[i] \gets 1$ \Comment{Perform an EREW AND operation to find a row in $T$ of all 1s.}
-        \If{$T[i, j] = 0$}
-            \State $And[i] \gets 0$
+        \If{$M[i] < M[j]$} \Comment{Perform all possible pairwise comparisons of $M$ using $n^2$ processors.}
+            \State $And[i] \gets 0$ \Comment{If $M[i]$ is less than any $M[j]$, then $M[i] cannot be the maximum $k$.}
         \EndIf
         \If{$And[i] = 1$}
             \State Output $i$ \Comment{That row is the maximum $k$. A maximum always exists, so this will always output.}
