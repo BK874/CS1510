@@ -37,7 +37,43 @@
 \maketitle
 
 \section*{9}
-
+The general outline of the algorithm is as follows:\\\\
+Due to the EREW restriction, the algorithm must first make copies of the input string $C$. The algorithm uses $n^2$ processors to make $n^2$ copies of the string in $log(n)$ time. It does this by using $x*n$ processors to make $x$ copies of the input string, where each processor reads a character from the string and writes it to an array. The array is of size $n\times n^2$, each row being one copy of $C$. The array will also be referred to as $C$, as it can be thought of as adding another dimension to the input string $C$, where each added row is a copy of $C$. Note that when $x>n$, we cannot make $xn$ copies in one step, as $x*n > n^2$. However, the additional $((x*n) - n^2)$ copies can be done in constant time. This makes the whole initial copying take $log(n)$. \\\\
+Next, $k$ processors are used to write an answer array, we'll call it $M$, where the $i'th$ index of $M$ is $i$ if there exists a prefix and suffix of length $i$, or $0$ otherwise. \\\\
+Then, $n^2$ processors are used to check all possible prefix/suffixes of lengths 1 to $k$. Each processor is identified by 2 numbers $i, j$. If its found that there is no prefix suffix of length $k=i$, write a zero to $M[i]$. \\\\
+Next, the max of the $M$ array must be found. Because $M[i] = i$ iff a prefix and suffix exist of length $i$, and $0$ otherwise, if we find the max of $M$, we will find the max length of prefix/suffix, and thus $k$. \\\\
+Below is the algorithm for a single processor $i, j$:
+\begin{algorithm}
+    \begin{algorithmic}%[1]
+       \caption{EREW $O(log(n))$ algorithm}
+        \Require A string $C$ of size $n$ to be expanded to an $n^2\times n$ array of copies, a processor $p_{i, j}$, a memory location $M$ of size $n - 1$
+        \If {$j == 1$} 
+        	\State $M[i] \gets i$ \Comment Have $n$ processors write $1...k$ to $M$ 
+        \EndIf
+        \State $number\_of\_copies \gets 1$ \Comment Variable to store the current number of copies made
+        \While{$number\_of\_copies < n^2$}
+        \If{$j < number\_of\_copies$} \Comment Only use the processors needed to make $c$ copies
+        \State $C[i][j+number\_of\_copies] \gets C[i][j]$ \Comment Copy current character to new copy location
+        \EndIf
+        \If{$number\_of\_copies > n$} \Comment Can't double the number of copies, can only make $n$ more
+        \State $number\_of\_copies \gets number\_of\_copies + n$
+        \Else
+        \State $number\_of\_copies \gets number\_of\_copies * 2$
+        \EndIf
+        \EndWhile
+        \If{$C[j][2i+j] \neq C[n - i + j]$} 
+            \State $M[i] \gets 0$ \Comment{If any of the pairs of characters don't match, then that $k$ isn't viable.}
+        \EndIf
+        \State $y \gets \lfloor{n/2}\rfloor$ \Comment{Now get the max of the $M$ array}
+        \While {$i < y$}
+        \State $M[i] \gets MAX(M[i], M[i+y]$) \Comment A processor can take the max of 2 values in constant time
+        \State $y \gets \lfloor{y/2}\rfloor$
+        \EndWhile
+        \If{$i==0$ and $j==0$} \Comment Have one processor output the solution 
+        \State output $M[0]$
+        \EndIf
+    \end{algorithmic}
+\end{algorithm}
 \section*{10}
 The general outline for this algorithm is as follows:
 \\\\
@@ -62,7 +98,7 @@ Below is an algorithm for one of the $(n - 1)^2$ processors, $i, j$. (Without lo
             \State $And[i] \gets 0$ \Comment{If $M[i]$ is less than any $M[j]$, then $M[i]$ cannot be the maximum $k$.}
         \EndIf
         \If{$And[i] = 1$}
-            \State Output $i$ \Comment{That row is the maximum $k$. A maximum always exists, so this will always output.}
+            \State Output $i$ \Comment That row is the maximum $k$. A maximum always exists, so this will always output.
         \EndIf
     \end{algorithmic}
 \end{algorithm}
