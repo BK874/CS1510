@@ -52,7 +52,7 @@ Below is an algorithm for one of the $(n - 1)^2$ processors, $i, j$. (Without lo
 \begin{algorithm}
     \begin{algorithmic}%[1]
         \caption{CRCW Common $O(1)$ algorithm}
-        \Require A string $C$ of size $n$, a processor $p_{i, j}$, a memory location $M$ of size $n - 1$, a memory location $T$ of size $(n - 1)^2$, and a memory location $And$ of size $n - 1$.
+        \Require A string $C$ of size $n$, a processor $p_{i, j}$, a memory location $M$ of size $n - 1$ and a memory location $And$ of size $n - 1$.
         \State $M[i] \gets i$ \Comment{First, copy the numbers $1, 2, 3 ... n - 1$ into $M$.}
         \If{$C[j] \neq C[n - i + j]$}
             \State $M[i] \gets 0$ \Comment{If any of the pairs of characters don't match, then that $k$ isn't viable.}
