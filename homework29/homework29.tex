@@ -59,7 +59,7 @@ Below is an algorithm for one of the $(n - 1)^2$ processors, $i, j$. (Without lo
         \EndIf
         \State $And[i] \gets 1$ \Comment{Perform an EREW AND operation to find a row in $T$ of all 1s.}
         \If{$M[i] < M[j]$} \Comment{Perform all possible pairwise comparisons of $M$ using $n^2$ processors.}
-            \State $And[i] \gets 0$ \Comment{If $M[i]$ is less than any $M[j]$, then $M[i] cannot be the maximum $k$.}
+            \State $And[i] \gets 0$ \Comment{If $M[i]$ is less than any $M[j]$, then $M[i]$ cannot be the maximum $k$.}
         \EndIf
         \If{$And[i] = 1$}
             \State Output $i$ \Comment{That row is the maximum $k$. A maximum always exists, so this will always output.}
