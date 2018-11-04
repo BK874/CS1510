@@ -1,0 +1,77 @@
+
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows, automata}
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\usepackage{algorithm}          %  float wrapper for algorithms.
+\usepackage{algpseudocode}      % layout for algorithmicx
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map"
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number
+\newcommand{\Q}{\mathbb{Q}} % rational number
+\newcommand{\R}{\mathbb{R}} % real number
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 29}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\section*{9}
+
+\section*{10}
+The general outline for this algorithm is as follows:
+\\\\
+At the first time step, use $n - 1$ processors to write the numbers $1, 2, 3, 4, ... n - 1$ in memory location $M$. These represent values for $k$ such that there exists a matching prefix and suffix of size $k$.
+\\\\
+At the second time step, use $n^2$ processors to compare the prefixes and suffixes of all lengths for $k$ from $1$ to $n - 1$. If the prefix and suffix aren't equal to each other, then "zero out" the location in memory. For example, if the first 3 characters do not match the last 3 characters, then the numbers in $M$ become $1, 2, 0, 4, ... n -1$.
+\\\\
+Finally, at the third time step, use $n^2$ processors to find the maximum number left in $M$. This will return the maximum valid $k$, and it can be done in constant time as discussed in class.
+\\\\
+Below is an algorithm for one of the $(n - 1)^2$ processors, $i, j$. (Without loss of generality, the processors are labelled with two numbers, $i \in [1...n-1]$ and $j \in [1...n-1]$ for easier usage).
+
+\begin{algorithm}
+    \begin{algorithmic}%[1]
+        \caption{CRCW Common $O(1)$ algorithm}
+        \Require A string $C$ of size $n$, a processor $p_{i, j}$, a memory location $M$ of size $n - 1$, a memory location $T$ of size $(n - 1)^2$, and a memory location $And$ of size $n - 1$.
+        \State $M[i] \gets i$ \Comment{First, copy the numbers $1, 2, 3 ... n - 1$ into $M$.}
+        \If{$C[j] \neq C[n - i + j]$}
+            \State $M[i] \gets 0$ \Comment{If any of the pairs of characters don't match, then that $k$ isn't viable.}
+        \EndIf
+        \If{$M[i] \geq M[j]$} \Comment{Perform all possible pairwise comparisons of $M$.}
+            \State $T[i, j] \gets 1$ \Comment{Record which indices are greater.}
+        \Else
+            \State $T[i, j] \gets 0$
+        \EndIf
+        \State $And[i] \gets 1$ \Comment{Perform an EREW AND operation to find a row in $T$ of all 1s.}
+        \If{$T[i, j] = 0$}
+            \State $And[i] \gets 0$
+        \EndIf
+        \If{$And[i] = 1$}
+            \State Output $i$ \Comment{That row is the maximum $k$. A maximum always exists, so this will always output.}
+        \EndIf
+    \end{algorithmic}
+\end{algorithm}
+
+\section*{11}
+
+\end{document}
