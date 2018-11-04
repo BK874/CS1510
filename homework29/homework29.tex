@@ -46,34 +46,42 @@ Below is the algorithm for a single processor $i, j$:
 \begin{algorithm}
     \begin{algorithmic}%[1]
        \caption{EREW $O(log(n))$ algorithm}
-        \Require A string $C$ of size $n$ to be expanded to an $n^2\times n$ array of copies, a processor $p_{i, j}$, a memory location $M$ of size $n - 1$
-        \If {$j == 1$} 
-        	\State $M[i] \gets i$ \Comment Have $n$ processors write $1...k$ to $M$ 
-        \EndIf
-        \State $number\_of\_copies \gets 1$ \Comment Variable to store the current number of copies made
+        \Require A string $C$ of size $n$ to be expanded to an $n^2\times n$ array of copies, a processor $p_{i, j}$, a memory location $M$ of size $n^2$
+        \State $M[i][j] \gets i$ \Comment{Use $n^2$ processors to write $1...k$ into $M[i]$ for all $i$.}
+        \State $number\_of\_copies \gets 1$ \Comment{This is a variable to store the current number of copies made.}
         \While{$number\_of\_copies < n^2$}
-        \If{$j < number\_of\_copies$} \Comment Only use the processors needed to make $c$ copies
-        \State $C[i][j+number\_of\_copies] \gets C[i][j]$ \Comment Copy current character to new copy location
-        \EndIf
-        \If{$number\_of\_copies > n$} \Comment Can't double the number of copies, can only make $n$ more
-        \State $number\_of\_copies \gets number\_of\_copies + n$
-        \Else
-        \State $number\_of\_copies \gets number\_of\_copies * 2$
-        \EndIf
+            \If{$j < number\_of\_copies$} \Comment{Only use the processors needed to make $c$ copies.}
+                \State $C[i][j+number\_of\_copies] \gets C[i][j]$ \Comment Copy current character to new copy location
+            \EndIf
+            \If{$number\_of\_copies > n$}
+                \State $number\_of\_copies \gets number\_of\_copies + n$ \Comment{All $n^2$ processors can copy at most $n$ strings eath of length $n$.}
+            \Else
+                \State $number\_of\_copies \gets number\_of\_copies * 2$ \Comment{Otherwise, with less than $n^2$ processors, the number of copies can be doubled.}
+            \EndIf
         \EndWhile
-        \If{$C[j][2i+j] \neq C[n - i + j]$} 
-            \State $M[i] \gets 0$ \Comment{If any of the pairs of characters don't match, then that $k$ isn't viable.}
+        \If{$C[j][2i+j] \neq C[n - i + j][2i + j]$} \Comment{Each processor compares two individual characters to see if the prefix is of size $k$. The extra dimension on $C$ is to ensure that all processors are reading from different places in memory.}
+            \State $M[i][j] \gets 0$ \Comment{If any of the pairs of characters don't match, then that $k$ isn't viable.}
         \EndIf
-        \State $y \gets \lfloor{n/2}\rfloor$ \Comment{Now get the max of the $M$ array}
+        
+        \State $z \gets \lfloor{n/2}\rfloor$ \Comment{Flatten the $M$ array so that any zero entry makes $M[i][1] \gets 0$.}
+        \While{$j < z$}
+            \State $M[i][j] \gets MIN(M[i][j], M[i][j + z])$ \Comment{If any entry in the $j$ column is zero, then $M[i][1]$ is 0.}
+            \State $z \gets \lfloor{z/2}\rfloor$
+        \EndWhile
+        
+        \State $y \gets \lfloor{n/2}\rfloor$ \Comment{Now get the max of the $M[1]$ array}
         \While {$i < y$}
-        \State $M[i] \gets MAX(M[i], M[i+y]$) \Comment A processor can take the max of 2 values in constant time
-        \State $y \gets \lfloor{y/2}\rfloor$
+            \State $M[i][1] \gets MAX(M[i][1], M[i+y][1]$) \Comment{A processor can take the max of 2 values in constant time. Overwrite the greater number into $M[i]$. After $\log n$ iterations, $M[1][1]$ will contain the maximum $k$.}
+            \State $y \gets \lfloor{y/2}\rfloor$
         \EndWhile
-        \If{$i==0$ and $j==0$} \Comment Have one processor output the solution 
-        \State output $M[0]$
+        \If{$i==1$ and $j==1$} \Comment{Designate the first processor to exclusively read and output the solution.}
+            \State Output $M[1][1]$
         \EndIf
     \end{algorithmic}
 \end{algorithm}
+
+This algorithm takes $\log n$ time. The first phase of making $n^2$ copies of the input string takes $\log n$ time, since $n^2$ processors can double the number of copies at each step, and so can reach $n^2$ copies in $\log n$ steps. The second phase of using $n^2$ processors to check the equality of the prefixes and suffixes takes constant time. The third phase checks to see if any cell in $M$ is zero, in which case the whole row (represented by $M[i][1]$ becomes zero. This takes $\log n$ time since $z$ is iteratively halved. The fourth phase takes the maximum over $M[i][1]$ so that $M[1][1]$ contains the maximum $k$ and outputs. This takes $\log n$ time since $y$ is iteratively halved.
+
 \section*{10}
 The general outline for this algorithm is as follows:
 \\\\
@@ -89,7 +97,7 @@ Below is an algorithm for one of the $(n - 1)^2$ processors, $i, j$. (Without lo
     \begin{algorithmic}%[1]
         \caption{CRCW Common $O(1)$ algorithm}
         \Require A string $C$ of size $n$, a processor $p_{i, j}$, a memory location $M$ of size $n - 1$ and a memory location $And$ of size $n - 1$.
-        \State $M[i] \gets i$ \Comment{First, copy the numbers $1, 2, 3 ... n - 1$ into $M$.}
+        \State $M[i] \gets i$ \Comment{Use $n$ processors to copy the numbers $1, 2, 3 ... n - 1$ into $M$.}
         \If{$C[j] \neq C[n - i + j]$}
             \State $M[i] \gets 0$ \Comment{If any of the pairs of characters don't match, then that $k$ isn't viable.}
         \EndIf
@@ -98,7 +106,7 @@ Below is an algorithm for one of the $(n - 1)^2$ processors, $i, j$. (Without lo
             \State $And[i] \gets 0$ \Comment{If $M[i]$ is less than any $M[j]$, then $M[i]$ cannot be the maximum $k$.}
         \EndIf
         \If{$And[i] = 1$}
-            \State Output $i$ \Comment That row is the maximum $k$. A maximum always exists, so this will always output.
+            \State Output $i$ \Comment{That row is the maximum $k$. A maximum always exists, so this will always output.}
         \EndIf
     \end{algorithmic}
 \end{algorithm}
