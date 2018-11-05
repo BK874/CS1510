@@ -119,7 +119,7 @@ Let the input to the algorithm be two $n$-bit integers $X = x_0x_1...x_{n-1}$ an
 \\\\
 The general outline for this algorithm is as follows:
 \\\\
-Using the Divide and Conquer methodology, the inputs $X$ and $Y$ are split into two chunks, $X_1, X_2$ and $Y_1, Y_2$ constructed as described above, where $X_1$ and $Y_1$ are the last (from right to left) $n/2$ digits of $X$ and $Y$ (respectively) multiplied by $2^{n/2}$ and $X_2$ and $Y_2$ are the first (from right to left) $n/2$ digits of $X$ and $Y$ respectively. The pairs $X_1$ and $Y_1$ are then summed together recursively, as are $X_2$ and $Y_2$. If the sum of $X_2$ and $Y_2$ have a carry, then 
+Using the Divide and Conquer methodology, the inputs $X$ and $Y$ are split into two chunks, $X_1, X_2$ and $Y_1, Y_2$ constructed as described above, where $X_1$ and $Y_1$ are the last (from right to left) $n/2$ digits of $X$ and $Y$ (respectively) multiplied by $2^{n/2}$ and $X_2$ and $Y_2$ are the first (from right to left) $n/2$ digits of $X$ and $Y$ respectively. The pairs $X_1$ and $Y_1$ are then summed together recursively, as are $X_2$ and $Y_2$. This is done by assigning the $xth$ of the $n$ processors the sum of the $xth$ bit of $X$ and $Y$ and then passing up any resulting carry. It takes $log(n)$ time to cascade up the addition tree, as every time we go up a level the number of sums to be performed concurrently halves.
 \subsection*{b}
 The EREW PRAM algorithm works similarly to the CREW PRAM algorithm in part a, except at each of the $log(n)$ steps copies of the $n$ bits must be made in $log(n)$ time, so the algorithm runs in $O(log^{2} n)$ time.
 
