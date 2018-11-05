@@ -114,5 +114,14 @@ Below is an algorithm for one of the $(n - 1)^2$ processors, $i, j$. (Without lo
 This algorithm runs in $O(1)$ time, since each processor only performs a constant number of operations, as described above.
 
 \section*{11}
+\subsection*{a}
+Let the input to the algorithm be two $n$-bit integers $X = x_0x_1...x_{n-1}$ and $Y = y_0y_1...y_{n-1}$. Let $p$ denote the number of processors and $p = n = |X| = |Y|$. For ease of outlining the algorithm, without loss of generality let $n = 2^k$ for some $k \geq 1$. Additionally, note that any $n$-bit integer $Z$ can be easily split into the sum of two integers $Z_1$ and $Z_2$ where $Z_1$ is an $n$-bit integer and $Z_2$ is a $k$-bit integer if we let $Z_2$ be the first (counting from right to left) $k$ bits of $Z$ and let $Z_1$ be the remaining $n-k$ bits multiplied by $2^{k}$. For example, let $n = 8$, $Z = 11101011$ and $k = 3$. Then $Z_2= 011$, $Z_1 = 11101 * 2^{3} = 11101000$, and $Z = Z_1 + Z_2 = 11101000 + 011 = 11101011$. Additionally, note that the construction of $Z_2$ is merely the concatenation of $k$ zeros onto the right side of the remaining $n-k$ bits. 
+\\\\
+The general outline for this algorithm is as follows:
+\\\\
+Using the Divide and Conquer methodology, the inputs $X$ and $Y$ are split into two chunks, $X_1, X_2$ and $Y_1, Y_2$ constructed as described above, where $X_1$ and $Y_1$ are the last (from right to left) $n/2$ digits of $X$ and $Y$ (respectively) multiplied by $2^{n/2}$ and $X_2$ and $Y_2$ are the first (from right to left) $n/2$ digits of $X$ and $Y$ respectively. The pairs $X_1$ and $Y_1$ are then summed together recursively, as are $X_2$ and $Y_2$. If the sum of $X_2$ and $Y_2$ have a carry, then 
+\subsection*{b}
+The EREW PRAM algorithm works similarly to the CREW PRAM algorithm in part a, except at each of the $log(n)$ steps copies of the $n$ bits must be made in $log(n)$ time, so the algorithm runs in $O(log^{2} n)$ time.
+
 
 \end{document}
