@@ -117,7 +117,7 @@ $$\begin{tikzpicture}
 In this picture, the edges with weight -1 are the diagonals, while all horizontal/vertical edges have weight 1. Its important to note that this constructs a graph with no cycles of negative aggregate weight. This is because in any cycle, there will be more positive weighted edges than negatives. With $n^2$ processors, where each processor is assigned an $i, j$, an algorithm is given: 
 \begin{algorithm}
 \begin{algorithmic}%[1]
-\caption{CRCW O(1) algorithm for computing input from LCS to input for APSP}
+\caption{CRCW O(1) algorithm for converting input from LCS to input for APSP}
 \Require 2 Strings A and B of size $N$ and $M$, a processor $p_{ij}$ and an adjacency matrix Adj of size $NM\times NM$ 
 \If{A[i] ==B[j]}
 \State $Adj[i+1][j+1] \gets -1$ \Comment{Negative edge weight, because we found a candidate character for the LCS}
