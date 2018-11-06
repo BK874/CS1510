@@ -129,5 +129,5 @@ In this picture, the edges with weight -1 are the diagonals, while all horizonta
 \end{algorithm}
 This construction takes constant time, as each processor simply compares 2 characters and makes either 1 or 2 writes. Also note that because $i, j$ are unique for each processor, this algorithm is exclusive write. \\
 Once we have the adjacency matrix constructed, we can simply pass it into the defined algorithm for APSP. \\
-Since the input transformation takes constant time, and time for APSP with $p=O(n)$ is $log^2n$, our algorithm also runs in time $log^n$ with $p=O(n)$ processors. 
+Since the input transformation takes constant time, and time for APSP with $p=O(n)$ is $log^2n$, our algorithm also runs in time $log^2n$ with $p=O(n)$ processors. 
 \end{document}
