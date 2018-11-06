@@ -1,0 +1,45 @@
+
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows, automata}
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\usepackage{algorithm}          %  float wrapper for algorithms.
+\usepackage{algpseudocode}      % layout for algorithmicx
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map"
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number
+\newcommand{\Q}{\mathbb{Q}} % rational number
+\newcommand{\R}{\mathbb{R}} % real number
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 30}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\section*{12}
+In the CREW algorithm, the concurrent read step is $D[i,j] \gets min(D[i, j], D[i, m] + D[m, j])$, since processor $i = 5$ is reading $D[i = 5, m = 4]$ at the same time processor $j = 4$ is reading $D[m = 5, j = 4]$ (These represent the same memory location). To make the algorithm EREW, make $n$ copies of $D$ into a 3D array $D'$ so that each of the $n^3$ processors $p_{i, j, k}$ is reading from a different cell in $D'$.
+\\\\
+$n^3$ processors can make $n$ copies of $D$ (which is size $n^2$) into a 3D array $D'$ in $\log^2 n$ time.
+\\\\
+With $n^3$ processors, the concurrent read step of the CREW algorithm becomes an exclusive read step: $D[i, j, k] \gets min(D[i, j, k], D[i, m, k] + D[m, j, k])$. But now each $D[i, j, k]$ must be synchronized over all $k$, since any one of the $k$s could have changed the minimum. So an extra step must be added to synchronize $D[i, j, k]$ for all $k$.
+\end{document}
