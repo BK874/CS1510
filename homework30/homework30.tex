@@ -17,6 +17,7 @@
 
 \usepackage{algorithm}          %  float wrapper for algorithms.
 \usepackage{algpseudocode}      % layout for algorithmicx
+\usepackage{float} % http:/ctan.org/pkg/flot - [H] float parameter forces a 'float' (algorithm block) to remain in a location
 
 \renewcommand{\implies}{\Rightarrow} % redefine command "implies"
 \renewcommand{\iff}{\Leftrightarrow} % double arrow
@@ -42,7 +43,7 @@ In the CREW algorithm, the concurrent read step is $D[i,j] \gets min(D[i, j], D[
 $n^3$ processors can make $n$ copies of $D$ (which is size $n^2$) into a 3D array $D'$ in $\log^2 n$ time.
 \\\\
 With $n^3$ processors, the concurrent read step of the CREW algorithm becomes an exclusive read step: $D[i, j, k] \gets min(D[i, j, k], D[i, m, k] + D[m, j, k])$. 
-\begin{algorithm}
+\begin{algorithm}[H]
   \begin{algorithmic}%[1]
     \caption{EREW $O(log^{2} (n))$ algorithm for APSP}
     \Require 
@@ -55,7 +56,7 @@ With $n^3$ processors, the concurrent read step of the CREW algorithm becomes an
         		\State $D'[i, j, i] = min(D'[i, j, i], D[i+b, k+b, i] + D'[k+b, j, i]$)
 	\EndWhile
 	\If{$i == 0$ and $j == 0$ and $k == 0$}
-		return $D'[0, 0, 0]$
+		\State return $D'[0, 0, 0]$
 	\EndIf
     \EndWhile
   \end{algorithmic}
@@ -64,9 +65,27 @@ With $n^3$ processors, the concurrent read step of the CREW algorithm becomes an
 \section*{13}
 The algorithm can be modified as follows to return the actual paths. First, when setting up the 2D array $D$ that contains information for all pairs $(v_i, v_j) \in G$, instead of storing the distance between $v_i$ and $v_j$ store a pair: the first element is a list of vertices representing a path from $v_i$ to $v_j$, and the second element is the distance between $v_i$ and $v_j$.
 \\\\
-When setting up $D$ initially, $D[i, j]$ is initialized as follows: if $i = j$, then $D[i, j] \gets ([v_i], 0)$. Else if there is an edge between $v_i$ and $v_j$, then $D[i, j] \gets ([v_i, v_j], edge_weight(v_i, v_j))$. Otherwise, $D[i, j] \gets ([], \infty)$.
+When setting up $D$ initially, $D[i, j]$ is initialized as follows: if $i = j$, then $D[i, j] \gets ([v_i], 0)$. Else if there is an edge between $v_i$ and $v_j$, then $D[i, j] \gets ([v_i, v_j], edge\_weight(v_i, v_j))$. Otherwise, $D[i, j] \gets ([], \infty)$.
 \\\\
 When $D[i, j]$ is updated to be $D[i, m] + D[m, j]$, then $D[i, j] \gets (fst(D[i, m]) ++ fst(D[m, j]), snd(D[i, m]) + snd(D[m, j]))$, where $fst$ returns the first element of a tuple, $snd$ returns the second element of a tuple, and $a ++ b$ represents list $a$ concatenated with list $b$.
+\begin{algorithm}[H]
+  \begin{algorithmic}%[1]
+    \caption{EREW $O(log^{2} (n))$ algorithm for APSP that returns the paths}
+    \Require 
+    \While {$c \leq 1$}
+    	\If{$k < c$}
+    		\State $D'[i, j, k+c] = D'[i, j, k]$
+    	\EndIf
+    	\State $b = \lfloor{\frac{c}{2}}\rfloor$
+    	\While {$x < b$}
+        		\State $D'[i, j, i] = min(D'[i, j, i], ((fstD[i+b, k+b, i]) ++ (fstD'[k+b, j, i]), (sndD'[i+b, k+b, i]) + snd(D'[k+b, j, i]))$)
+	\EndWhile
+	\If{$i == 0$ and $j == 0$ and $k == 0$}
+		\State return $D'[0, 0, 0]$
+	\EndIf
+    \EndWhile
+  \end{algorithmic}
+\end{algorithm}
 
 \section*{14}
 The main idea of this algorithm is to convert the input of longest common subsequence (referred to as LCS) to the input for all-pairs shortest path (APSP). Because we showed in class a CREW algorithm for APSP that runs in time $log^2n$ with a polynomial number of processors, if we can do the input conversion in $log^2n$ time, we can pass the converted input into our APSP algorithm to get our output in $log^2n$ time. \\
@@ -133,7 +152,7 @@ $$\begin{tikzpicture}
 	\path[->] (x12) edge node {} (x16);
 \end{tikzpicture}$$
 In this picture, the edges with weight -1 are the diagonals, while all horizontal/vertical edges have weight 1. Its important to note that this constructs a graph with no cycles of negative aggregate weight. This is because in any cycle, there will be more positive weighted edges than negatives. With $n^2$ processors, where each processor is assigned an $i, j$, an algorithm is given: 
-\begin{algorithm}
+\begin{algorithm}[H]
 \begin{algorithmic}%[1]
 \caption{CRCW O(1) algorithm for converting input from LCS to input for APSP}
 \Require 2 Strings A and B of size $N$ and $M$, a processor $p_{ij}$ and an adjacency matrix Adj of size $NM\times NM$ 
