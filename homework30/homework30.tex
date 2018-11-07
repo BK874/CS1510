@@ -42,25 +42,28 @@ In the CREW algorithm, the concurrent read step is $D[i,j] \gets min(D[i, j], D[
 \\\\
 $n^3$ processors can make $n$ copies of $D$ (which is size $n^2$) into a 3D array $D'$ in $\log^2 n$ time.
 \\\\
-With $n^3$ processors, the concurrent read step of the CREW algorithm becomes an exclusive read step: $D[i, j, k] \gets min(D[i, j, k], D[i, m, k] + D[m, j, k])$. 
+With $n^3$ processors, the concurrent read step of the CREW algorithm becomes an exclusive read step: $D[i, j, k] \gets min(D[i, j, k], D[i, m, k] + D[m, j, k])$.
 \begin{algorithm}[H]
   \begin{algorithmic}%[1]
     \caption{EREW $O(log^{2} (n))$ algorithm for APSP}
-    \Require 
+    \Require A 2D Array $D'$ (With extra space for a third dimension)
     \While {$c \leq 1$}
     	\If{$k < c$}
-    		\State $D'[i, j, k+c] = D'[i, j, k]$
+    		\State $D'[i, j, k+c] \gets D'[i, j, k]$ \Comment{With enough available processors, make $n$ copies of $D$ into a 3D array $D'$}
     	\EndIf
-    	\State $b = \lfloor{\frac{c}{2}}\rfloor$
-    	\While {$x < b$}
-        		\State $D'[i, j, i] = min(D'[i, j, i], D[i+b, k+b, i] + D'[k+b, j, i]$)
-	\EndWhile
-	\If{$i == 0$ and $j == 0$ and $k == 0$}
-		\State return $D'[0, 0, 0]$
-	\EndIf
     \EndWhile
+    \State $b \gets \lfloor{\frac{c}{2}}\rfloor$
+    \While {$b > 1$}
+        	\State $D'[i, j, i] \gets min(D'[i, j, i], D[i+b, k+b, i] + D'[k+b, j, i]$) \Comment{Use $k$ to perform $\log n$ associative operations, ending up in the first row of $D$.}
+            \State $b \gets \lfloor{\frac{c}{2}}\rfloor$ \Comment{Iteratively half $b$ as the minimum gets pushed further to the left, as in the OR algorithm.}
+    \EndWhile
+	\If{$i == 0$ and $j == 0$ and $k == 0$}
+		\State return $D'[k = 0]$ \Comment{One processor outputs the 2D array containing all shortest path distances.}
+	\EndIf
   \end{algorithmic}
 \end{algorithm}
+
+This algorithm runs in $O(log^2(n))$ time, since making $n$ copies of $n^2$ entries takes $\log^2(n)$ time, and the EREW min algorithm takes $\log(n)$ time (as all associative algorithms do).
 
 \section*{13}
 The algorithm can be modified as follows to return the actual paths. First, when setting up the 2D array $D$ that contains information for all pairs $(v_i, v_j) \in G$, instead of storing the distance between $v_i$ and $v_j$ store a pair: the first element is a list of vertices representing a path from $v_i$ to $v_j$, and the second element is the distance between $v_i$ and $v_j$.
@@ -71,21 +74,24 @@ When $D[i, j]$ is updated to be $D[i, m] + D[m, j]$, then $D[i, j] \gets (fst(D[
 \begin{algorithm}[H]
   \begin{algorithmic}%[1]
     \caption{EREW $O(log^{2} (n))$ algorithm for APSP that returns the paths}
-    \Require 
+    \Require A 2D Array $D'$ (With extra space for a third dimension)
     \While {$c \leq 1$}
     	\If{$k < c$}
-    		\State $D'[i, j, k+c] = D'[i, j, k]$
+    		\State $D'[i, j, k+c] \gets D'[i, j, k]$ \Comment{With enough available processors, make $n$ copies of $D$ into a 3D array $D'$}
     	\EndIf
-    	\State $b = \lfloor{\frac{c}{2}}\rfloor$
-    	\While {$x < b$}
-        		\State $D'[i, j, i] = min(D'[i, j, i], ((fstD[i+b, k+b, i]) ++ (fstD'[k+b, j, i]), (sndD'[i+b, k+b, i]) + snd(D'[k+b, j, i]))$)
+    \EndWhile
+    \State $b \gets \lfloor{\frac{c}{2}}\rfloor$
+    \While {$b > 1$}
+        	\State $D'[i, j, i] \gets min(D'[i, j, i], ((fstD[i+b, k+b, i]) ++ (fstD'[k+b, j, i]), (sndD'[i+b, k+b, i]) + snd(D'[k+b, j, i]))$) \Comment{See algorithm above for details.}
+            \State $b \gets \lfloor{\frac{c}{2}}\rfloor$ \Comment{Iteratively half $b$ as the minimum gets pushed further to the left, as in the OR algorithm.}
 	\EndWhile
 	\If{$i == 0$ and $j == 0$ and $k == 0$}
-		\State return $D'[0, 0, 0]$
+		\State return $D'[k = 0]$ \Comment{One processor outputs the 2D array containing all shortest paths and distances.}
 	\EndIf
-    \EndWhile
   \end{algorithmic}
 \end{algorithm}
+
+As above, this algorithm runs in $O(\log^2(n))$ time, since the only modifications (concatenating two arrays, and accessig/constructing members of a tuple) require constant time.
 
 \section*{14}
 The main idea of this algorithm is to convert the input of longest common subsequence (referred to as LCS) to the input for all-pairs shortest path (APSP). Because we showed in class a CREW algorithm for APSP that runs in time $log^2n$ with a polynomial number of processors, if we can do the input conversion in $log^2n$ time, we can pass the converted input into our APSP algorithm to get our output in $log^2n$ time. \\
@@ -95,7 +101,7 @@ Because the CREW algorithm fo APSP has already been extensively defined, this al
 \item If $A[i] != B[j]$ then add edges from $n_{ij}$ to $n_{i+1j}$ and $n_{ij+1}$ with weights 1
 \end{itemize}
 Thus the minimum weight path from node $n_{00}$ to $n_{NM}$ will have taken the maximum number of 'diagonal' edges (that is, from $n_{ij}$ to $n_{i+1 j+1}$) as these edges have negative weight and will contribute to the min distance. \\
-A simple example of this conversion is provided, where the input strings to LCS are $A=XYYX$ and $B=YZYQ$: 
+A simple example of this conversion is provided, where the input strings to LCS are $A=XYYX$ and $B=YZYQ$:
 $$\begin{tikzpicture}
 	\node[circle,draw=black!80] (a1) at (0, 1) {$X$};
 	\node[circle,draw=black!80] (a2) at (0, 2) {$Y$};
@@ -105,22 +111,22 @@ $$\begin{tikzpicture}
 	\node[circle,draw=black!80] (b2) at (2, 0) {$Z$};
 	\node[circle,draw=black!80] (b3) at (3, 0) {$Y$};
 	\node[circle,draw=black!80] (b4) at (4, 0) {$Q$};
-	
+
 	\node[circle,draw=black!80] (x1) at (1, 1) {};
 	\node[circle,draw=black!80] (x2) at (1, 2) {};
 	\node[circle,draw=black!80] (x3) at (1, 3) {};
 	\node[circle,draw=black!80] (x4) at (1, 4) {};
-	
+
 	\node[circle,draw=black!80] (x5) at (2, 1) {};
 	\node[circle,draw=black!80] (x6) at (2, 2) {};
 	\node[circle,draw=black!80] (x7) at (2, 3) {};
 	\node[circle,draw=black!80] (x8) at (2, 4) {};
-	
+
 	\node[circle,draw=black!80] (x9) at (3, 1) {};
 	\node[circle,draw=black!80] (x10) at (3, 2) {};
 	\node[circle,draw=black!80] (x11) at (3, 3) {};
 	\node[circle,draw=black!80] (x12) at (3, 4) {};
-	
+
 	\node[circle,draw=black!80] (x13) at (4, 1) {};
 	\node[circle,draw=black!80] (x14) at (4, 2) {};
 	\node[circle,draw=black!80] (x15) at (4, 3) {};
@@ -133,29 +139,29 @@ $$\begin{tikzpicture}
 	\path[->] (x9) edge node {} (x13);
 	\path[->] (x9) edge node {} (x10);
 	\path[->] (x13) edge node {} (x14);
-	
+
 	\path[->] (x2) edge node {} (x7);
 	\path[->] (x6) edge node {} (x10);
 	\path[->] (x6) edge node {} (x7);
 	\path[->] (x10) edge node {} (x14);
 	\path[->] (x10) edge node {} (x11);
 	\path[->] (x14) edge node {} (x15);
-	
+
 	\path[->] (x3) edge node {} (x8);
 	\path[->] (x7) edge node {} (x11);
 	\path[->] (x7) edge node {} (x8);
 	\path[->] (x11) edge node {} (x16);
 	\path[->] (x15) edge node {} (x16);
-	
+
 	\path[->] (x4) edge node {} (x8);
 	\path[->] (x8) edge node {} (x12);
 	\path[->] (x12) edge node {} (x16);
 \end{tikzpicture}$$
-In this picture, the edges with weight -1 are the diagonals, while all horizontal/vertical edges have weight 1. Its important to note that this constructs a graph with no cycles of negative aggregate weight. This is because in any cycle, there will be more positive weighted edges than negatives. With $n^2$ processors, where each processor is assigned an $i, j$, an algorithm is given: 
+In this picture, the edges with weight -1 are the diagonals, while all horizontal/vertical edges have weight 1. Its important to note that this constructs a graph with no cycles of negative aggregate weight. This is because in any cycle, there will be more positive weighted edges than negatives. With $n^2$ processors, where each processor is assigned an $i, j$, an algorithm is given:
 \begin{algorithm}[H]
 \begin{algorithmic}%[1]
 \caption{CRCW O(1) algorithm for converting input from LCS to input for APSP}
-\Require 2 Strings A and B of size $N$ and $M$, a processor $p_{ij}$ and an adjacency matrix Adj of size $NM\times NM$ 
+\Require 2 Strings A and B of size $N$ and $M$, a processor $p_{ij}$ and an adjacency matrix Adj of size $NM\times NM$
 \If{A[i] ==B[j]}
 \State $Adj[i+1][j+1] \gets -1$ \Comment{Negative edge weight, because we found a candidate character for the LCS}
 \Else
@@ -166,5 +172,5 @@ In this picture, the edges with weight -1 are the diagonals, while all horizonta
 \end{algorithm}
 This construction takes constant time, as each processor simply compares 2 characters and makes either 1 or 2 writes. Also note that because $i, j$ are unique for each processor, this algorithm is exclusive write. \\
 Once we have the adjacency matrix constructed, we can simply pass it into the defined algorithm for APSP. \\
-Since the input transformation takes constant time, and time for APSP with $p=O(n)$ is $log^2n$, our algorithm also runs in time $log^2n$ with $p=O(n)$ processors. 
+Since the input transformation takes constant time, and time for APSP with $p=O(n)$ is $log^2n$, our algorithm also runs in time $log^2n$ with $p=O(n)$ processors.
 \end{document}
