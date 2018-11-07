@@ -41,21 +41,25 @@ In the CREW algorithm, the concurrent read step is $D[i,j] \gets min(D[i, j], D[
 \\\\
 $n^3$ processors can make $n$ copies of $D$ (which is size $n^2$) into a 3D array $D'$ in $\log^2 n$ time.
 \\\\
-With $n^3$ processors, the concurrent read step of the CREW algorithm becomes an exclusive read step: $D[i, j, k] \gets min(D[i, j, k], D[i, m, k] + D[m, j, k])$. But now each $D[i, j, k]$ must be synchronized over all $k$, since any one of the $k$s could have changed the minimum. 
-\begin{verbatim}
-while c <= 1:
-	if k<c:
-		D'[i, j, k+c] = D'[i, j, k]
-	end
-	b = floor(c/2)
-	while x < b do:
-		D'[i, j, i] = min(D'[i, j, i], D'[i+b, k+b, i] + D'[k+b, j, i])
-	end
-	if i == 0 & j == 0 & k == 0
-		return D'[0, 0, 0]
-	end
-end
-\end{verbatim}
+With $n^3$ processors, the concurrent read step of the CREW algorithm becomes an exclusive read step: $D[i, j, k] \gets min(D[i, j, k], D[i, m, k] + D[m, j, k])$. 
+\begin{algorithm}
+  \begin{algorithmic}%[1]
+    \caption{EREW $O(log^{2} (n))$ algorithm for APSP}
+    \Require 
+    \While {$c \leq 1$}
+    	\If{$k < c$}
+    		\State $D'[i, j, k+c] = D'[i, j, k]$
+    	\EndIf
+    	\State $b = \lfloor{\frac{c}{2}}\rfloor$
+    	\While {$x < b$}
+        		\State $D'[i, j, i] = min(D'[i, j, i], D[i+b, k+b, i] + D'[k+b, j, i]$)
+	\EndWhile
+	\If{$i == 0$ and $j == 0$ and $k == 0$}
+		return $D'[0, 0, 0]$
+	\EndIf
+    \EndWhile
+  \end{algorithmic}
+\end{algorithm}
 
 \section*{13}
 The algorithm can be modified as follows to return the actual paths. First, when setting up the 2D array $D$ that contains information for all pairs $(v_i, v_j) \in G$, instead of storing the distance between $v_i$ and $v_j$ store a pair: the first element is a list of vertices representing a path from $v_i$ to $v_j$, and the second element is the distance between $v_i$ and $v_j$.
