@@ -76,7 +76,7 @@ After $A$ gets populated in constant time by $n^2$ processors, $M[i]$ must be fi
 			\ElsIf{$i > n \land j < n$}
 				\State $A[i][j] \gets b_j$
 			\Else
-				\State $A[i][j] \gets min(a_{i - j}, b_j)
+				\State $A[i][j] \gets min(a_{i - j}, b_j)$
 			\EndIf
 		\Else
 			\State $A[i][j] \gets -\infty$
