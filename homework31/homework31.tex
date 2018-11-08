@@ -50,5 +50,5 @@ Therefore finding a fast efficient parallel algorithm for problem $N$ is at leas
 
 
 \section*{17}
-
+Break the input into $\sqrt{n}$ chunks of size $\sqrt{n}$ and recursively solve the problem in parallel with $\sqrt{n}$ processors assigned to each chunk. We have $n$ processors, so the $\sqrt{n}$ max values returned by the chunks can be "maxed" in constant time using our $n$ processors (see hint). 
 \end{document}
