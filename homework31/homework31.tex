@@ -47,7 +47,45 @@ Therefore finding a fast efficient parallel algorithm for problem $N$ is at leas
 
 \section*{16}
 
+Given two lists of increasing items $a_0...a_{n - 1}$ and $b_1...b_{n - 1}$, the following must be true for the merged increasing list $M$ of size $2n$:
+\begin{enumerate}
+\item The first element of $M$ must be the minimum of $a_0$ and $b_0$
+\item If the first element of $M$ is $a_0$, then the second element must be the minimum of $a_1$ and $b_0$. \\
+      If the first element of $M$ is $b_0$, then the second element must be the minimum of $a_0$ and $b_1$.
+\item If the second element of $M$ is $a_0$, then the first element must have been $b_0$, and so the third element must be the minimum of $a_1$ and $b_1$. \\
+      If the second element of $M$ is $b_0$, then the first element must have been $a_0$, and so the third element must be the minimum of $a_1$ and $b_1$ as above. \\
+	  If the second element of $M$ is $a_1$, then the first element must have been $a_0$, and so the third element must be the minimum of $a_2$ and $b_0$. \\
+	  If the second element of $M$ is $b_1$, then the first element must have been $b_0$, and so the third element must be the minimum of $a_0$ and $b_2$.
+\end{enumerate}
 
+The third row could be any of $a_0, a_1, a_2, b_0, b_1, b_2$ in the general case. But the reasoning above shows that there are only three possibilities for what the third entry could be. In fact, the other two minimums will occupy the first two entries of $M$. So it can be said that the first entry of $M$ is the maximum of $min(a_0, b_0)$, the second entry of $M$ is the maximum of $min(a_1, b_0), min(a_0, b_1)$, and the third entry of $M$ is the maximum of $min(a_2, b_0), min(a_1, b_1), min(a_0, b_2)$. So in general, the $i$th entry of $M$ is the maximum of $min(a_{i - j}, b_j)$for all $j$ from 1 to $i$.
+\\\\
+The outline for the algorithm is as follows: use $n^2$ processors to calculate all pairwise minimums in constant time, and store the results in a table $A$ such that $A[i][j] = min(a_{i - j}, b_j)$ (unless $j > i$, in which case $A[i][j] = -\infty$, which will never be the maximum).
+\\\\
+Note also that when $i$ or $j$ exceeds $n$, this implies there are either no more $a$s or no more $b$s to consider, and so the rest of $M$ must be filled with either $b$s or $a$s respectively. And so in these cases no minimum is calculated; the entry in the other list is returned. Consider when $i = 2n$. That implies that the last row is the maximum of $2n$ different entries: $a_0, a_1, ... a_{n - 1}, b_0, b_1, ... b_{n - 1}$. This makes sense intuitively, since the last entry in $M$ must have the maximum value of all of $a$ and $b$.
+\\\\
+After $A$ gets populated in constant time by $n^2$ processors, $M[i]$ must be filled in with the maximum entry $A[i][j]$ for all $j$. Each row can do this calculation in constant time with $n^2$ processors as discussed in class. Since $n$ rows need to do this, $n^3$ total processors are needed. After a constant number of steps, $M$ will be fully populated with the merged increasing elements of $a$ and $b$, and so the algorithm is finished.
+
+\begin{algorithm}[H]
+	\begin{algorithmic}%[1]
+		\caption{CRCW Merge two sorted length $n$ lists in $O(1)$}
+		\Require Increasing lists $a_1...a_n$, $b_1...b_n$
+		\If{$j < i$} \Comment{First, populate each row $i$ of $A$ with the candidate entries that could be in position $i$ of the merged list.}
+			\If{$i > n \land j > n$}
+				\State $A[i][j] \gets a_{i - j}$
+			\ElsIf{$i > n \land j < n$}
+				\State $A[i][j] \gets b_j$
+			\Else
+				\State $A[i][j] \gets min(a_{i - j}, b_j)
+			\EndIf
+		\Else
+			\State $A[i][j] \gets -\infty$
+		\EndIf
+		
+		
+		% TODO: add the maximum calculation.
+	\end{algorithmic}
+\end{algorithm}
 
 \section*{17}
 Break the input into $\sqrt{n}$ chunks of size $\sqrt{n}$ and recursively solve the problem in parallel with $\sqrt{n}$ processors assigned to each chunk. We have $n$ processors, so the $\sqrt{n}$ max values returned by the chunks can be "maxed" in constant time using our $n$ processors (see hint). 
