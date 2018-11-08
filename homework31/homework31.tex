@@ -71,10 +71,8 @@ After $A$ gets populated in constant time by $n^2$ processors, $M[i]$ must be fi
 		\caption{CRCW Merge two sorted length $n$ lists in $O(1)$}
 		\Require Increasing lists $a_1...a_n$, $b_1...b_n$
 		\If{$j < i$} \Comment{First, populate each row $i$ of $A$ with the candidate entries that could be in position $i$ of the merged list.}
-			\If{$i > n \land j > n$}
-				\State $A[i][j] \gets a_{i - j}$
-			\ElsIf{$i > n \land j < n$}
-				\State $A[i][j] \gets b_j$
+			\If{$i > n \lor j > n$}
+				\State $A[i][j] -\infty$
 			\Else
 				\State $A[i][j] \gets min(a_{i - j}, b_j)$
 			\EndIf
