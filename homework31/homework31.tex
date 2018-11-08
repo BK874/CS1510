@@ -70,22 +70,26 @@ After $A$ gets populated in constant time by $n^2$ processors, $M[i]$ must be fi
 	\begin{algorithmic}%[1]
 		\caption{CRCW Merge two sorted length $n$ lists in $O(1)$}
 		\Require Increasing lists $a_1...a_n$, $b_1...b_n$
-		\If{$j < i$} \Comment{First, populate each row $i$ of $A$ with the candidate entries that could be in position $i$ of the merged list.}
-			\If{$i > n \land j > n$}
-				\State $A[i][j] \gets a_{i - j}$
-			\ElsIf{$i > n \land j < n$}
-				\State $A[i][j] \gets b_j$
-			\Else
+		\If{$k == 0$}
+			\If{$j < i$ \lang $i < n$} \Comment{First, populate each row $i$ of $A$ with the candidate entries that could be in position $i$ of the merged list.}
 				\State $A[i][j] \gets min(a_{i - j}, b_j)$
+			\Else
+				\State $A[i][j] \gets -\infty$
 			\EndIf
-		\Else
-			\State $A[i][j] \gets -\infty$
+		
 		\EndIf
 		
-		
-		% TODO: add the maximum calculation.
+		\State $And[i][j] \gets 1$ \Comment{Assume $A[i][j]$ is the maximum}
+		\If{$A[i][j] < A[i][k]$} \Comment{If there exists some other cell in row $i$ which is greater,}
+			\State $And[i][j] \gets 0$ \Comment{Then $A[i][j]$ is not the maximum.}
+		\EndIf
+		\If{$And[i][j] == 1$} \Comment{If $A[i][j]$ remains the maximum,}
+			\State $M[i] \gets M[i][j]$ \Comment{then this cell in row $i$ contains the maximum. Push it to $M$.}
+		\EndIf
 	\end{algorithmic}
 \end{algorithm}
+
+This algorithm is CRCW Common, since the only concurrent writes occur when calculating the maximum of each row, which is Common as discussed in class.
 
 \section*{17}
 Break the input into $\sqrt{n}$ chunks of size $\sqrt{n}$ and recursively solve the problem in parallel with $\sqrt{n}$ processors assigned to each chunk. We have $n$ processors, so the $\sqrt{n}$ max values returned by the chunks can be "maxed" in constant time using our $n$ processors (see hint). \\\\
