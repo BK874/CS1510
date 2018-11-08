@@ -88,5 +88,8 @@ After $A$ gets populated in constant time by $n^2$ processors, $M[i]$ must be fi
 \end{algorithm}
 
 \section*{17}
-Break the input into $\sqrt{n}$ chunks of size $\sqrt{n}$ and recursively solve the problem in parallel with $\sqrt{n}$ processors assigned to each chunk. We have $n$ processors, so the $\sqrt{n}$ max values returned by the chunks can be "maxed" in constant time using our $n$ processors (see hint). 
+Break the input into $\sqrt{n}$ chunks of size $\sqrt{n}$ and recursively solve the problem in parallel with $\sqrt{n}$ processors assigned to each chunk. We have $n$ processors, so the $\sqrt{n}$ max values returned by the chunks can be "maxed" in constant time using our $n$ processors (see hint). \\\\
+The recurrence relation for this algorithm is $T(n, n) = T(\sqrt{n}, \sqrt{n}) + 1$. \\
+Without loss of generality, let $n = 2^k$ for some $k$. At each step we are breaking the input into $\sqrt{n}$ size chunks i.e. we are halving the exponent $k$. Therefore we can only take the square root $O(log(k))$ times before $k$ drops to 1 or lower (and $n$ drops to 2 or lower). $n = 2^k$, so $k = log(n)$ and the number of square roots taken is $O(log(k) = O(log(log(n)))$. Each of the $\sqrt{n}$ chunks returns a single max value and we have $n$ processors, so we have the required $\sqrt{n}^2 = n$ processors to compute the max of those $\sqrt{n}$ numbers in constant time. Therefore the runtime of this algorithm is $O(log(log(n))$ with $n$ processors on a CRCW Common PRAM.
+
 \end{document}
