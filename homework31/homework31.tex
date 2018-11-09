@@ -76,9 +76,9 @@ After $A$ gets populated in constant time by $n^2$ processors, $M[i]$ must be fi
 			\Else
 				\State $A[i][j] \gets -\infty$
 			\EndIf
-		
+
 		\EndIf
-		
+
 		\State $And[i][j] \gets 1$ \Comment{Assume $A[i][j]$ is the maximum}
 		\If{$A[i][j] < A[i][k]$} \Comment{If there exists some other cell in row $i$ which is greater,}
 			\State $And[i][j] \gets 0$ \Comment{Then $A[i][j]$ is not the maximum.}
@@ -92,7 +92,31 @@ After $A$ gets populated in constant time by $n^2$ processors, $M[i]$ must be fi
 This algorithm is CRCW Common, since the only concurrent writes occur when calculating the maximum of each row, which is Common as discussed in class.
 
 \section*{17}
-Break the input into $\sqrt{n}$ chunks of size $\sqrt{n}$ and recursively solve the problem in parallel with $\sqrt{n}$ processors assigned to each chunk. We have $n$ processors, so the $\sqrt{n}$ max values returned by the chunks can be "maxed" in constant time using our $n$ processors (see hint). \\\\
+Break the input into $\sqrt{n}$ chunks of size $\sqrt{n}$ and recursively solve the problem in parallel with $\sqrt{n}$ processors assigned to each chunk. We have $n$ processors, so the $\sqrt{n}$ max values returned by the chunks can be "maxed" in constant time using our $n$ processors (see hint). Without loss of generality, assume $n$ is a perfect square. So $n = k^2$ for some integer $k$
+\\\\
+The $n$ processors can be thought of as $\sqrt{n}^2$ processors, that is, each processor is labelled $p_{i, j}$ for $1 \leq i \leq k$ and $1 \leq j \leq k$.
+
+\begin{algorithm}[H]
+    \begin{algorithmic}%[1]
+        \caption{CRCW Maximum of $x_1...x_n$ in $O(\log\log n)$}
+        \Require Integers $x_1...x_n$, a working space $A$ of size $k^2 = n$, and a working space $And$ of size $k = \sqrt{n}$
+        \State $A[i][j] \gets x_{k*i + j}$ \Comment{Break the input list into a 2D array, where each row is of length $\sqrt{n}$}
+        \State $c \gets \lfloor \frac{k}{2} \rfloor$
+        \While{$j < c$}
+            \State $A[i][j] \gets max(A[i][j], A[i][j + c])$
+            \State $c \gets \lfloor \frac{c}{2} \rfloor$
+        \EndWhile \Comment{For all $i$, each row $A[i][1]$ now contains the maximum $j$ for that row.}
+        \State
+        \State $And[i] \gets 1$ \Comment{There is a possibility that $A[i][1]$ contains the maximum over all $k$ rows of $A$}
+        \If{$A[i][1] < A[j][1]$} \Comment{But if there exists a row $j$ in $A$ with a greater maximum,}
+            \State $And[i] \gets 0$ \Comment{then $A[i][1]$ cannot be the maximum.}
+        \EndIf
+        \If{$And[i] == 1$} \Comment{If $A[i]]1]$ is the maximum,}
+            \State Output $A[i][1]$ \Comment{Then output it.}
+        \EndIf
+    \end{algorithmic}
+\end{algorithm}
+
 The recurrence relation for this algorithm is $T(n, n) = T(\sqrt{n}, \sqrt{n}) + 1$. \\
 Without loss of generality, let $n = 2^k$ for some $k$. At each step we are breaking the input into $\sqrt{n}$ size chunks i.e. we are halving the exponent $k$. Therefore we can only take the square root $O(log(k))$ times before $k$ drops to 1 or lower (and $n$ drops to 2 or lower). $n = 2^k$, so $k = log(n)$ and the number of square roots taken is $O(log(k) = O(log(log(n)))$. Each of the $\sqrt{n}$ chunks returns a single max value and we have $n$ processors, so we have the required $\sqrt{n}^2 = n$ processors to compute the max of those $\sqrt{n}$ numbers in constant time. Therefore the runtime of this algorithm is $O(log(log(n))$ with $n$ processors on a CRCW Common PRAM.
 
