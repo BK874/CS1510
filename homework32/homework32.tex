@@ -1,0 +1,77 @@
+
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows, automata}
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\usepackage{algorithm}          %  float wrapper for algorithms.
+\usepackage{algpseudocode}      % layout for algorithmicx
+\usepackage{float} % http:/ctan.org/pkg/flot - [H] float parameter forces a 'float' (algorithm block) to remain in a location
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map"
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number
+\newcommand{\Q}{\mathbb{Q}} % rational number
+\newcommand{\R}{\mathbb{R}} % real number
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 32}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\section*{18}
+The outline for this algorithm is as follows: Since the input is a list of
+(possibly overlapping) integers $x_1...x_n$ between $1$ and $n$, then each
+processor $p_i$ of the $n$ processors can look at its corresponding integer
+$x_i$ and confirm that the number $x_i$ is in the input by writing a 1 to an
+(originally 0) memory location $IsInInput[i]$. When $IsInInput[i] = 1$, the
+integer $i$ is in the input. If no processor writes to $IsInInput[i]$, then it
+stays 0, which means that the integer $i$ is not in the input. This stage of
+the algorithm takes only constant time, since $n$ processors working on $n$
+integers each do one read step and one write step.
+\\\\
+Next, each processor $p_i$ will read $IsInInput[n - i + 1]$. If $p_i$ finds a 1,
+then it will write $n - i + 1$ to the memory location $Maximum$. $Maximum$ will
+contain the maximum of $x_1...x_n$ after this step, since the lowest numbered
+processor will write the highest valued number. If $p_i$ reads a 1 from
+$IsInInput[n - i + 1]$, then it will write $n - i + 1$ to $Maximum$ which
+will be the maximum if and only if all $p_j, j < i$ read a 0 in
+$IsInInput[n - j + 1]$, which implies there are no higher numbers in the input.
+If there is a larger number, then a lower register (with a higher priority) will
+write to $Maximum$ instead. This step also takes constant time, because each
+processor performs one read and one write.
+
+\begin{algorithm}[H]
+  \begin{algorithmic}%[1]
+    \caption{CRCW Priority $O(1)$ algorithm for maximum with $n$ processors.}
+    \Require Input $x_1...x_n$, an $n$-sized memory location $IsInInput$, and a memory location $Maximum$.
+    \State $IsInInput[i] \gets 0$ \Comment{First, zero out the $IsInInput$ array.}
+    \State $IsInInput[x_i] \gets 1$ \Comment{This is a CRCW Common step, since all processors write the same number: 1.}
+    \If{$IsInInput[n - i + 1] == 1$}
+        \State $Maximum \gets n - i + 1$ \Comment{This is the CRCW Priority step.}
+    \EndIf
+    \If{$i == 0$} \Comment{Designate one processor}
+        \State Output $Maximum$ \Comment{to output the maximum}.
+    \EndIf
+  \end{algorithmic}
+\end{algorithm}
+
+\end{document}
