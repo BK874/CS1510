@@ -97,7 +97,9 @@ We have four steps that each take constant time, so this algorithm is $O(1)$ on 
 \end{algorithm}
 
 \section*{20}
-
+Its clear that this algorithm would be incredibly trivial if the machine were not limited to exclusive write. Each processor would simply read its corresponding $B$ value, and write that index in $A$ to its corresponding index in $C$. However, due to the data bottleneck that occurs with $A$, we must make copies. \\
+The algorithm begins with each processor making $log^2(n)$ copies of its corresponding index in $A$. These copies are put into a $log^2(n) \times n$ array. This step will take $log^2(n)$ time, as each processor makes $log^2(n)$ copies in sequence. \\
+The processors are now broken into groups of size $n/log^2(n)$. This gives us $log^2(n)$ groups. Thus, each grouping of processors can now be assigned its own copy of $A$. Each group could do its writings in sequence, with each processor in the group making its write, and then allowing the next processor to. Since each group has its own copy of $A$, and the groups do their writings sequentially, there is no concurrent reading. 
 
 
 \end{document}
