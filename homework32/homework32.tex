@@ -91,7 +91,8 @@ We have four steps that each take constant time, so this algorithm is $O(1)$ on 
     \If{$IsInInput[i] == 1$}
         \State $RootChunks[\lceil \frac{i}{\sqrt{n}} \rceil -1] \gets 1$ \Comment{This is a CRCW Common step.}
     \EndIf
-    
+    \State $MaxIndex \gets Max(IndicesContainingOne(RootChunks))$ \Comment{The $Max$ algorithm from problem 17}
+    \State $Maximum \gets Max(IndicesContainingOne(IsInInput[MaxIndex*\sqrt{n}]$ to $IsInInput[MaxIndex*\sqrt{n}]))$
   \end{algorithmic}
 \end{algorithm}
 
