@@ -66,10 +66,10 @@ Formally, the algorithm is as follows:
 	\State $t_p \gets $ $t_i$'s parent node.
 	\If{$t_i$ is a leaf node}
 		\State Allocate a copy of $t_i$ for creating $L$: $l_{i_1}$
-		\If($t_i$ is a left child}
-			\State Link $l_{i_1} \rightarrow l_{p_2}$}
+		\If{$t_i$ is a left child}
+			\State Link $l_{i_1} \rightarrow l_{p_2}$
 		\ElsIf{$t_i$ is a right child}
-			\State Link $l_{i_1} \rightarrow l_{p_3}$}
+			\State Link $l_{i_1} \rightarrow l_{p_3}$
 		\EndIf
 	\Else
 		\State $t_l \gets $ $t_i$'s left child.
@@ -81,7 +81,7 @@ Formally, the algorithm is as follows:
 			\State Link $l_{i_3} \rightarrow l_{p_2}$
 		\ElsIf{$t_i$ is a right child}
 			\State Link $l_{i_3} \rightarrow l_{p_3}$
-		\Else
+		\EndIf
 	\EndIf
   \end{algorithmic}
 \end{algorithm}
