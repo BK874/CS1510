@@ -1,0 +1,89 @@
+\documentclass[letterpaper,notitlepage,twoside]{article}
+
+% Basic imports, increase margins...
+\usepackage[margin=0.75in]{geometry}
+% Finite State Machine stuff
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows, automata}
+% Format tables nicely
+\usepackage[latin1]{inputenc}
+\usepackage{array}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath,amsthm}
+
+\usepackage{algorithm}          %  float wrapper for algorithms.
+\usepackage{algpseudocode}      % layout for algorithmicx
+\usepackage{float} % http:/ctan.org/pkg/flot - [H] float parameter forces a 'float' (algorithm block) to remain in a location
+
+\renewcommand{\implies}{\Rightarrow} % redefine command "implies"
+\renewcommand{\iff}{\Leftrightarrow} % double arrow
+\newcommand{\maps}{\rightarrow} % define command "map"
+\newcommand{\union}{\cup}
+\newcommand{\intersect}{\cap}
+\newcommand{\N}{\mathbb{N}} % natural number
+\newcommand{\Q}{\mathbb{Q}} % rational number
+\newcommand{\R}{\mathbb{R}} % real number
+\newcommand{\Z}{\mathbb{Z}} % integers
+\newcommand\tab[1][1cm]{\hspace*{#1}} %\tab command
+
+% Add more packages that you use here...
+
+\begin{document}
+\title{Homework 33}
+\author{Brian Knotten, Brett Schreiber, Brian Falkenstein}
+\maketitle
+
+\section*{21}
+Consider a sequential algorithm for this problem on a binary tree $T$ as follows:
+\begin{enumerate}
+\item Let $i \gets 1$.
+\item Perform an Eulerian tour on the tree.
+\item If the node is a leaf, label the node with $i$ and increment $i$.
+\end{enumerate}
+The result is a tree with each leaf node labelled in-order.
+\\
+The outline for the parallel version of this algorithm is as follows:
+\begin{enumerate}
+\item Perform an Eulerian tour on $T$ to return a $3n$ linked-list $L$.
+\item Let the nodes in $L$ representing a leaves in the tree (only one visit on the tour) be set to $1$ and let their corresponding processor keep a pointer to its node.
+\item Let all other nodes in $L$ be set to $0$.
+\item Perform the linked-list parallel prefix algorithm on $L$.
+\item Each processor corresponding to a leaf node in $T$ looks at its pointer to the node in $L$ to see a prefix sum. This number represents the number of the leaf in $T$ in an in-order traversal.
+\item Have each processor label their leaf node in $T$ with this number.
+\end{enumerate}
+
+This algorithm takes $O(\log(n))$ time, since performing an Eulerian tour takes a constant number of steps with $n$ processors, and performing the parallel prefix sum algorithm takes $O(\log(n))$ steps. This algorithm is EREW, because the Eulerian tour algorithm is EREW, the parallel prefix algorithm is EREW, and each processor reads and writes exclusively to its corresponding nodes in the steps particular to this algorithm.
+\\\\
+Formally, the algorithm is as follows:
+\begin{algorithm}[H]
+  \begin{algorithmic}%[1]
+    \caption{EREW $O(\log(n))$ algorithm for In-Order labeling of leaf nodes with $n$ processors.}
+    \Require An $n$-sized binary tree $T$.
+	\State $t_i \gets $ the node in $T$ which $p_i$ points to.
+	\State $t_p \gets $ $t_i$'s parent node.
+	\If{$t_i$ is a leaf node}
+		\State Allocate a copy of $t_i$ for creating $L$: $l_{i_1}$
+		\If($t_i$ is a left child}
+			\State Link $l_{i_1} \rightarrow l_{p_2}$}
+		\ElsIf{$t_i$ is a right child}
+			\State Link $l_{i_1} \rightarrow l_{p_3}$}
+		\EndIf
+	\Else
+		\State $t_l \gets $ $t_i$'s left child.
+		\State $t_r \gets $ $t_i$'s right child.
+		\State Allocate three copies of $t_i$ for creating $L$: $l_{i_1}$, $l_{i_2}$, $l_{i_3}$.
+		\State Link $l_{i_1} \rightarrow l_{l_1}$
+		\State Link $l_{i_2} \rightarrow l_{r_1}$
+		\If{$t_i$ is a left child}
+			\State Link $l_{i_3} \rightarrow l_{p_2}$
+		\ElsIf{$t_i$ is a right child}
+			\State Link $l_{i_3} \rightarrow l_{p_3}$
+		\Else
+	\EndIf
+  \end{algorithmic}
+\end{algorithm}
+
+\end{document}
