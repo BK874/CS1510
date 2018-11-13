@@ -83,6 +83,10 @@ Formally, the algorithm is as follows:
 			\State Link $l_{i_3} \rightarrow l_{p_3}$
 		\EndIf
 	\EndIf
+	\State $L' \gets$ the parallel prefix algorithm on $L$.
+	\If{$t_i$ is a leaf node}
+		\State Label $t_i$ with $l_{i_1}'$
+	\EndIf
   \end{algorithmic}
 \end{algorithm}
 
