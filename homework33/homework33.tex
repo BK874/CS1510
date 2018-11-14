@@ -90,4 +90,21 @@ Formally, the algorithm is as follows:
   \end{algorithmic}
 \end{algorithm}
 
+\section*{23}
+As indicated by the hint, to solve the problem of evaluating a binary expression tree with the four standard arithmetic operations as nodes and integers as leaves it will suffice to find a collection of functions that is closed under the four standard operations with constants, composition, and contains the identity and constant functions and apply that class of functions to the algorithm presented in class. \\\\
+Note that in class we used the class of functions of the form $ax+b$ (where $a$ is 1 or -1, and $b$ is any number) for addition and subtraction. \\\\
+Now we present a new class of functions of the form $\frac{ax+b}{nx+m}$ and show that this class of functions satisfies the presented requirements:
+\begin{enumerate}
+  \item Identity function: $\frac{1x+0}{0x+1} = \frac{x}{1} = x$
+  \item Constant function: $\frac{0x+k}{0x+1} = \frac{k}{1} = k$ where $k$ is any constant
+  \item Closed under addition of a constant: $\frac{ax+b}{nx+m} + \ell = \frac{ax+b}{nx+m} + \frac{\ell (nx+m)}{nx+m} = \frac{ax+b+\ell nx+\ell m}{nx+m} = \frac{(a+\ell n)x+b+\ell m}{nx+m} = \frac{yx+z}{nx+m}$ where $y = a + \ell n$ and $z = b + \ell m$
+  \item Close under subtraction of a constant: $\frac{ax+b}{nx+m} - \ell = \frac{ax+b}{nx+m} + \frac{(-\ell) (nx+m)}{nx+m} = \frac{ax+b+(-\ell) nx+(-\ell) m}{nx+m} = \frac{(a+(-\ell) n)x+b+(-\ell) m}{nx+m} = \frac{yx+z}{nx+m}$ where $y = a + (-\ell) n$ and $z = b + (-\ell) m$
+  \item Closed under multiplication by a constant: $\frac{ax+b}{nx+m} \cdot c = \frac{cax+cb}{nx+m} = \frac{yx+z}{nx+m}$ where $y=ca$ and $z=cb$
+  \item Closed under division by a constant: $\frac{\frac{ax+b}{nx+m}}{d} = \frac{ax+b}{nx+m} \cdot \frac{1}{d} = \frac{ax+b}{dnx+dm}  = \frac{ax+b}{yx+z}$ where $y = dn$ and $z = dm$
+  \item Closed under the division of a constant: $\frac{d}{\frac{ax+b}{nx+m}} = d \cdot \frac{nx+m}{ax+b} = \frac{dnx+dm}{ax+b} = \frac{yx+z}{ax+b}$ where $y = nx$ and $z = dm$
+  \item Closed under the composition of functions: Let $f(x) = \frac{ax+b}{nx+m}$ and let $g(x) = \frac{cx+d}{ex+f}$. Then $f(g(x)) = \frac{a(\frac{cx+d}{ex+f})+b}{n(\frac{cx+d}{ex+f})+m} = \frac{\frac{acx+ad}{ex+f}+b}{\frac{ncx+nd}{ex+f}+m} = \frac{\frac{acx+ad}{ex+f}+\frac{bex+bf}{ex+f}}{\frac{ncx+nd}{ex+f}+\frac{mex+mf}{ex+f}} = \frac{ex+f}{ex+f} \cdot \frac{(acx+ad)+(bex+bf)}{(ncx+nd)+(mex+mf)} = \frac{(ac+be)x+(ad+bf)}{(nc+me)x+(nd+mf)} = \frac{yx+z}{wx+v}$ where $y = (ac+be)$, $z = (ad+bf)$, $w = (nc+me)$, and $v = (nd + mf)$
+\end{enumerate}
+
+We have shown that our class of functions is closed under the four standard operations with constants and composition, and contains the identity and constant functions. Therefore, our class of functions can be applied to the $O(log^2n)$ algorithm given in class that applies "cuts" using these functions to every odd numbered left child that is a leaf or even numbered right child that is a leaf at each step. Because our operations can all be done in constant time, our functions can be applied to the class algorithm without changing the $O(log^2n$ runtime on a CREW PRAM with $n$ processors.
+
 \end{document}
